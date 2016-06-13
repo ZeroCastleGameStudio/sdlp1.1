@@ -68,13 +68,24 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(SolutionDir)3thlib\include\SDL_Extension;$(SolutionDir)3thlib\include\SDL2;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)3thlib\lib32;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>SDL2main.lib;vld.lib;SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy /Y $(SolutionDir)3thlib\bin32\*.* $(OutputPath)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -110,6 +121,47 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="mygame.cpp" />
+    <ClCompile Include="tinyxml2.cpp" />
+    <ClCompile Include="ZE_AssetManager.cpp" />
+    <ClCompile Include="ZE_Controller.cpp" />
+    <ClCompile Include="ZE_Core.cpp" />
+    <ClCompile Include="ZE_DisplayObject.cpp" />
+    <ClCompile Include="ZE_Error.cpp" />
+    <ClCompile Include="ZE_Event.cpp" />
+    <ClCompile Include="ZE_EventDispatcher.cpp" />
+    <ClCompile Include="ZE_Font.cpp" />
+    <ClCompile Include="ZE_Fraps.cpp" />
+    <ClCompile Include="ZE_Image.cpp" />
+    <ClCompile Include="ZE_InputBox.cpp" />
+    <ClCompile Include="ZE_Sound.cpp" />
+    <ClCompile Include="ZE_Sprite.cpp" />
+    <ClCompile Include="ZE_TextField.cpp" />
+    <ClCompile Include="ZE_Texture.cpp" />
+    <ClCompile Include="ZE_TextureContainer.cpp" />
+    <ClCompile Include="ZE_Timer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="mygame.h" />
+    <ClInclude Include="tinyxml2.h" />
+    <ClInclude Include="ZE_AssetManager.h" />
+    <ClInclude Include="ZE_Controller.h" />
+    <ClInclude Include="ZE_Core.h" />
+    <ClInclude Include="ZE_DisplayObject.h" />
+    <ClInclude Include="ZE_Error.h" />
+    <ClInclude Include="ZE_Event.h" />
+    <ClInclude Include="ZE_EventDispatcher.h" />
+    <ClInclude Include="ZE_Font.h" />
+    <ClInclude Include="ZE_Fraps.h" />
+    <ClInclude Include="ZE_Image.h" />
+    <ClInclude Include="ZE_InputBox.h" />
+    <ClInclude Include="ZE_Sound.h" />
+    <ClInclude Include="ZE_Sprite.h" />
+    <ClInclude Include="ZE_TextField.h" />
+    <ClInclude Include="ZE_Texture.h" />
+    <ClInclude Include="ZE_TextureContainer.h" />
+    <ClInclude Include="ZE_Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
