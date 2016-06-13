@@ -22,6 +22,7 @@
     <ProjectGuid>{08BC09F7-F4AD-426A-9C4A-BAF2E9A2AB41}</ProjectGuid>
     <RootNamespace>sdlp11</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>sdlp1.1</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
