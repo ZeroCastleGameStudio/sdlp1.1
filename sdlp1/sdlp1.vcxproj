@@ -163,7 +163,6 @@
     <ClCompile Include="ZE_Sound.cpp" />
     <ClCompile Include="ZE_TextField.cpp" />
     <ClCompile Include="ZE_TextureContainer.cpp" />
-    <ClCompile Include="tinyxml2.cpp" />
     <ClCompile Include="ZE_AssetManager.cpp" />
     <ClCompile Include="ZE_Core.cpp" />
     <ClCompile Include="ZE_DisplayObject.cpp" />
@@ -188,7 +187,6 @@
     <ClInclude Include="ZE_Sound.h" />
     <ClInclude Include="ZE_TextField.h" />
     <ClInclude Include="ZE_TextureContainer.h" />
-    <ClInclude Include="tinyxml2.h" />
     <ClInclude Include="ZE_AssetManager.h" />
     <ClInclude Include="ZE_Core.h" />
     <ClInclude Include="ZE_DisplayObject.h" />
@@ -198,9 +196,6 @@
     <ClInclude Include="ZE_Sprite.h" />
     <ClInclude Include="ZE_Texture.h" />
     <ClInclude Include="ZE_Timer.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

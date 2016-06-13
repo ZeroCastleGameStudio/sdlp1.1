@@ -114,9 +114,6 @@
     <ClCompile Include="ZE_EventDispatcher.cpp">
       <Filter>源文件\ZeroEngine\Events</Filter>
     </ClCompile>
-    <ClCompile Include="tinyxml2.cpp">
-      <Filter>源文件\ZeroEngine\Support</Filter>
-    </ClCompile>
     <ClCompile Include="ZE_Sound.cpp">
       <Filter>源文件\ZeroEngine\Sound</Filter>
     </ClCompile>
@@ -176,9 +173,6 @@
     <ClInclude Include="ZE_EventDispatcher.h">
       <Filter>头文件\ZeroEngineHeads\Events</Filter>
     </ClInclude>
-    <ClInclude Include="tinyxml2.h">
-      <Filter>头文件\ZeroEngineHeads\Support</Filter>
-    </ClInclude>
     <ClInclude Include="ZE_Sound.h">
       <Filter>头文件\ZeroEngineHeads\Sound</Filter>
     </ClInclude>
@@ -197,8 +191,5 @@
     <ClInclude Include="ZE_InputBox.h">
       <Filter>头文件\ZeroEngineHeads\UserInterface</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
