@@ -3,25 +3,25 @@
 
 using namespace std;
 
-//[Goble]ZE版本号
+//[Global]ZE版本号
 string ZE_version = "1.0.0";
-//[Goble]保存SDL窗体的指针
+//[Global]保存SDL窗体的指针
 SDL_Window* g_ZE_Window = NULL;
-//[Goble]保存SDL主Surface的指针
+//[Global]保存SDL主Surface的指针
 SDL_Surface* g_ZE_MainSurface = NULL;
-//[Goble]到现在也不知道这玩意到底该叫什么，就叫渲染器好了，这是主渲染器，绑定到主window
+//[Global]到现在也不知道这玩意到底该叫什么，就叫渲染器好了，这是主渲染器，绑定到主window
 SDL_Renderer* g_ZE_MainRenderer = NULL;
-//[Goble]stage对象，唯一
+//[Global]stage对象，唯一
 Sprite ZE_stage;
-//[Goble]error对象(应该是唯一，其它类就算有也是private)
+//[Global]error对象(应该是唯一，其它类就算有也是private)
 Error ZE_error;
-//[Goble]事件处理器对象，唯一
+//[Global]事件处理器对象，唯一
 EventManager ZE_eventHandler;
-//[Goble]退出主循环的判定变量
+//[Global]退出主循环的判定变量
 bool ZE_QUIT_MAIN_LOOP = false;
-//[Goble]保存所有的手柄指针
+//[Global]保存所有的手柄指针
 deque<unique_ptr<Controller>> ZE_Controllers;
-//[Goble]系统默认字体
+//[Global]系统默认字体
 shared_ptr<Font> defaultFont;
 
 
