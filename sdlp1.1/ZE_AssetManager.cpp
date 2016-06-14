@@ -10,7 +10,10 @@ using namespace tinyxml2;
 void AssetManager::Init(string xmlPath)
 {
 	XMLDocument doc;
-	doc.LoadFile(xmlPath.c_str());
+	if (XML_NO_ERROR != doc.LoadFile(xmlPath.c_str()))
+	{
+		throw std::runtime_error("XMLDocument LoadFile ERROR");
+	}
 	XMLElement* docroot = doc.RootElement();
 	XMLElement* sub = docroot->FirstChildElement("element");
 	while (sub)
@@ -181,11 +184,11 @@ void AssetManager::LoadTexture(string name, string path, string xml)
 
 	//声明一个子贴图数组，用于传递给贴图类
 	deque <SubTexture> subtexture = SubXmlReader(xml);
-	
+
 	//调用下面的读取地址方法获得一个surface指针传递给S2T，
 	SDL_Texture* tempTexture = Surface2SDLTexture(ImageReader(path), &tempWidth, &tempHeight);
 	//然后再把返回的texture指针传递给目标变量
-	TEXTURES[TEXTURES.size()-1]->Init(name, tempTexture, tempWidth, tempHeight, subtexture);
+	TEXTURES[TEXTURES.size() - 1]->Init(name, tempTexture, tempWidth, tempHeight, subtexture);
 }
 
 void AssetManager::LoadTTF(string name, string path) { FONT.push_back(new Font(name, path)); }
@@ -373,7 +376,7 @@ void AssetManager::DeleteTexture(int index)
 void AssetManager::DeleteAllTextures()
 {
 	//AllTexture是一个指针vector
-	while(TEXTURES.size() != 0)
+	while (TEXTURES.size() != 0)
 	{
 		DeleteTexture(0);
 		//永远记得，不要野指针，不要内存泄露

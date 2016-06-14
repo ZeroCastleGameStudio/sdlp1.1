@@ -15,13 +15,13 @@ Controller::Controller(int id)
 		shake = SDL_HapticOpenFromJoystick(me);
 		if (shake == NULL)
 		{
-			ZE_error.PopDebutConsole_Warning("Warning: Controller does not support haptics!");
+			ZE_error.PopDebugConsole_Warning("Warning: Controller does not support haptics!");
 		}
 		else
 		{
 			if( SDL_HapticRumbleInit( shake ) < 0 )
 			{
-				ZE_error.PopDebutConsole_Warning("Warning: Unable to initialize rumble!");
+				ZE_error.PopDebugConsole_Warning("Warning: Unable to initialize rumble!");
 			}
 		}
 	}

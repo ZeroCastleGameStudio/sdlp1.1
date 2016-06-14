@@ -9,14 +9,14 @@
 
 using namespace std;
 
-void Error::PopToDebutConsole(string msg, bool mainConsole)
+void Error::PopToDebugConsole(string msg, bool mainConsole)
 {
 	OutputDebugStringA(msg.c_str());
 	if (mainConsole)
 		cout << msg << endl;
 }
 
-void Error::PopDebutConsole_Warning(string msg)
+void Error::PopDebugConsole_Warning(string msg)
 {
 	OutputDebugStringA(("Warning: " + msg + "\n").c_str());
 }

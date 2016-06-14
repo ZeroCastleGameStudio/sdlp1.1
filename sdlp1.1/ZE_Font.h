@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <deque>
-#include <SDL_ttf.h>
+#include <SDL_Extension/SDL_ttf.h>
 
 using namespace std;
 

@@ -9,9 +9,9 @@ class Error
 {
 public:
 	//单纯的向DEBUG控制台输出一条信息，第二个参数表示是否同时向程序控制台输出
-	void PopToDebutConsole(string msg, bool mainConsole = true);
+	void PopToDebugConsole(string msg, bool mainConsole = true);
 	//输出一条警告信息，不退出
-	void PopDebutConsole_Warning(string msg);
+	void PopDebugConsole_Warning(string msg);
 	//弹出一个一般错误，接收一个错误信息字符串
 	void PopDebugConsole_Error(string msg, bool quit = true);
 	//弹出一个SDL错误，接收一个错误信息字符串，并附加SDL错误信息

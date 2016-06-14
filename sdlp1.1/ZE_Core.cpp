@@ -22,9 +22,10 @@ bool ZE_QUIT_MAIN_LOOP = false;
 //[Goble]保存所有的手柄指针
 deque<Controller*> ZE_Controllers;
 //[Goble]系统默认字体
-Font* defaultFont = new Font("default", "simhei.ttf");
+unique_ptr<Font> defaultFont;
 
-bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useVSync)
+
+bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useVSync, std::string defaultFontFile)
 {
 	bool success = true;
 	if (!Init_SDL(Title, windowWidth, windowHeight))
@@ -43,6 +44,9 @@ bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useV
 	{
 		success = false;
 	}
+
+	// 加载字体
+	defaultFont.reset(new Font("default", defaultFontFile));
 
 	function<void(SDL_Event)> addJoyStick = [](SDL_Event evt)->void
 	{
@@ -168,7 +172,7 @@ void ZeroEngine::Start(Game* userGame)
 	fraps.setUp();
 	while (!ZE_QUIT_MAIN_LOOP)
 	{
-		
+
 		//处理事件
 		ZE_eventHandler.handleEvent();
 		//清空
@@ -215,9 +219,10 @@ void ZeroEngine::Close()
 		Mix_Quit();
 	}
 	//清除默认字体
-	defaultFont->~Font();
-	delete(defaultFont);
-	defaultFont = NULL;
+	// 现在由智能指针自动处理
+	//defaultFont->~Font();
+	//delete(defaultFont);
+	//defaultFont = NULL;
 
 	TTF_Quit();
 	IMG_Quit();

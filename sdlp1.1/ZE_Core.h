@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <fstream>
+#include <memory>
 #include <deque>
 #include <SDL.h>
 #include <SDL_ttf.h>
@@ -33,7 +34,7 @@ extern bool ZE_QUIT_MAIN_LOOP;
 //[Goble]保存所有的手柄指针
 extern deque<Controller*> ZE_Controllers;
 //[Goble]系统默认字体
-extern Font* defaultFont;
+extern unique_ptr<Font> defaultFont;
 
 
 //颜色结构体，也就设置舞台颜色的时候用用
@@ -64,7 +65,7 @@ public:
 	//该方法调用了本类中的其它两个方法，分别初始化了外部库SDL和SDL_IMAGE
 	//该方法会返回一个bool值，若所有模块初始化成功则返回true，否则返回false
 	//外部库的报错写在对应方法里
-	bool Init(string, int, int, bool);
+	bool Init(string, int, int, bool, std::string defaultFontFile = "data/ttf/SourceHanSansSC-Normal.otf");
 	//该方法是ZE的主循环方法，目前是暂用版
 	void Start(Game*);
 

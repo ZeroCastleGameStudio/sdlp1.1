@@ -115,7 +115,7 @@ void DisplayObject::removeFromParent(bool disposeMe)
 {
 	if (parent == NULL)
 	{
-		ZE_error.PopDebutConsole_Warning("DisplayObject:" + this->name + " do not have a parent!");
+		ZE_error.PopDebugConsole_Warning("DisplayObject:" + this->name + " do not have a parent!");
 	}
 	else
 	{

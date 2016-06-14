@@ -129,9 +129,6 @@
     <ClCompile Include="ZE_Sound.cpp">
       <Filter>源文件\ZeroEngine\Sound</Filter>
     </ClCompile>
-    <ClCompile Include="tinyxml2.cpp">
-      <Filter>源文件\ZeroEngine\Support</Filter>
-    </ClCompile>
     <ClCompile Include="ZE_InputBox.cpp">
       <Filter>源文件\ZeroEngine\UserInterface</Filter>
     </ClCompile>
@@ -187,9 +184,6 @@
     </ClInclude>
     <ClInclude Include="ZE_Sound.h">
       <Filter>头文件\ZeroEngineHeads\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="tinyxml2.h">
-      <Filter>头文件\ZeroEngineHeads\Support</Filter>
     </ClInclude>
     <ClInclude Include="ZE_InputBox.h">
       <Filter>头文件\ZeroEngineHeads\UserInterface</Filter>

@@ -69,7 +69,7 @@ void Image::changeCurrentFrame(unsigned int frame)
 			currentFrame = 0;
 	}
 	else
-		ZE_error.PopDebutConsole_Warning("Can't edit a stable image");
+		ZE_error.PopDebugConsole_Warning("Can't edit a stable image");
 }
 
 void Image::play()
@@ -80,7 +80,7 @@ void Image::play()
 		frameTimer.start();
 	}
 	else
-		ZE_error.PopDebutConsole_Warning("Can't edit a stable image");
+		ZE_error.PopDebugConsole_Warning("Can't edit a stable image");
 }
 void Image::stop()
 {
@@ -90,7 +90,7 @@ void Image::stop()
 		frameTimer.reset();
 	}
 	else
-		ZE_error.PopDebutConsole_Warning("Can't edit a stable image");
+		ZE_error.PopDebugConsole_Warning("Can't edit a stable image");
 }
 
 bool Image::playState() { return playing; }
