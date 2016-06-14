@@ -71,7 +71,7 @@ textureStruct AssetManager::getTexture(string name)
 			}
 		}
 	}
-	ZE_error.PopDebugConsole_Error("Can't find Texture: " + name);
+	GlobalState->ZE_error->PopDebugConsole_Error("Can't find Texture: " + name);
 	return temp;
 }
 
@@ -89,7 +89,7 @@ SDL_Texture* AssetManager::getTTFTexture(string text, string name, int size, SDL
 		tempsur = TTF_RenderUTF8_Blended(tempfont, text.c_str(), color);
 	if (tempsur == NULL)
 	{
-		ZE_error.PopDebugConsole_SDL_ttfError("Unable to render text surface!");
+		GlobalState->ZE_error->PopDebugConsole_SDL_ttfError("Unable to render text surface!");
 		return NULL;
 	}
 	else
@@ -108,7 +108,7 @@ shared_ptr<Font> AssetManager::getFont(string name)
 			return i;
 		}
 	}
-	ZE_error.PopDebugConsole_Error("Can't find font name:" + name);
+	GlobalState->ZE_error->PopDebugConsole_Error("Can't find font name:" + name);
 	return nullptr;
 }
 
@@ -121,7 +121,7 @@ shared_ptr<Sound> AssetManager::getSound(string name)
 			return i;
 		}
 	}
-	ZE_error.PopDebugConsole_Error("Can't find sound name:" + name);
+	GlobalState->ZE_error->PopDebugConsole_Error("Can't find sound name:" + name);
 	return nullptr;
 }
 
@@ -159,7 +159,7 @@ deque<textureStruct> AssetManager::getTextures(string partOfName)
 	}
 	if (temp.size() == 0)
 	{
-		ZE_error.PopDebugConsole_Error("Can't find Texture has part of name: " + partOfName);
+		GlobalState->ZE_error->PopDebugConsole_Error("Can't find Texture has part of name: " + partOfName);
 	}
 	sort(temp.begin(), temp.end(), comparTextureStruce);
 	return temp;
@@ -214,12 +214,12 @@ void AssetManager::LoadSound(bool isMusic, string name, string path)
 SDL_Texture* AssetManager::Surface2SDLTexture(SDL_Surface* surface, int* getW, int* getH)
 {
 	SDL_Texture* newTexture = NULL;
-	newTexture = SDL_CreateTextureFromSurface(g_ZE_MainRenderer, surface);
+	newTexture = SDL_CreateTextureFromSurface(GlobalState->g_ZE_MainRenderer, surface);
 	//将Surface转换为Texture
 	//直接创建贴图也行，但是要的参数复杂很多，不如直接转换
 	if (newTexture == NULL)
 	{
-		ZE_error.PopDebugConsole_SDLError("Unable to creat texture!");
+		GlobalState->ZE_error->PopDebugConsole_SDLError("Unable to creat texture!");
 	}
 	//获取宽高，用指针传回去
 	*getW = surface->w;
@@ -250,7 +250,7 @@ SDL_Surface* AssetManager::ImageReader(string path, int extNameLength)
 		//因为是纯C，不接受string变量，不再赘述
 		if (tempSurface == NULL)
 		{
-			ZE_error.PopDebugConsole_SDLError("Unable to load bmp file:" + path + " |Load error");
+			GlobalState->ZE_error->PopDebugConsole_SDLError("Unable to load bmp file:" + path + " |Load error");
 		}
 	}
 	else if (temp == "png" || temp == "PNG")
@@ -259,12 +259,12 @@ SDL_Surface* AssetManager::ImageReader(string path, int extNameLength)
 		tempSurface = IMG_Load(path.c_str());
 		if (tempSurface == NULL)
 		{
-			ZE_error.PopDebugConsole_SDL_ImageError("Unable to load png file:" + path + " |Load error");
+			GlobalState->ZE_error->PopDebugConsole_SDL_ImageError("Unable to load png file:" + path + " |Load error");
 		}
 	}
 	else
 	{
-		ZE_error.PopDebugConsole_Error("Unable to read " + temp + " file.");
+		GlobalState->ZE_error->PopDebugConsole_Error("Unable to read " + temp + " file.");
 		//if们都没截住那就是没搞的格式呗...
 	}
 

@@ -24,7 +24,7 @@ void TextField::changeText(string text)
 	SDL_Texture* temptex;
 	if (Ass == NULL)
 	{
-		TTF_Font* tempfont = defaultFont->getFont(FontSize);
+		TTF_Font* tempfont = GlobalState->defaultFont->getFont(FontSize);
 		SDL_Surface* tempsur = nullptr;
 		if (EffectLevel == 0)
 			tempsur = TTF_RenderUTF8_Solid(tempfont, text.c_str(), TextColor);

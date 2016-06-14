@@ -5,17 +5,29 @@ using namespace std;
 
 void EventDispatcher::addEventListener(SDL_EventType type, function<void(SDL_Event)> func)
 {
-	ZE_eventHandler.addEventFunction(type, this, func);
+	event_indexs.insert(make_pair(type, GlobalState->ZE_eventHandler->addEventFunction(type, this, func)));
 }
 
 void EventDispatcher::removeEventListeners(SDL_EventType type)
 {
-	ZE_eventHandler.removeEventOfObject(type, this);
+	auto itp = event_indexs.equal_range(type);
+	auto it = itp.first;
+	while (it != itp.second)
+	{
+		GlobalState->ZE_eventHandler->removeEventOfObject(it->second);
+		++it;
+	}
+
+	event_indexs.erase(itp.first, itp.second);
 }
 
 void EventDispatcher::removeAllEvents()
 {
-	ZE_eventHandler.removeAllEventOfObject(this);
+	for (auto& a : event_indexs)
+	{
+		GlobalState->ZE_eventHandler->removeEventOfObject(a.second);
+	}
+	event_indexs.clear();
 }
 
 EventDispatcher::~EventDispatcher()

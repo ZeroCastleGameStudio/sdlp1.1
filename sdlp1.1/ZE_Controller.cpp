@@ -8,20 +8,20 @@ Controller::Controller(int id)
 	me = SDL_JoystickOpen(id);
 	if (me == NULL)
 	{
-		ZE_error.PopDebugConsole_SDLError("Unable to open game controller!");
+		GlobalState->ZE_error->PopDebugConsole_SDLError("Unable to open game controller!");
 	}
 	else
 	{
 		shake = SDL_HapticOpenFromJoystick(me);
 		if (shake == NULL)
 		{
-			ZE_error.PopDebugConsole_Warning("Warning: Controller does not support haptics!");
+			GlobalState->ZE_error->PopDebugConsole_Warning("Warning: Controller does not support haptics!");
 		}
 		else
 		{
 			if( SDL_HapticRumbleInit( shake ) < 0 )
 			{
-				ZE_error.PopDebugConsole_Warning("Warning: Unable to initialize rumble!");
+				GlobalState->ZE_error->PopDebugConsole_Warning("Warning: Unable to initialize rumble!");
 			}
 		}
 	}

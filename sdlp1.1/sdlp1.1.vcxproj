@@ -102,6 +102,8 @@
       <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;SDL2main.lib;tinyxml2.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)3thlib\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>Debug</GenerateDebugInformation>
+      <FullProgramDatabaseFile>true</FullProgramDatabaseFile>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y $(SolutionDir)3thlib\bin64\*.* $(OutputPath)</Command>
@@ -140,8 +142,9 @@
     <ClCompile Include="ZE_Controller.cpp" />
     <ClCompile Include="ZE_Core.cpp" />
     <ClCompile Include="ZE_DisplayObject.cpp" />
+    <ClCompile Include="ZE_EngineGlobalState.cpp" />
     <ClCompile Include="ZE_Error.cpp" />
-    <ClCompile Include="ZE_Event.cpp" />
+    <ClCompile Include="ZE_EventManager.cpp" />
     <ClCompile Include="ZE_EventDispatcher.cpp" />
     <ClCompile Include="ZE_Font.cpp" />
     <ClCompile Include="ZE_Fraps.cpp" />
@@ -160,8 +163,9 @@
     <ClInclude Include="ZE_Controller.h" />
     <ClInclude Include="ZE_Core.h" />
     <ClInclude Include="ZE_DisplayObject.h" />
+    <ClInclude Include="ZE_EngineGlobalState.h" />
     <ClInclude Include="ZE_Error.h" />
-    <ClInclude Include="ZE_Event.h" />
+    <ClInclude Include="ZE_EventManager.h" />
     <ClInclude Include="ZE_EventDispatcher.h" />
     <ClInclude Include="ZE_Font.h" />
     <ClInclude Include="ZE_Fraps.h" />

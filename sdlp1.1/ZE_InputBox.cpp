@@ -19,7 +19,7 @@ void InputBox::changeText()
 	mTexture = make_shared<Texture>();
 	SDL_Texture* temptex;
 
-	TTF_Font* tempfont = defaultFont->getFont(12);
+	TTF_Font* tempfont = GlobalState->defaultFont->getFont(12);
 	SDL_Surface* tempsur = nullptr;
 	tempsur = TTF_RenderUTF8_Solid(tempfont, mText.c_str(), fontColor);
 	temptex = AssetManager::Surface2SDLTexture(tempsur, &mWidth, &mHeight);
@@ -30,7 +30,7 @@ void InputBox::changeText()
 
 void InputBox::Render()
 {
-	SDL_SetRenderDrawColor(g_ZE_MainRenderer, bgColor.r, bgColor.g, bgColor.b, bgColor.a);
+	SDL_SetRenderDrawColor(GlobalState->g_ZE_MainRenderer, bgColor.r, bgColor.g, bgColor.b, bgColor.a);
 	SDL_Rect temp = { x, y, mWidth, mHeight };
-	SDL_RenderFillRect(g_ZE_MainRenderer, &temp);
+	SDL_RenderFillRect(GlobalState->g_ZE_MainRenderer, &temp);
 }
