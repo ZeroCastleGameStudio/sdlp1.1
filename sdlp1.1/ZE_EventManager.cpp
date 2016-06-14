@@ -1,4 +1,4 @@
-#include "ZE_Event.h"
+#include "ZE_EventManager.h"
 #include "ZE_Core.h"
 
 using namespace std;
@@ -14,44 +14,35 @@ void EventManager::handleEvent()
 		}
 		else
 		{
-			for (unsigned int i = 0; i < AllEvents.size(); i++)
+			for (auto&a : AllEvents)
 			{
-				if (e.type == AllEvents[i].type)
+				if (e.type == a.second.type)
 				{
-					AllEvents[i].func(e);
+					a.second.func(e);
 				}
 			}
 		}
 	}
 }
 
-void EventManager::addEventFunction(SDL_EventType type, EventDispatcher* signedObject, function<void(SDL_Event)> func)
+size_t EventManager::addEventFunction(SDL_EventType type, EventDispatcher* signedObject, function<void(SDL_Event)> func)
 {
+	size_t index = ++event_index;
 	EventData temp;
 	temp.type = type;
 	temp.signedObject = signedObject;
 	temp.func = func;
-	AllEvents.push_back(temp);
+	temp.eventIndex = index;
+	AllEvents.emplace(index, temp);
+	return index;
 }
 
-void EventManager::removeEventOfObject(SDL_EventType type, EventDispatcher* signedObject)
+void EventManager::removeEventOfObject(size_t event_index)
 {
-	for (unsigned int i = 0; i < AllEvents.size(); i++)
-	{
-		if (type == AllEvents[i].type && signedObject == AllEvents[i].signedObject)
-		{
-			AllEvents.erase(AllEvents.begin() + i);
-		}
-	}
+	AllEvents.erase(event_index);
 }
 
-void EventManager::removeAllEventOfObject(EventDispatcher* signedObject)
+void EventManager::removeAllEvent()
 {
-	for (unsigned int i = 0; i < AllEvents.size(); i++)
-	{
-		if (signedObject == AllEvents[i].signedObject)
-		{
-			AllEvents.erase(AllEvents.begin() + i);
-		}
-	}
+	AllEvents.clear();
 }
