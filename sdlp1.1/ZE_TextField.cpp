@@ -20,12 +20,12 @@ TextField::TextField(string text_f, unsigned int effectLevel_f, int fontSize_f, 
 void TextField::changeText(string text)
 {
 	freeTexture();
-	mTexture = new Texture();
+	mTexture = make_shared<Texture>();
 	SDL_Texture* temptex;
 	if (Ass == NULL)
 	{
 		TTF_Font* tempfont = defaultFont->getFont(FontSize);
-		SDL_Surface* tempsur = NULL;
+		SDL_Surface* tempsur = nullptr;
 		if (EffectLevel == 0)
 			tempsur = TTF_RenderUTF8_Solid(tempfont, text.c_str(), TextColor);
 		else if (EffectLevel == 1)

@@ -1,11 +1,13 @@
 #pragma once
 #include <string>
 #include <deque>
+#include <memory>
 #include <SDL_Extension/SDL_ttf.h>
 
 using namespace std;
 
 class Font
+	:enable_shared_from_this<Font>
 {
 public:
 	Font(string, string);

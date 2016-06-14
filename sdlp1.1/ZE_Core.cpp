@@ -22,7 +22,7 @@ bool ZE_QUIT_MAIN_LOOP = false;
 //[Goble]保存所有的手柄指针
 deque<Controller*> ZE_Controllers;
 //[Goble]系统默认字体
-unique_ptr<Font> defaultFont;
+shared_ptr<Font> defaultFont;
 
 
 bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useVSync, std::string defaultFontFile)
@@ -46,7 +46,7 @@ bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useV
 	}
 
 	// 加载字体
-	defaultFont.reset(new Font("default", defaultFontFile));
+	defaultFont = make_shared<Font>("default", defaultFontFile);
 
 	function<void(SDL_Event)> addJoyStick = [](SDL_Event evt)->void
 	{

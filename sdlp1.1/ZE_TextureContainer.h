@@ -5,7 +5,7 @@
 class TextureContainer : public DisplayObject
 {
 public:
-	Texture* mTexture = NULL;
+	shared_ptr<Texture> mTexture{ nullptr };
 	int stageX;
 	int stageY;
 	int mWidth;

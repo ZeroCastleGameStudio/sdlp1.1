@@ -78,7 +78,7 @@ textureStruct AssetManager::getTexture(string name)
 SDL_Texture* AssetManager::getTTFTexture(string text, string name, int size, SDL_Color color, int* width, int* height,
 	unsigned int effectLevel)
 {
-	Font* usingfont = getFont(name);
+	auto usingfont = getFont(name);
 	TTF_Font* tempfont = usingfont->getFont(size);
 	SDL_Surface* tempsur = NULL;
 	if (effectLevel == 0)
@@ -99,7 +99,7 @@ SDL_Texture* AssetManager::getTTFTexture(string text, string name, int size, SDL
 	}
 }
 
-Font* AssetManager::getFont(string name)
+shared_ptr<Font> AssetManager::getFont(string name)
 {
 	for (auto i : FONT)
 	{
@@ -109,10 +109,10 @@ Font* AssetManager::getFont(string name)
 		}
 	}
 	ZE_error.PopDebugConsole_Error("Can't find font name:" + name);
-	return NULL;
+	return nullptr;
 }
 
-Sound* AssetManager::getSound(string name)
+shared_ptr<Sound> AssetManager::getSound(string name)
 {
 	for (auto i : SOUNDS)
 	{
@@ -122,7 +122,7 @@ Sound* AssetManager::getSound(string name)
 		}
 	}
 	ZE_error.PopDebugConsole_Error("Can't find sound name:" + name);
-	return NULL;
+	return nullptr;
 }
 
 //用于对比两个结构体的大小，供getTextures排序使用，若A小于B将返回true
@@ -174,8 +174,7 @@ void AssetManager::LoadTexture(string name, string path, string xml)
 	这可能也是为什么大家都用指针的原因，就好像你在A类里盖了一栋楼，你想让B看看，总不能说把楼搬过去给B看。
 	所以就拿一个指针，告诉B地址让他自己来看就好了。*/
 
-	//统筹数组创建变量，开辟储存空间，删除什么的肯定还会用到
-	TEXTURES.push_back(new Texture());
+	auto temp_texture = make_shared<Texture>();
 
 	//总之宽高必须从SURFACE读取，所以声明两个变量，让S2T方法用指针传回来
 	//直接把函数放在INIT里的话，无法正确传递WH变量，所以单独拿出来赋值一遍。
@@ -187,23 +186,28 @@ void AssetManager::LoadTexture(string name, string path, string xml)
 
 	//调用下面的读取地址方法获得一个surface指针传递给S2T，
 	SDL_Texture* tempTexture = Surface2SDLTexture(ImageReader(path), &tempWidth, &tempHeight);
-	//然后再把返回的texture指针传递给目标变量
-	TEXTURES[TEXTURES.size() - 1]->Init(name, tempTexture, tempWidth, tempHeight, subtexture);
+	// 初始化
+	temp_texture->Init(name, tempTexture, tempWidth, tempHeight, subtexture);
+	// 保存指针
+	TEXTURES.push_back(temp_texture);
 }
 
-void AssetManager::LoadTTF(string name, string path) { FONT.push_back(new Font(name, path)); }
+void AssetManager::LoadTTF(string name, string path)
+{
+	FONT.emplace_back(new Font(name, path));
+}
 
 void AssetManager::LoadSound(bool isMusic, string name, string path)
 {
 	if (isMusic)
 	{
 		Mix_Music* music = Mix_LoadMUS(path.c_str());
-		SOUNDS.push_back(new Sound(name, music));
+		SOUNDS.emplace_back(new Sound(name, music));
 	}
 	else
 	{
 		Mix_Chunk* sound = Mix_LoadWAV(path.c_str());
-		SOUNDS.push_back(new Sound(name, sound));
+		SOUNDS.emplace_back(new Sound(name, sound));
 	}
 }
 
@@ -332,9 +336,10 @@ void AssetManager::dispose()
 
 void AssetManager::DeleteSound(int index)
 {
-	SOUNDS[index]->~Sound();
-	delete(SOUNDS[index]);
-	SOUNDS[index] = NULL;
+	// 智能指针化
+	//SOUNDS[index]->~Sound();
+	//delete(SOUNDS[index]);
+	//SOUNDS[index] = NULL;
 	SOUNDS.erase(SOUNDS.begin() + index);
 }
 
@@ -349,9 +354,10 @@ void AssetManager::DeleteAllSounds()
 
 void AssetManager::DeleteFont(int index)
 {
-	FONT[index]->~Font();
-	delete(FONT[index]);
-	FONT[index] = NULL;
+	// 智能指针化
+	//FONT[index]->~Font();
+	//delete(FONT[index]);
+	//FONT[index] = NULL;
 	FONT.erase(FONT.begin() + index);
 }
 
@@ -366,9 +372,10 @@ void AssetManager::DeleteAllFonts()
 
 void AssetManager::DeleteTexture(int index)
 {
-	TEXTURES[index]->~Texture();
-	delete(TEXTURES[index]);
-	TEXTURES[index] = NULL;
+	// 智能指针化
+	//TEXTURES[index]->~Texture();
+	//delete(TEXTURES[index]);
+	//TEXTURES[index] = NULL;
 	//删除数组元素
 	TEXTURES.erase(TEXTURES.begin() + index);
 }

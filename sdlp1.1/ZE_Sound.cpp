@@ -44,7 +44,7 @@ void Sound::pause()
 {
 	if (isMusic)
 		Mix_PauseMusic();
-	else if(channel != -1)
+	else if (channel != -1)
 		Mix_Pause(channel);
 }
 
@@ -52,7 +52,7 @@ void Sound::stop()
 {
 	if (isMusic)
 		Mix_HaltMusic();
-	else if(channel != -1)
+	else if (channel != -1)
 	{
 		Mix_HaltChannel(channel);
 		channel = -1;
@@ -70,7 +70,9 @@ Sound::~Sound()
 			ZE_error.PopDebugConsole_Warning("Can't free a mp3 music, SDL_Mixer is not support it");
 		}
 		else
+		{
 			Mix_FreeMusic(music);
+		}
 	}
 	else
 		Mix_FreeChunk(sound);
