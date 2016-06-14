@@ -9,7 +9,7 @@
 using namespace std;
 
 class Font
-	:public enable_shared_from_this<Font>
+	: public enable_shared_from_this<Font>
 {
 public:
 	Font(string, string);
