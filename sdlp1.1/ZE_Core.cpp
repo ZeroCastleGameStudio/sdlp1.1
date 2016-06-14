@@ -20,7 +20,7 @@ Event ZE_eventHandler;
 //[Goble]退出主循环的判定变量
 bool ZE_QUIT_MAIN_LOOP = false;
 //[Goble]保存所有的手柄指针
-deque<Controller*> ZE_Controllers;
+deque<unique_ptr<Controller>> ZE_Controllers;
 //[Goble]系统默认字体
 shared_ptr<Font> defaultFont;
 
@@ -50,12 +50,14 @@ bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useV
 
 	function<void(SDL_Event)> addJoyStick = [](SDL_Event evt)->void
 	{
-		ZE_Controllers.push_back(new Controller(SDL_NumJoysticks() - 1));
+		ZE_Controllers.emplace_back(new Controller(SDL_NumJoysticks() - 1));
 	};
 
 	function<void(SDL_Event)> removeJoyStick = [](SDL_Event evt)->void
 	{
-		delete(ZE_Controllers[evt.jdevice.which]);
+		//delete(ZE_Controllers[evt.jdevice.which]);
+		//ZE_Controllers[evt.jdevice.which].reset();
+		// FIXME 这里使用下标进行访问不会在某种情况下炸么
 		ZE_Controllers.erase(ZE_Controllers.begin() + evt.jdevice.which);
 	};
 	ZE_stage.addEventListener(SDL_JOYDEVICEADDED, addJoyStick);
@@ -194,11 +196,12 @@ void ZeroEngine::Start(Game* userGame)
 
 void ZeroEngine::Close()
 {
-	for (auto con : ZE_Controllers)
-	{
-		delete(con);
-		con = NULL;
-	}
+	//for (auto& con : ZE_Controllers)
+	//{
+	//	//delete(con);
+	//	//con = NULL;
+	//	con.reset();
+	//}
 	ZE_Controllers.clear();
 
 	//清理舞台
