@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\ZeroEngineHeads">
+      <UniqueIdentifier>{282ff570-61ed-4946-baa9-bd9c8dff5329}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\ZeroEngineHeads\Controller">
+      <UniqueIdentifier>{dc864989-0a4c-4e54-92fb-aa20ebce45af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\ZeroEngineHeads\Core">
+      <UniqueIdentifier>{5e64cf49-1a2f-4214-8d26-bbdc4ac1fbf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\ZeroEngineHeads\Display">
+      <UniqueIdentifier>{36ea97da-ec2a-4709-919c-84f5e42b4b63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\ZeroEngineHeads\Display\Text">
+      <UniqueIdentifier>{15505137-6765-4bae-b2ee-6c583f7ec84b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\ZeroEngineHeads\Error">
+      <UniqueIdentifier>{292f1c19-e69c-4018-88d4-91806cf46534}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\ZeroEngineHeads\Events">
+      <UniqueIdentifier>{b4161835-601d-4a31-b699-52b66e387483}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\ZeroEngineHeads\Sound">
+      <UniqueIdentifier>{56dd960c-f936-47fa-82e5-94e8c079da95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\ZeroEngineHeads\Support">
+      <UniqueIdentifier>{a1870311-d058-4be8-98f8-87fe2e061a07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\ZeroEngineHeads\UserInterface">
+      <UniqueIdentifier>{0c3b5979-9c30-4248-9d9d-231e0bfea639}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ZeroEngine">
+      <UniqueIdentifier>{08760c73-78d5-4932-9d7b-308cb03bab10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ZeroEngine\Controller">
+      <UniqueIdentifier>{4b6877f6-fe0c-4579-b0a2-8c1c32c1db95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ZeroEngine\Core">
+      <UniqueIdentifier>{ecee04d2-2a4b-4bf6-8458-f3e9377f3635}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ZeroEngine\Display">
+      <UniqueIdentifier>{52bcb23c-f824-431c-bb69-47868d083e7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ZeroEngine\Display\Text">
+      <UniqueIdentifier>{d174a3c1-7f56-4aae-a9bd-aa9e28aa467a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ZeroEngine\Error">
+      <UniqueIdentifier>{b1190b22-2ab4-4b18-a6e5-b39f7079b89b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ZeroEngine\Events">
+      <UniqueIdentifier>{32190869-2c04-4eca-8639-77abc06104a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ZeroEngine\Sound">
+      <UniqueIdentifier>{e8a06ef7-aa11-4d53-90fe-45ce531fe497}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ZeroEngine\UserInterface">
+      <UniqueIdentifier>{0c4a8ad2-eda7-4e1a-be51-8ceca2395702}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ZeroEngine\Support">
+      <UniqueIdentifier>{28ec6271-65da-4389-8be6-a0487a6e1747}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mygame.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ZE_Controller.cpp">
+      <Filter>源文件\ZeroEngine\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="ZE_AssetManager.cpp">
+      <Filter>源文件\ZeroEngine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ZE_Core.cpp">
+      <Filter>源文件\ZeroEngine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ZE_Fraps.cpp">
+      <Filter>源文件\ZeroEngine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ZE_Timer.cpp">
+      <Filter>源文件\ZeroEngine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ZE_Font.cpp">
+      <Filter>源文件\ZeroEngine\Display\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="ZE_TextField.cpp">
+      <Filter>源文件\ZeroEngine\Display\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="ZE_DisplayObject.cpp">
+      <Filter>源文件\ZeroEngine\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="ZE_Image.cpp">
+      <Filter>源文件\ZeroEngine\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="ZE_Sprite.cpp">
+      <Filter>源文件\ZeroEngine\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="ZE_Texture.cpp">
+      <Filter>源文件\ZeroEngine\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="ZE_TextureContainer.cpp">
+      <Filter>源文件\ZeroEngine\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="ZE_Error.cpp">
+      <Filter>源文件\ZeroEngine\Error</Filter>
+    </ClCompile>
+    <ClCompile Include="ZE_Event.cpp">
+      <Filter>源文件\ZeroEngine\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="ZE_EventDispatcher.cpp">
+      <Filter>源文件\ZeroEngine\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="ZE_Sound.cpp">
+      <Filter>源文件\ZeroEngine\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml2.cpp">
+      <Filter>源文件\ZeroEngine\Support</Filter>
+    </ClCompile>
+    <ClCompile Include="ZE_InputBox.cpp">
+      <Filter>源文件\ZeroEngine\UserInterface</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="mygame.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_Controller.h">
+      <Filter>头文件\ZeroEngineHeads\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_AssetManager.h">
+      <Filter>头文件\ZeroEngineHeads\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_Core.h">
+      <Filter>头文件\ZeroEngineHeads\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_Fraps.h">
+      <Filter>头文件\ZeroEngineHeads\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_Timer.h">
+      <Filter>头文件\ZeroEngineHeads\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_Font.h">
+      <Filter>头文件\ZeroEngineHeads\Display\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_TextField.h">
+      <Filter>头文件\ZeroEngineHeads\Display\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_DisplayObject.h">
+      <Filter>头文件\ZeroEngineHeads\Display</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_Image.h">
+      <Filter>头文件\ZeroEngineHeads\Display</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_Sprite.h">
+      <Filter>头文件\ZeroEngineHeads\Display</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_Texture.h">
+      <Filter>头文件\ZeroEngineHeads\Display</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_TextureContainer.h">
+      <Filter>头文件\ZeroEngineHeads\Display</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_Error.h">
+      <Filter>头文件\ZeroEngineHeads\Error</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_Event.h">
+      <Filter>头文件\ZeroEngineHeads\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_EventDispatcher.h">
+      <Filter>头文件\ZeroEngineHeads\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_Sound.h">
+      <Filter>头文件\ZeroEngineHeads\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml2.h">
+      <Filter>头文件\ZeroEngineHeads\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_InputBox.h">
+      <Filter>头文件\ZeroEngineHeads\UserInterface</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
