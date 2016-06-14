@@ -32,9 +32,9 @@ extern Event ZE_eventHandler;
 //[Goble]退出主循环的判定变量
 extern bool ZE_QUIT_MAIN_LOOP;
 //[Goble]保存所有的手柄指针
-extern deque<Controller*> ZE_Controllers;
+extern deque<unique_ptr<Controller>> ZE_Controllers;
 //[Goble]系统默认字体
-extern unique_ptr<Font> defaultFont;
+extern shared_ptr<Font> defaultFont;
 
 
 //颜色结构体，也就设置舞台颜色的时候用用

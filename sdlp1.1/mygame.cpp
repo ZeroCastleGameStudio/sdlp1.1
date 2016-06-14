@@ -18,7 +18,6 @@ void mygame::Init()
 {
 	resourses.Init("data/amText.xml");
 
-	Sound* temp;
 	Image* tuanzi;
 
 	Image* background = new Image(resourses.getTexture("background"));
@@ -39,7 +38,7 @@ void mygame::Init()
 	test1->play();
 
 
-	temp = resourses.getSound("testsound");
+	auto temp = resourses.getSound("testsound");
 
 	function <void(SDL_Event)> eventtest = [=](SDL_Event evt)->void
 	{

@@ -7,7 +7,7 @@ using namespace std;
 //Image的参数结构体
 struct textureStruct
 {
-	Texture* texture;//接收的贴图
+	shared_ptr<Texture> texture;//接收的贴图
 	SubTexture subData;//贴图的读取信息
 };
 

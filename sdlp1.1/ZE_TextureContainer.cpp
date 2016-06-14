@@ -61,10 +61,11 @@ void TextureContainer::Render()
 
 void TextureContainer::freeTexture()
 {
-	if (mTexture != NULL)
-	{
-		mTexture->~Texture();
-		delete(mTexture);
-		mTexture = NULL;
-	}
+	// ÖÇÄÜÖ¸Õë»¯
+	//if (mTexture != NULL)
+	//{
+	//	mTexture->~Texture();
+	//	delete(mTexture);
+	//	mTexture = NULL;
+	//}
 }

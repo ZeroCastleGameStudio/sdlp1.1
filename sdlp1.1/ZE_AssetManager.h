@@ -27,7 +27,7 @@ public:
 	SDL_Texture* getTTFTexture(string text, string name, int size, SDL_Color color, int* width, int* height,
 		unsigned int effectLevel = 0);
 	//获取一个声音对象
-	Sound* getSound(string name);
+	shared_ptr<Sound> getSound(string name);
 	//获取数个已注册的texture
 	deque<textureStruct> getTextures(string partOfName);
 	//该方法将一个surface指针转换为SDLtexture指针并返回
@@ -37,11 +37,12 @@ public:
 
 private:
 	//所有的贴图对象都由AM对象统一进行创建、管理、销毁，该数组为保存所有已注册贴图的数组
-	deque<Texture*> TEXTURES;
+	// 已经使用智能指针自动控制资源的析构
+	deque<shared_ptr<Texture>> TEXTURES;
 	//储存字体对象
-	deque<Font*> FONT;
+	deque<shared_ptr<Font>> FONT;
 	//储存声音对象
-	deque<Sound*> SOUNDS;
+	deque<shared_ptr<Sound>> SOUNDS;
 
 	//读取并返回子贴图数据的方法，接收XML文件地址作为参数
 	deque<SubTexture> SubXmlReader(string xml);
@@ -55,7 +56,7 @@ private:
 	//用户不该调用此方法
 	SDL_Surface* ImageReader(string, int extNameLength = 3);
 	//获取并返回一个FONT对象
-	Font* getFont(string);
+	shared_ptr<Font> getFont(string);
 
 	//删除单一texture，基本只被下面的方法调用
 	void DeleteTexture(int index);

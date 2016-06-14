@@ -5,6 +5,7 @@
 using namespace std;
 
 class Sound
+	:enable_shared_from_this<Sound>
 {
 public:
 	bool isMusic;

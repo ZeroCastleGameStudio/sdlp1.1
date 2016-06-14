@@ -25,6 +25,7 @@ struct SubTexture
 //texture由assetManager的对象统一管理
 //texture对象能且仅能由assetManager对象进行创建、管理、销毁
 class Texture
+	:enable_shared_from_this<Texture>
 {
 public:
 	~Texture();
@@ -50,7 +51,7 @@ public:
 
 private:
 	//保存贴图
-	SDL_Texture* mTexture = NULL;
+	SDL_Texture* mTexture{ NULL };
 	//宽度
 	int mWidth;
 	//高度

@@ -16,11 +16,11 @@ InputBox::InputBox(int x, int y, int w, int h, SDL_Color fontColor, SDL_Color bg
 void InputBox::changeText()
 {
 	freeTexture();
-	mTexture = new Texture();
+	mTexture = make_shared<Texture>();
 	SDL_Texture* temptex;
 
 	TTF_Font* tempfont = defaultFont->getFont(12);
-	SDL_Surface* tempsur = NULL;
+	SDL_Surface* tempsur = nullptr;
 	tempsur = TTF_RenderUTF8_Solid(tempfont, mText.c_str(), fontColor);
 	temptex = AssetManager::Surface2SDLTexture(tempsur, &mWidth, &mHeight);
 
