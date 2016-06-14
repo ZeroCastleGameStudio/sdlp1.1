@@ -2,6 +2,7 @@
 #include <deque>
 #include <functional>
 #include <SDL.h>
+#include <atomic>
 #include "ZE_EventDispatcher.h"
 
 using namespace std;

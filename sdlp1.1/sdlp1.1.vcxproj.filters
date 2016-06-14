@@ -120,9 +120,6 @@
     <ClCompile Include="ZE_Error.cpp">
       <Filter>源文件\ZeroEngine\Error</Filter>
     </ClCompile>
-    <ClCompile Include="ZE_Event.cpp">
-      <Filter>源文件\ZeroEngine\Events</Filter>
-    </ClCompile>
     <ClCompile Include="ZE_EventDispatcher.cpp">
       <Filter>源文件\ZeroEngine\Events</Filter>
     </ClCompile>
@@ -131,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="ZE_InputBox.cpp">
       <Filter>源文件\ZeroEngine\UserInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ZE_EventManager.cpp">
+      <Filter>源文件\ZeroEngine\Events</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -176,9 +176,6 @@
     <ClInclude Include="ZE_Error.h">
       <Filter>头文件\ZeroEngineHeads\Error</Filter>
     </ClInclude>
-    <ClInclude Include="ZE_Event.h">
-      <Filter>头文件\ZeroEngineHeads\Events</Filter>
-    </ClInclude>
     <ClInclude Include="ZE_EventDispatcher.h">
       <Filter>头文件\ZeroEngineHeads\Events</Filter>
     </ClInclude>
@@ -187,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="ZE_InputBox.h">
       <Filter>头文件\ZeroEngineHeads\UserInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_EventManager.h">
+      <Filter>头文件\ZeroEngineHeads\Events</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

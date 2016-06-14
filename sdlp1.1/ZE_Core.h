@@ -8,7 +8,7 @@
 #include <SDL_mixer.h>
 #include "ZE_Error.h"
 #include "ZE_Sprite.h"
-#include "ZE_Event.h"
+#include "ZE_EventManager.h"
 #include "ZE_Controller.h"
 #include "ZE_Fraps.h"
 #include "ZE_Font.h"
