@@ -50,9 +50,13 @@ public:
 	//将我从父节点中删除
 	void removeFromParent(bool disposeMe = false);
 	//清除该子节点所有资源
-	virtual void Render();
+	virtual ~DisplayObject();
+
+	// 渲染，必须重写
+	// 纯虚函数
+	virtual void Render() = 0;
 	virtual void dispose();
 	virtual int getWidth();
 	virtual int getHeight();
-	virtual ~DisplayObject();
+	
 };

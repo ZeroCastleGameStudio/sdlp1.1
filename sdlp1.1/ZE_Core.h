@@ -28,7 +28,7 @@ extern Sprite ZE_stage;
 //[Goble]error对象(应该是唯一，其它类就算有也是private)
 extern Error ZE_error;
 //[Goble]事件处理器对象，唯一
-extern Event ZE_eventHandler;
+extern EventManager ZE_eventHandler;
 //[Goble]退出主循环的判定变量
 extern bool ZE_QUIT_MAIN_LOOP;
 //[Goble]保存所有的手柄指针

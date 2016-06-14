@@ -190,7 +190,6 @@ void DisplayObject::dispose()
 	addedObjects.clear();
 }
 
-void DisplayObject::Render() {}
 int DisplayObject::getWidth() { return 0; }
 int DisplayObject::getHeight() { return 0; }
 
