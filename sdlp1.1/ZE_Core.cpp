@@ -218,11 +218,10 @@ void ZeroEngine::Close()
 	{
 		Mix_Quit();
 	}
-	//清除默认字体
-	// 现在由智能指针自动处理
-	//defaultFont->~Font();
-	//delete(defaultFont);
-	//defaultFont = NULL;
+	//清除默认字体  
+	//因为字体库使用了SDL空间，然而这里是全局变量生命周期比引擎长，所以需要在SDL关闭前手动释放
+	//否则自动释放会发生在SDL关闭后exe结束前
+	defaultFont.reset();
 
 	TTF_Quit();
 	IMG_Quit();
