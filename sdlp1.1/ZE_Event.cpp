@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void Event::handleEvent()
+void EventManager::handleEvent()
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e) != 0)
@@ -25,7 +25,7 @@ void Event::handleEvent()
 	}
 }
 
-void Event::addEventFunction(SDL_EventType type, EventDispatcher* signedObject, function<void(SDL_Event)> func)
+void EventManager::addEventFunction(SDL_EventType type, EventDispatcher* signedObject, function<void(SDL_Event)> func)
 {
 	EventData temp;
 	temp.type = type;
@@ -34,7 +34,7 @@ void Event::addEventFunction(SDL_EventType type, EventDispatcher* signedObject, 
 	AllEvents.push_back(temp);
 }
 
-void Event::removeEventOfObject(SDL_EventType type, EventDispatcher* signedObject)
+void EventManager::removeEventOfObject(SDL_EventType type, EventDispatcher* signedObject)
 {
 	for (unsigned int i = 0; i < AllEvents.size(); i++)
 	{
@@ -45,7 +45,7 @@ void Event::removeEventOfObject(SDL_EventType type, EventDispatcher* signedObjec
 	}
 }
 
-void Event::removeAllEventOfObject(EventDispatcher* signedObject)
+void EventManager::removeAllEventOfObject(EventDispatcher* signedObject)
 {
 	for (unsigned int i = 0; i < AllEvents.size(); i++)
 	{
