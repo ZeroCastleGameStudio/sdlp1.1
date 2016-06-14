@@ -25,7 +25,7 @@ struct SubTexture
 //texture由assetManager的对象统一管理
 //texture对象能且仅能由assetManager对象进行创建、管理、销毁
 class Texture
-	:enable_shared_from_this<Texture>
+	:public enable_shared_from_this<Texture>
 {
 public:
 	~Texture();
