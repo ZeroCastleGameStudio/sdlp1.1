@@ -14,6 +14,12 @@ using namespace std;
 class EventManager
 {
 public:
+	EventManager();
+	EventManager(const EventManager&) = delete;
+	EventManager(EventManager&&) = delete;
+	EventManager& operator=(const EventManager&) = delete;
+	EventManager& operator=(EventManager&&) = delete;
+
 	void handleEvent();
 	// ×¢²áÒ»¸öÊÂ¼ş¼àÌıÆ÷£¬·µ»Ø¼àÌıÆ÷±àºÅ
 	size_t addEventFunction(SDL_EventType type, EventDispatcher*, function<void(SDL_Event)>);

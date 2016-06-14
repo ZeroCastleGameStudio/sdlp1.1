@@ -3,6 +3,16 @@
 
 using namespace std;
 
+std::atomic_bool EventManagerSingleton_AreCtor{ false };
+
+EventManager::EventManager()
+{
+	if (EventManagerSingleton_AreCtor.exchange(true))
+	{
+		throw std::runtime_error("");
+	}
+}
+
 void EventManager::handleEvent()
 {
 	SDL_Event e;
@@ -39,7 +49,14 @@ size_t EventManager::addEventFunction(SDL_EventType type, EventDispatcher* signe
 
 void EventManager::removeEventOfObject(size_t event_index)
 {
-	AllEvents.erase(event_index);
+	try
+	{
+		AllEvents.erase(AllEvents.find(event_index));
+	}
+	catch (const std::out_of_range&)
+	{
+		cout << "EventManager::removeEventOfObject invaild" << endl;
+	}
 }
 
 void EventManager::removeAllEvent()
