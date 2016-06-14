@@ -115,7 +115,7 @@ void DisplayObject::removeFromParent(bool disposeMe)
 {
 	if (parent == NULL)
 	{
-		ZE_error.PopDebugConsole_Warning("DisplayObject:" + this->name + " do not have a parent!");
+		GlobalState->ZE_error->PopDebugConsole_Warning("DisplayObject:" + this->name + " do not have a parent!");
 	}
 	else
 	{
@@ -164,7 +164,7 @@ void DisplayObject::removeChild(DisplayObject* targetChild, bool disposeIt)
 
 	else
 	{
-		ZE_error.PopDebugConsole_Error("Can't find Child:" + targetChild->name);
+		GlobalState->ZE_error->PopDebugConsole_Error("Can't find Child:" + targetChild->name);
 	}
 }
 

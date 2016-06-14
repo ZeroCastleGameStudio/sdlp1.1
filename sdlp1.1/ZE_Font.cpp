@@ -29,7 +29,7 @@ void Font::setNewSizeOfFont(int size)
 		auto font = TTF_OpenFont(mPath.c_str(), size);
 		if (!font)
 		{
-			ZE_error.PopDebugConsole_SDL_ttfError("Failed to load ttf font!");
+			GlobalState->ZE_error->PopDebugConsole_SDL_ttfError("Failed to load ttf font!");
 			cout << "Failed to load ttf font!" << endl;
 			mFont.emplace(size, nullptr);
 			return;

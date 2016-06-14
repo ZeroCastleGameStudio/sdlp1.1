@@ -21,20 +21,20 @@ void mygame::Init()
 	Image* tuanzi;
 
 	Image* background = new Image(resourses.getTexture("background"));
-	ZE_stage.addChild(background);
+	GlobalState->ZE_stage->addChild(background);
 
 	tuanzi = new Image(resourses.getTextures("bug_fly1_"), 24);
 
 	TextField* text = new TextField(u8"然后我是一个显示中文的内部Text");
-	ZE_stage.addChild(text);
+	GlobalState->ZE_stage->addChild(text);
 
-	ZE_stage.addChild(tuanzi);
+	GlobalState->ZE_stage->addChild(tuanzi);
 	tuanzi->play();
 
 	Image* test1 = new Image(resourses.getTextures("test1_"), 24);
 	test1->scaleX = 0.2;
 	test1->scaleY = 0.2;
-	ZE_stage.addChild(test1);
+	GlobalState->ZE_stage->addChild(test1);
 	test1->play();
 
 
@@ -73,8 +73,8 @@ void mygame::Init()
 	function <void(SDL_Event)> eventtest2 = [=](SDL_Event evt) 
 	{
 		int b = evt.jbutton.button;
-		cout << b << endl;
-		ZE_Controllers[evt.jbutton.which]->rumble();
+		cout << b << endl; 
+		GlobalState->ZE_Controllers[evt.jbutton.which]->rumble();
 	};
 	function <void(SDL_Event)> eventtest3 = [=](SDL_Event evt)
 	{
@@ -87,11 +87,11 @@ void mygame::Init()
 		cout << c << endl;
 	};
 
-	ZE_stage.addEventListener(SDL_KEYDOWN, eventtest);
+	GlobalState->ZE_stage->addEventListener(SDL_KEYDOWN, eventtest);
 
-	ZE_stage.addEventListener(SDL_JOYBUTTONDOWN, eventtest2);
-	ZE_stage.addEventListener(SDL_JOYAXISMOTION, eventtest3);
-	ZE_stage.addEventListener(SDL_JOYHATMOTION, eventtest4);
+	GlobalState->ZE_stage->addEventListener(SDL_JOYBUTTONDOWN, eventtest2);
+	GlobalState->ZE_stage->addEventListener(SDL_JOYAXISMOTION, eventtest3);
+	GlobalState->ZE_stage->addEventListener(SDL_JOYHATMOTION, eventtest4);
 
 	resourses.getSound("bgm5")->play();
 }

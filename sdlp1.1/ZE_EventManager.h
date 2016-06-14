@@ -15,6 +15,7 @@ class EventManager
 {
 public:
 	EventManager();
+	~EventManager();
 	EventManager(const EventManager&) = delete;
 	EventManager(EventManager&&) = delete;
 	EventManager& operator=(const EventManager&) = delete;

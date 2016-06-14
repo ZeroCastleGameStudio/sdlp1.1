@@ -54,7 +54,7 @@ void TextureContainer::Render()
 	}
 	SDL_Rect subTextureClip = { nowUsingSubData.x, nowUsingSubData.y, nowUsingSubData.width, nowUsingSubData.height };
 	setAlpha(this->alpah);
-	SDL_RenderCopyEx(g_ZE_MainRenderer, mTexture->getTexture(), &subTextureClip, &renderRect, rotationAngle, &rotationPoint, flip);
+	SDL_RenderCopyEx(GlobalState->g_ZE_MainRenderer, mTexture->getTexture(), &subTextureClip, &renderRect, rotationAngle, &rotationPoint, flip);
 	stageX = renderRect.x;
 	stageY = renderRect.y;
 }

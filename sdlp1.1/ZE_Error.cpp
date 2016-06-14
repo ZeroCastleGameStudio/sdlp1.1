@@ -5,7 +5,7 @@
 #include <SDL_mixer.h>
 #include <iostream>
 #include <string>
-#include "ZE_Error.h"
+#include "ZE_error.h"
 
 using namespace std;
 

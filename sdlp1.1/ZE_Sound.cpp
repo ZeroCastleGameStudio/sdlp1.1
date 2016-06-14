@@ -67,7 +67,7 @@ Sound::~Sound()
 		会弹出一个访问冲突错误。chunk的话就没有问题*/
 		if (Mix_GetMusicType(music) == MUS_MP3)
 		{
-			ZE_error.PopDebugConsole_Warning("Can't free a mp3 music, SDL_Mixer is not support it");
+			GlobalState->ZE_error->PopDebugConsole_Warning("Can't free a mp3 music, SDL_Mixer is not support it");
 		}
 		else
 		{

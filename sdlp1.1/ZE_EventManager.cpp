@@ -13,6 +13,11 @@ EventManager::EventManager()
 	}
 }
 
+EventManager::~EventManager()
+{
+	cout << "EventManager::~EventManager()" << endl;
+}
+
 void EventManager::handleEvent()
 {
 	SDL_Event e;
@@ -20,7 +25,7 @@ void EventManager::handleEvent()
 	{
 		if (e.type == SDL_QUIT)
 		{
-			ZE_QUIT_MAIN_LOOP = true;
+			GlobalState->ZE_QUIT_MAIN_LOOP = true;
 		}
 		else
 		{
@@ -49,17 +54,11 @@ size_t EventManager::addEventFunction(SDL_EventType type, EventDispatcher* signe
 
 void EventManager::removeEventOfObject(size_t event_index)
 {
-	try
-	{
-		AllEvents.erase(AllEvents.find(event_index));
-	}
-	catch (const std::out_of_range&)
-	{
-		cout << "EventManager::removeEventOfObject invaild" << endl;
-	}
+		AllEvents.erase(event_index);
 }
 
 void EventManager::removeAllEvent()
 {
 	AllEvents.clear();
+	cout << "EventManager::removeAllEvent()" << endl;
 }
