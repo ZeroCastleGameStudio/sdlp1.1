@@ -69,8 +69,8 @@ bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useV
 		// FIXME 这里使用下标进行访问不会在某种情况下炸么
 		GlobalState->ZE_Controllers.erase(GlobalState->ZE_Controllers.begin() + evt.jdevice.which);
 	};
-	GlobalState->ZE_stage->addEventListener(SDL_JOYDEVICEADDED, addJoyStick);
-	GlobalState->ZE_stage->addEventListener(SDL_JOYDEVICEREMOVED, removeJoyStick);
+	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYDEVICEADDED, addJoyStick);
+	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYDEVICEREMOVED, removeJoyStick);
 
 	return success;
 }

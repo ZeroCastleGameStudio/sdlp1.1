@@ -87,11 +87,11 @@ void mygame::Init()
 		cout << c << endl;
 	};
 
-	GlobalState->ZE_stage->addEventListener(SDL_KEYDOWN, eventtest);
-
-	GlobalState->ZE_stage->addEventListener(SDL_JOYBUTTONDOWN, eventtest2);
-	GlobalState->ZE_stage->addEventListener(SDL_JOYAXISMOTION, eventtest3);
-	GlobalState->ZE_stage->addEventListener(SDL_JOYHATMOTION, eventtest4);
+	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode,SDL_KEYDOWN, eventtest);
+											
+	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode,SDL_JOYBUTTONDOWN, eventtest2);
+	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode,SDL_JOYAXISMOTION, eventtest3);
+	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode,SDL_JOYHATMOTION, eventtest4);
 
 	resourses.getSound("bgm5")->play();
 }

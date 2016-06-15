@@ -4,13 +4,13 @@
 using namespace std;
 
 // FIXME：这个函数不能在多线程中调用，因为GlobalState没法在构造函数中初始化，现在在此类型的某个对象初始化时间比GlobalState早
-void EventDispatcher::addEventListener(SDL_EventType type, function<void(SDL_Event)> func)
+void EventDispatcher::addEventListener(EventMode event_mode, SDL_EventType type, function<void(SDL_Event)> func)
 {
 	if (~0 == dispatch_index.load())
 	{
 		dispatch_index.store(GlobalState->ZE_eventHandler->dispatchIndexDistributor());
 	}
-	GlobalState->ZE_eventHandler->addEventFunction(dispatch_index, type, this, func);
+	GlobalState->ZE_eventHandler->addEventFunction(dispatch_index, event_mode, type, this, func);
 }
 
 void EventDispatcher::removeEventListeners(SDL_EventType type) const
