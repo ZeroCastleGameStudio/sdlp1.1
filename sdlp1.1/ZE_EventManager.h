@@ -1,12 +1,14 @@
 #pragma once
-#include <deque>
 #include <functional>
 #include <SDL.h>
 #include <atomic>
-#include <unordered_map>
 #include "ZE_EventDispatcher.h"
+#include "ZE_EventContainer.h"
 
 using namespace std;
+
+
+
 
 //事件统筹类
 //所有eventDispatcher对象注册监听时，都调用该类的add方法
@@ -71,21 +73,12 @@ public:
 	// 鼠标点击事件肯定要处理遮蔽的问题，常见的方法是对所有对象以遮挡方式构建堆叠树，然后在树上遍历查找响应事件的对象
 	// 但这个方法不适合这里，我觉得可以现对图像分层，然后按层筛选来获得响应事件的对象，
 	// 或者给所有需要响应点击事件的对象如同构建碰撞箱一样构造一个事件响应箱，然后直接查看点击点处有哪些响应箱，然后根据层叠关系来发送事件
-	
-public:
-	//给eventDispatcher类用的元素结构体
-	struct EventData
-	{
-		SDL_EventType type;
-		EventDispatcher* signedObject;
-		function<void(SDL_Event)> func;
-		size_t eventIndex;
-	};
+
+	// TODO 使用get模式获取鼠标状态
 
 private:
 	// 编号计数器
 	std::atomic_size_t event_index{ 0 };
 	//保存所有的事件
-	// TODO 在性能不足的时候换用boost::multi-index容器
-	unordered_map<size_t, EventData> AllEvents;
+	EventContainer AllEvents;
 };

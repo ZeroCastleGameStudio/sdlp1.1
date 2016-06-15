@@ -29,11 +29,12 @@ void EventManager::handleEvent()
 		}
 		else
 		{
+			// TODO ¸ÄÐ´
 			for (auto&a : AllEvents)
 			{
-				if (e.type == a.second.type)
+				if (e.type == a.type)
 				{
-					a.second.func(e);
+					a.event_data.func(e);
 				}
 			}
 		}
@@ -48,13 +49,13 @@ size_t EventManager::addEventFunction(SDL_EventType type, EventDispatcher* signe
 	temp.signedObject = signedObject;
 	temp.func = func;
 	temp.eventIndex = index;
-	AllEvents.emplace(index, temp);
+	AllEvents.emplace(index, type, temp);
 	return index;
 }
 
 void EventManager::removeEventOfObject(size_t event_index)
 {
-		AllEvents.erase(event_index);
+	AllEvents.get<EventContainerTag::Index>().erase(event_index);
 }
 
 void EventManager::removeAllEvent()

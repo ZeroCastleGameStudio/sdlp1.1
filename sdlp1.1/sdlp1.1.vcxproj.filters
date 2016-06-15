@@ -194,5 +194,8 @@
     <ClInclude Include="ZE_EngineGlobalState.h">
       <Filter>头文件\ZeroEngineHeads\Core</Filter>
     </ClInclude>
+    <ClInclude Include="ZE_EventContainer.h">
+      <Filter>头文件\ZeroEngineHeads\Events</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

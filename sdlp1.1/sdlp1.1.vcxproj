@@ -165,6 +165,7 @@
     <ClInclude Include="ZE_DisplayObject.h" />
     <ClInclude Include="ZE_EngineGlobalState.h" />
     <ClInclude Include="ZE_Error.h" />
+    <ClInclude Include="ZE_EventContainer.h" />
     <ClInclude Include="ZE_EventManager.h" />
     <ClInclude Include="ZE_EventDispatcher.h" />
     <ClInclude Include="ZE_Font.h" />
