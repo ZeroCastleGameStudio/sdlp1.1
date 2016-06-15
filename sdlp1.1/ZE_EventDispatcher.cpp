@@ -3,32 +3,28 @@
 
 using namespace std;
 
+// FIXME：这个函数不能在多线程中调用，因为GlobalState没法在构造函数中初始化，现在在此类型的某个对象初始化时间比GlobalState早
 void EventDispatcher::addEventListener(SDL_EventType type, function<void(SDL_Event)> func)
 {
-	event_indexs.insert(make_pair(type, GlobalState->ZE_eventHandler->addEventFunction(type, this, func)));
-}
-
-void EventDispatcher::removeEventListeners(SDL_EventType type)
-{
-	auto itp = event_indexs.equal_range(type);
-	auto it = itp.first;
-	while (it != itp.second)
+	if (~0 == dispatch_index.load())
 	{
-		GlobalState->ZE_eventHandler->removeEventOfObject(it->second);
-		++it;
+		dispatch_index.store(GlobalState->ZE_eventHandler->dispatchIndexDistributor());
 	}
-
-	event_indexs.erase(itp.first, itp.second);
+	GlobalState->ZE_eventHandler->addEventFunction(dispatch_index, type, this, func);
 }
 
-void EventDispatcher::removeAllEvents()
+void EventDispatcher::removeEventListeners(SDL_EventType type) const
 {
-	for (auto& a : event_indexs)
-	{
-		GlobalState->ZE_eventHandler->removeEventOfObject(a.second);
-	}
-	event_indexs.clear();
+	GlobalState->ZE_eventHandler->removeAllEventOfDispatchAndType(dispatch_index, type);
 }
+
+void EventDispatcher::removeAllEvents() const
+{
+	GlobalState->ZE_eventHandler->removeAllEventOfDispatch(this->dispatch_index);
+}
+
+EventDispatcher::EventDispatcher()
+{}
 
 EventDispatcher::~EventDispatcher()
 {

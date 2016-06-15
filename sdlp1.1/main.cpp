@@ -16,19 +16,22 @@ using namespace std;
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
-ZeroEngine ZEROENG;
-mygame game;
 
 int main(int argc, char* args[])
 {
+	ZeroEngine ZEROENG;
 	ZEROENG.Init(u8"我TM不但是一个SDL窗口还是一个TM中英文全半角混合标题的窗口卧槽！!！", SCREEN_WIDTH, SCREEN_HEIGHT, true);
+	{
+		mygame game;
 
-	//可以设置舞台默认颜色，也没什么卵用
-	ZEROENG.stageColor = { 0, 0, 0 };
+		//可以设置舞台默认颜色，也没什么卵用
+		ZEROENG.stageColor = { 0, 0, 0 };
 
-	game.Init();
+		game.Init();
 
-	ZEROENG.Start(&game);
+		ZEROENG.Start(&game);
+	}
+	cout << "mygame end" << endl;
 
 	return 0;
 }

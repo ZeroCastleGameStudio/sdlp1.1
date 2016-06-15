@@ -9,13 +9,12 @@ EventManager::EventManager()
 {
 	if (EventManagerSingleton_AreCtor.exchange(true))
 	{
-		throw std::runtime_error("");
+		throw std::runtime_error("EventManager::EventManager Singleton error");
 	}
 }
 
 EventManager::~EventManager()
 {
-	cout << "EventManager::~EventManager()" << endl;
 }
 
 void EventManager::handleEvent()
@@ -29,18 +28,19 @@ void EventManager::handleEvent()
 		}
 		else
 		{
+			// TODO ¸ÄÐ´
 			for (auto&a : AllEvents)
 			{
-				if (e.type == a.second.type)
+				if (e.type == a.type)
 				{
-					a.second.func(e);
+					a.event_data.func(e);
 				}
 			}
 		}
 	}
 }
 
-size_t EventManager::addEventFunction(SDL_EventType type, EventDispatcher* signedObject, function<void(SDL_Event)> func)
+size_t EventManager::addEventFunction(size_t dispatch_index, SDL_EventType type, EventDispatcher* signedObject, function<void(SDL_Event)> func)
 {
 	size_t index = ++event_index;
 	EventData temp;
@@ -48,17 +48,35 @@ size_t EventManager::addEventFunction(SDL_EventType type, EventDispatcher* signe
 	temp.signedObject = signedObject;
 	temp.func = func;
 	temp.eventIndex = index;
-	AllEvents.emplace(index, temp);
+	AllEvents.emplace_back(index, dispatch_index, type, temp);
 	return index;
 }
 
-void EventManager::removeEventOfObject(size_t event_index)
+void EventManager::removeEventOfIndex(size_t event_index)
 {
-		AllEvents.erase(event_index);
+	AllEvents.get<EventContainerTag::Index>().erase(event_index);
+}
+
+void EventManager::removeAllEventOfDispatch(size_t dispatch_index)
+{
+	AllEvents.get<EventContainerTag::DispatchIndex>().erase(dispatch_index);
+}
+
+void EventManager::removeAllEventOfDispatchAndType(size_t dispatch_index, SDL_EventType type)
+{
+	AllEvents.get<EventContainerTag::DispatchIndexAndType>().erase(
+		AllEvents.get<EventContainerTag::DispatchIndexAndType>().find(
+			std::make_tuple(dispatch_index, type)
+		)
+	);
 }
 
 void EventManager::removeAllEvent()
 {
 	AllEvents.clear();
-	cout << "EventManager::removeAllEvent()" << endl;
+}
+
+size_t EventManager::dispatchIndexDistributor()
+{
+	return ++dispatch_index;
 }

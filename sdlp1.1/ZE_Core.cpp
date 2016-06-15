@@ -10,10 +10,29 @@ string ZE_version = "1.0.0";
 unique_ptr<EngineGlobalState> GlobalState;
 
 
-bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useVSync, std::string defaultFontFile)
+ZeroEngine::ZeroEngine()
+	:fraps(make_unique<Fraps>())
+{
+}
+
+ZeroEngine::~ZeroEngine()
+{
+	fraps.reset();
+	GlobalState->ZE_eventHandler.reset();
+	GlobalState.reset();
+	TTF_Quit();
+	IMG_Quit();
+	SDL_Quit();
+	//退出
+	cout << "ZeroEngine::~ZeroEngine()" << endl;
+}
+
+bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useVSync, std::string defaultFontFile) const
 {
 	bool success = true;
 	GlobalState.reset(new EngineGlobalState());
+	GlobalState->ZE_eventHandler.reset(new EventManager);
+
 	if (!Init_SDL(Title, windowWidth, windowHeight))
 	{
 		success = false;
@@ -34,8 +53,6 @@ bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useV
 
 	// 加载字体
 	GlobalState->defaultFont = make_shared<Font>("default", defaultFontFile);
-
-	GlobalState->ZE_eventHandler.reset(new EventManager);
 
 	GlobalState->ZE_stage.reset(new Sprite);
 	GlobalState->ZE_error.reset(new Error);
@@ -91,7 +108,7 @@ bool ZeroEngine::Init_SDL(string Title, int windowWidth, int windowHeight)
 	return success;
 }
 
-bool ZeroEngine::Init_SDL_Image(bool useVSync)
+bool ZeroEngine::Init_SDL_Image(bool useVSync) const
 {
 	bool success = true;
 
@@ -113,7 +130,7 @@ bool ZeroEngine::Init_SDL_Image(bool useVSync)
 		renderFlag = SDL_RENDERER_ACCELERATED;
 	GlobalState->g_ZE_MainRenderer.reset(SDL_CreateRenderer(GlobalState->g_ZE_Window.get(), -1, renderFlag));
 	//初始化并绑定渲染器
-	if (GlobalState->g_ZE_MainRenderer == NULL)
+	if (GlobalState->g_ZE_MainRenderer == nullptr)
 	{
 		GlobalState->ZE_error->PopDebugConsole_SDLError("Renderer could not be created!");
 		success = false;
@@ -163,7 +180,7 @@ bool ZeroEngine::Init_SDL_Mixer()
 void ZeroEngine::Start(Game* userGame)
 {
 	maingame = userGame;
-	fraps.setUp();
+	fraps->setUp();
 	while (!GlobalState->ZE_QUIT_MAIN_LOOP)
 	{
 
@@ -176,8 +193,8 @@ void ZeroEngine::Start(Game* userGame)
 		//重绘
 		GlobalState->ZE_stage->Render();
 		//让fraps执行逻辑
-		fraps.setText();
-		fraps.Render();
+		fraps->setText();
+		fraps->Render();
 		//改变回默认颜色
 		SDL_SetRenderDrawColor(GlobalState->g_ZE_MainRenderer.get(), stageColor.red, stageColor.green, stageColor.blue, 1);
 		//再刷新
@@ -186,7 +203,7 @@ void ZeroEngine::Start(Game* userGame)
 	Close();
 }
 
-void ZeroEngine::Close()
+void ZeroEngine::Close() const
 {
 	//for (auto& con : ZE_Controllers)
 	//{
@@ -228,11 +245,4 @@ void ZeroEngine::Close()
 	GlobalState->ZE_error.reset();
 	GlobalState->ZE_stage.reset();
 
-	GlobalState->ZE_eventHandler.reset();
-	GlobalState.reset();
-
-	TTF_Quit();
-	IMG_Quit();
-	SDL_Quit();
-	//退出
 }

@@ -34,8 +34,9 @@ struct Color
 class Game
 {
 public:
-	virtual void MainLoop() {};
-	virtual void Close() {};
+	virtual void MainLoop() = 0;
+	virtual void Close() = 0;
+	virtual ~Game() {}
 };
 
 //头文件中声明类，cpp中定义类，全都一样
@@ -44,28 +45,30 @@ public:
 class ZeroEngine
 {
 public:
+	ZeroEngine();
+	~ZeroEngine();
 	//舞台颜色，默认为黑
 	Color stageColor = { 0, 0, 0 };
 	//初始化方法，使用ZE前必须调用此方法
 	//该方法调用了本类中的其它两个方法，分别初始化了外部库SDL和SDL_IMAGE
 	//该方法会返回一个bool值，若所有模块初始化成功则返回true，否则返回false
 	//外部库的报错写在对应方法里
-	bool Init(string, int, int, bool, std::string defaultFontFile = "data/ttf/SourceHanSansSC-Normal.otf");
+	bool Init(string, int, int, bool, std::string defaultFontFile = "data/ttf/SourceHanSansSC-Normal.otf") const;
 	//该方法是ZE的主循环方法，目前是暂用版
 	void Start(Game*);
 
 private:
 	//最后渲染在舞台上，显示一些监视变量
-	Fraps fraps;
+	unique_ptr<Fraps> fraps;
 	//SDL的初始化方法，该方法的三个参数分别是窗口标题、窗口宽度、窗口高度
-	bool Init_SDL(string, int, int);
+	static bool Init_SDL(string, int, int);
 	//初始化了SDL_IMAGE第三方库
-	bool Init_SDL_Image(bool);
+	bool Init_SDL_Image(bool) const;
 	//初始化了SDL_TTF第三方库
-	bool Init_SDL_ttf();
-	bool Init_SDL_Mixer();
+	static bool Init_SDL_ttf();
+	static bool Init_SDL_Mixer();
 	//清理方法，安全的关闭SDL并退出程序
-	void Close();
+	void Close() const;
 	//用户的游戏对象
-	Game* maingame;
+	Game* maingame{ nullptr };
 };

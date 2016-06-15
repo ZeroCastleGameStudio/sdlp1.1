@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>
 #include <SDL.h>
-#include <vector>
+#include <atomic>
 #include <unordered_map>
 
 using namespace std;
@@ -10,10 +10,12 @@ using namespace std;
 class EventDispatcher
 {
 public:
+	EventDispatcher();
 	virtual ~EventDispatcher();
 	void addEventListener(SDL_EventType type, function<void(SDL_Event)>);
-	void removeEventListeners(SDL_EventType type);
-	void removeAllEvents();
-	unordered_multimap<SDL_EventType, size_t> event_indexs;
+	void removeEventListeners(SDL_EventType type) const;
+	void removeAllEvents() const;
+private:
+	atomic_size_t dispatch_index{ ~0 };
 };
 
