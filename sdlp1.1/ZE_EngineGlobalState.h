@@ -14,14 +14,20 @@
 class EngineGlobalState
 {
 public:
+	// 阻止重复构造
 	EngineGlobalState();
 	~EngineGlobalState();
+	// 阻止移动语义与拷贝语义
+	EngineGlobalState(const EngineGlobalState&) = delete;
+	EngineGlobalState(EngineGlobalState&&) = delete;
+	EngineGlobalState& operator=(const EngineGlobalState&) = delete;
+	EngineGlobalState& operator=(EngineGlobalState&&) = delete;
 
 	//[Global]保存SDL窗体的指针
 	SDL_Window* g_ZE_Window{ NULL };
 	//[Global]保存SDL主Surface的指针
 	SDL_Surface* g_ZE_MainSurface{ NULL };
-	//[Global]到现在也不知道这玩意到底该叫什么，就叫渲染器好了，这是主渲染器，绑定到主window
+	//[Global]主渲染器，绑定到主window
 	SDL_Renderer* g_ZE_MainRenderer{ NULL };
 	//[Global]stage对象，唯一
 	unique_ptr<Sprite> ZE_stage;

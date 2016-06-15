@@ -220,11 +220,15 @@ void ZeroEngine::Close()
 	//调用用户的关闭方法
 	maingame->Close();
 
-	SDL_DestroyWindow(GlobalState->g_ZE_Window);
-	SDL_DestroyRenderer(GlobalState->g_ZE_MainRenderer);
+	// 这里的销毁循序应该与初始化顺序相反
+	// 释放表面指针
+	SDL_FreeSurface(GlobalState->g_ZE_MainSurface);
+	GlobalState->g_ZE_MainSurface = NULL;
 	//删除渲染器
+	SDL_DestroyRenderer(GlobalState->g_ZE_MainRenderer);
 	GlobalState->g_ZE_MainRenderer = NULL;
 	//删除SDL窗口
+	SDL_DestroyWindow(GlobalState->g_ZE_Window);
 	GlobalState->g_ZE_Window = NULL;
 	//必须将指针清空否则变野指针
 	Mix_CloseAudio();
