@@ -12,7 +12,7 @@
 
 using namespace std;
 
-mygame::mygame() {};
+mygame::mygame() {}
 
 void mygame::Init()
 {
@@ -104,4 +104,8 @@ void mygame::MainLoop()
 void mygame::Close()
 {
 	resourses.dispose();
+}
+
+mygame::~mygame()
+{
 }

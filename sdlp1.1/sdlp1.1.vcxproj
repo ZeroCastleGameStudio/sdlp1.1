@@ -97,6 +97,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
     </ClCompile>
     <Link>
       <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;SDL2main.lib;tinyxml2.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>

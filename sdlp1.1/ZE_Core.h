@@ -34,8 +34,9 @@ struct Color
 class Game
 {
 public:
-	virtual void MainLoop() {};
-	virtual void Close() {};
+	virtual void MainLoop() = 0;
+	virtual void Close() = 0;
+	virtual ~Game() {}
 };
 
 //头文件中声明类，cpp中定义类，全都一样
@@ -67,5 +68,5 @@ private:
 	//清理方法，安全的关闭SDL并退出程序
 	void Close();
 	//用户的游戏对象
-	Game* maingame;
+	Game* maingame{ nullptr };
 };

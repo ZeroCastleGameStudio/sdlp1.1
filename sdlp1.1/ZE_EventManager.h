@@ -25,11 +25,15 @@ public:
 
 	void handleEvent();
 	// 注册一个事件监听器，返回监听器编号
-	size_t addEventFunction(SDL_EventType type, EventDispatcher*, function<void(SDL_Event)>);
+	size_t addEventFunction(size_t dispatch_index, SDL_EventType type, EventDispatcher*, function<void(SDL_Event)>);
 	// 移除指定监听器
-	void removeEventOfObject(size_t event_index);
+	void removeEventOfIndex(size_t event_index);
+	void removeAllEventOfDispatch(size_t dispatch_index);
+	void removeAllEventOfDispatchAndType(size_t dispatch_index, SDL_EventType type);
 	// 移除所有监听器
 	void removeAllEvent();
+	// dispatch挂号器 从这里获取dispatch的index身份
+	size_t dispatchIndexDistributor();
 
 	/*在经历了（很大的）一番周折后，最终（不幸的）确定了event的修改方案
 	参照starling的方法，当注册一个事件的时候，应该传入一个函数。
@@ -79,6 +83,8 @@ public:
 private:
 	// 编号计数器
 	std::atomic_size_t event_index{ 0 };
+	// dispatch编号分发器
+	std::atomic_size_t dispatch_index{ 0 };
 	//保存所有的事件
 	EventContainer AllEvents;
 };

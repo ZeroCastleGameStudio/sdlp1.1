@@ -11,6 +11,7 @@ public:
 
 	mygame();
 	void Init();
-	virtual void MainLoop();
-	virtual void Close();
+	void MainLoop() override;
+	void Close() override;
+	virtual ~mygame();
 };

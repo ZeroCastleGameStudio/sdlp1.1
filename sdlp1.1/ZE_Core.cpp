@@ -14,6 +14,8 @@ bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useV
 {
 	bool success = true;
 	GlobalState.reset(new EngineGlobalState());
+	GlobalState->ZE_eventHandler.reset(new EventManager);
+
 	if (!Init_SDL(Title, windowWidth, windowHeight))
 	{
 		success = false;
@@ -34,8 +36,6 @@ bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useV
 
 	// ¼ÓÔØ×ÖÌå
 	GlobalState->defaultFont = make_shared<Font>("default", defaultFontFile);
-
-	GlobalState->ZE_eventHandler.reset(new EventManager);
 
 	GlobalState->ZE_stage.reset(new Sprite);
 	GlobalState->ZE_error.reset(new Error);
