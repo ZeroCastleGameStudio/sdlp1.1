@@ -45,6 +45,8 @@ public:
 class ZeroEngine
 {
 public:
+	ZeroEngine();
+	~ZeroEngine();
 	//舞台颜色，默认为黑
 	Color stageColor = { 0, 0, 0 };
 	//初始化方法，使用ZE前必须调用此方法
@@ -57,7 +59,7 @@ public:
 
 private:
 	//最后渲染在舞台上，显示一些监视变量
-	Fraps fraps;
+	unique_ptr<Fraps> fraps;
 	//SDL的初始化方法，该方法的三个参数分别是窗口标题、窗口宽度、窗口高度
 	bool Init_SDL(string, int, int);
 	//初始化了SDL_IMAGE第三方库

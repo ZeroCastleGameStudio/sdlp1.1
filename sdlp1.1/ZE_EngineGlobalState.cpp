@@ -22,4 +22,5 @@ EngineGlobalState::~EngineGlobalState()
 	assert(nullptr == g_ZE_Window);
 	assert(nullptr == g_ZE_MainSurface);
 	assert(nullptr == g_ZE_MainRenderer);
+	cout << "EngineGlobalState::~EngineGlobalState()" << endl;
 }
