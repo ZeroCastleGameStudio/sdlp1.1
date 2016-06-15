@@ -39,7 +39,7 @@ EngineGlobalState::~EngineGlobalState()
 {
 	// 垃圾回收断言 此断言在DEBUG模式下检查断言内容是否为真
 	// 在这里会检查如下的指针是否被正确置空
-	assert(NULL == g_ZE_Window);
-	assert(NULL == g_ZE_MainSurface);
-	assert(NULL == g_ZE_MainRenderer);
+	assert(nullptr == g_ZE_Window);
+	assert(nullptr == g_ZE_MainSurface);
+	assert(nullptr == g_ZE_MainRenderer);
 }
