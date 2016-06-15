@@ -1,7 +1,29 @@
 #include "ZE_EngineGlobalState.h"
 #include <assert.h>
 
+#include <type_traits>
+
 std::atomic_bool EngineGlobalState_Singleton{ false };
+
+
+// 测试试验性功能用
+void test()
+{
+
+	auto z = make_sdl_unique_ptr((SDL_Texture*)nullptr, SDL_DestroyTexture);
+
+	
+
+	auto a = unique_ptr<SDL_Texture, decltype(SDL_DestroyTexture)*>((SDL_Texture*)nullptr, SDL_DestroyTexture);
+	//auto b = unique_ptr<int>();
+	//auto c = unique_ptr<int>();
+
+	z.reset();
+
+}
+
+
+
 
 EngineGlobalState::EngineGlobalState()
 {
@@ -9,6 +31,7 @@ EngineGlobalState::EngineGlobalState()
 	{
 		throw std::runtime_error("EngineGlobalState Re Ctor");
 	}
+	test();
 }
 
 

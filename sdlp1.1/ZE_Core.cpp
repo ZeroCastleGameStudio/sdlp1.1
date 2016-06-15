@@ -92,17 +92,17 @@ bool ZeroEngine::Init_SDL(string Title, int windowWidth, int windowHeight)
 	{
 		const char* tit = Title.c_str();
 		//因为SDL是纯C，所以这里要把string转换为C的char，就算不想用纯C但是下面这个函数只接受纯C
-		GlobalState->g_ZE_Window = SDL_CreateWindow(tit, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth, windowHeight, SDL_WINDOW_SHOWN);
+		GlobalState->g_ZE_Window.reset(SDL_CreateWindow(tit, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth, windowHeight, SDL_WINDOW_SHOWN));
 		//变量含义：窗口标题，窗口出现位置的X坐标(该变量含义不明)，窗口出现位置的Y坐标(该变量含义不明)，窗口宽度，
 		//窗口高度，不明变量(这个变量表示立即打开窗口，但是具体内容是什么，可以替换成什么，替换了有什么作用都不知道)
-		if (GlobalState->g_ZE_Window == NULL)
+		if (GlobalState->g_ZE_Window == nullptr)
 		{
 			GlobalState->ZE_error->PopDebugConsole_SDLError("Window could not be created!");
 			success = false;
 		}
 		else
 		{
-			GlobalState->g_ZE_MainSurface = SDL_GetWindowSurface(GlobalState->g_ZE_Window);
+			GlobalState->g_ZE_MainSurface = SDL_GetWindowSurface(GlobalState->g_ZE_Window.get());
 			//抓取窗口的主Surface，所有的绘制都会绘制在主surface上
 		}
 	}
@@ -130,7 +130,7 @@ bool ZeroEngine::Init_SDL_Image(bool useVSync)
 		renderFlag = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
 	else
 		renderFlag = SDL_RENDERER_ACCELERATED;
-	GlobalState->g_ZE_MainRenderer = SDL_CreateRenderer(GlobalState->g_ZE_Window, -1, renderFlag);
+	GlobalState->g_ZE_MainRenderer = SDL_CreateRenderer(GlobalState->g_ZE_Window.get(), -1, renderFlag);
 	//初始化并绑定渲染器
 	if (GlobalState->g_ZE_MainRenderer == NULL)
 	{
@@ -228,8 +228,9 @@ void ZeroEngine::Close()
 	SDL_DestroyRenderer(GlobalState->g_ZE_MainRenderer);
 	GlobalState->g_ZE_MainRenderer = NULL;
 	//删除SDL窗口
-	SDL_DestroyWindow(GlobalState->g_ZE_Window);
-	GlobalState->g_ZE_Window = NULL;
+	//SDL_DestroyWindow(GlobalState->g_ZE_Window);
+	//GlobalState->g_ZE_Window = NULL;
+	GlobalState->g_ZE_Window.reset();
 	//必须将指针清空否则变野指针
 	Mix_CloseAudio();
 	while (Mix_Init(0))
