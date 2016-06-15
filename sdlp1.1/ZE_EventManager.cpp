@@ -74,7 +74,7 @@ void EventManager::handleEvent()
 					if (currentKeyStates[*it])
 					{
 						auto itp = AllEvents.get<EventContainerTag::EventTypeAndEventModeType>().equal_range(
-							std::make_tuple(e.type, EventMode::KeyboardStateMode)
+							std::make_tuple(*it, EventMode::KeyboardStateMode)
 						);
 						if (itp.first == itp.second)
 						{
@@ -102,7 +102,7 @@ void EventManager::handleEvent()
 	}
 }
 
-size_t EventManager::addEventFunction(size_t dispatch_index, EventMode event_mode, SDL_EventType type, EventDispatcher* signedObject, function<void(SDL_Event)> func)
+size_t EventManager::addEventFunction(size_t dispatch_index, EventMode event_mode, Uint32 type, EventDispatcher* signedObject, function<void(SDL_Event)> func)
 {
 	size_t index = ++event_index;
 	EventData temp;
@@ -135,7 +135,7 @@ void EventManager::removeAllEventOfDispatch(size_t dispatch_index)
 	AllEvents.get<EventContainerTag::DispatchIndex>().erase(dispatch_index);
 }
 
-void EventManager::removeAllEventOfDispatchAndTypeAndMode(size_t dispatch_index, SDL_EventType type, EventMode event_mode)
+void EventManager::removeAllEventOfDispatchAndTypeAndMode(size_t dispatch_index, Uint32 type, EventMode event_mode)
 {
 	auto itp = AllEvents.get<EventContainerTag::DispatchIndexAndEventTypeAndEventModeType>().equal_range(
 		std::make_tuple(dispatch_index, type, event_mode)
@@ -143,7 +143,7 @@ void EventManager::removeAllEventOfDispatchAndTypeAndMode(size_t dispatch_index,
 	AllEvents.get<EventContainerTag::DispatchIndexAndEventTypeAndEventModeType>().erase(itp.first, itp.second);
 }
 
-void EventManager::removeAllEventOfDispatchAndType(size_t dispatch_index, SDL_EventType type)
+void EventManager::removeAllEventOfDispatchAndType(size_t dispatch_index, Uint32 type)
 {
 	auto itp = AllEvents.get<EventContainerTag::DispatchIndexAndEventTypeAndEventModeType>().equal_range(
 		std::make_tuple(dispatch_index, type)

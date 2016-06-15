@@ -40,6 +40,24 @@ void mygame::Init()
 
 	auto temp = resourses.getSound("testsound");
 
+	function <void(SDL_Event)> eventtest_left = [=](SDL_Event evt)->void
+	{
+		tuanzi->x -= 1;
+		tuanzi->flip = SDL_FLIP_NONE;
+	};
+	function <void(SDL_Event)> eventtest_right = [=](SDL_Event evt)->void
+	{
+		tuanzi->x += 1;
+		tuanzi->flip = SDL_FLIP_HORIZONTAL;
+	};
+	function <void(SDL_Event)> eventtest_up = [=](SDL_Event evt)->void
+	{
+		tuanzi->y -= 1;
+	};
+	function <void(SDL_Event)> eventtest_down = [=](SDL_Event evt)->void
+	{
+		tuanzi->y += 1;
+	};
 	function <void(SDL_Event)> eventtest = [=](SDL_Event evt)->void
 	{
 		if (evt.key.keysym.sym == SDLK_SPACE)
@@ -51,29 +69,11 @@ void mygame::Init()
 		{
 			cout << "enter" << endl;
 		}
-		else
-		{
-			switch (evt.key.keysym.sym)
-			{
-			case SDLK_UP: tuanzi->y -= 1; break;
-			case SDLK_DOWN: tuanzi->y += 1; break;
-			case SDLK_LEFT:
-			{
-				tuanzi->x -= 1;
-				tuanzi->flip = SDL_FLIP_NONE;
-			}break;
-			case SDLK_RIGHT:
-			{
-				tuanzi->x += 1;
-				tuanzi->flip = SDL_FLIP_HORIZONTAL;
-			}break;
-			}
-		}
 	};
-	function <void(SDL_Event)> eventtest2 = [=](SDL_Event evt) 
+	function <void(SDL_Event)> eventtest2 = [=](SDL_Event evt)
 	{
 		int b = evt.jbutton.button;
-		cout << b << endl; 
+		cout << b << endl;
 		GlobalState->ZE_Controllers[evt.jbutton.which]->rumble();
 	};
 	function <void(SDL_Event)> eventtest3 = [=](SDL_Event evt)
@@ -87,11 +87,14 @@ void mygame::Init()
 		cout << c << endl;
 	};
 
-	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode,SDL_KEYDOWN, eventtest);
-											
-	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode,SDL_JOYBUTTONDOWN, eventtest2);
-	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode,SDL_JOYAXISMOTION, eventtest3);
-	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode,SDL_JOYHATMOTION, eventtest4);
+	GlobalState->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_UP, eventtest_up);
+	GlobalState->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_DOWN, eventtest_down);
+	GlobalState->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_LEFT, eventtest_left);
+	GlobalState->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_RIGHT, eventtest_right);
+
+	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYBUTTONDOWN, eventtest2);
+	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYAXISMOTION, eventtest3);
+	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYHATMOTION, eventtest4);
 
 	resourses.getSound("bgm5")->play();
 }

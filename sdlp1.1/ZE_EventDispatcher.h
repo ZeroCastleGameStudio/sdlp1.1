@@ -13,7 +13,7 @@ class EventDispatcher
 public:
 	EventDispatcher();
 	virtual ~EventDispatcher();
-	void addEventListener(EventMode event_mode, SDL_EventType type, function<void(SDL_Event)>);
+	void addEventListener(EventMode event_mode, Uint32 type, function<void(SDL_Event)>);
 	void removeEventListeners(SDL_EventType type) const;
 	void removeAllEvents() const;
 private:

@@ -32,14 +32,14 @@ public:
 	// type  事件的类型
 	// signedObject  对象
 	// func  事件处理函数
-	size_t addEventFunction(size_t dispatch_index, EventMode event_mode, SDL_EventType type, EventDispatcher* signedObject, function<void(SDL_Event)> func);
+	size_t addEventFunction(size_t dispatch_index, EventMode event_mode, Uint32 type, EventDispatcher* signedObject, function<void(SDL_Event)> func);
 	// 移除指定监听器
 	void removeEventOfIndex(size_t event_index);
 	// 移除一个Dispatch的所有监听器
 	void removeAllEventOfDispatch(size_t dispatch_index);
 	// 移除一个Dispatch的所有指定类型的监听器
-	void removeAllEventOfDispatchAndType(size_t dispatch_index, SDL_EventType type);
-	void removeAllEventOfDispatchAndTypeAndMode(size_t dispatch_index, SDL_EventType type, EventMode event_mode);
+	void removeAllEventOfDispatchAndType(size_t dispatch_index, Uint32 type);
+	void removeAllEventOfDispatchAndTypeAndMode(size_t dispatch_index, Uint32 type, EventMode event_mode);
 	// 移除所有监听器
 	void removeAllEvent();
 	// dispatch挂号器 从这里获取dispatch的index身份

@@ -12,7 +12,7 @@ class EventDispatcher;
 //给eventDispatcher类用的元素结构体
 struct EventData
 {
-	SDL_EventType type;
+	Uint32 type;
 	EventDispatcher* signedObject;
 	std::function<void(SDL_Event)> func;
 	size_t eventIndex;
