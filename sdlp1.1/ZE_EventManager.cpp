@@ -25,6 +25,7 @@ void EventManager::handleEvent()
 		if (e.type == SDL_QUIT)
 		{
 			GlobalState->ZE_QUIT_MAIN_LOOP = true;
+			return;
 		}
 		else
 		{
@@ -65,39 +66,39 @@ void EventManager::handleEvent()
 			{
 
 			}
-			// TODO 处理新键盘模式
-			{
-				const Uint8* currentKeyStates = SDL_GetKeyboardState(nullptr);
-				auto it = RegistedKeyboardState.begin();
-				while (it != RegistedKeyboardState.end())
-				{
-					if (currentKeyStates[*it])
-					{
-						auto itp = AllEvents.get<EventContainerTag::EventTypeAndEventModeType>().equal_range(
-							std::make_tuple(*it, EventMode::KeyboardStateMode)
-						);
-						if (itp.first == itp.second)
-						{
-							// 不存在则表示RegistedEvent过时了，清理这个标志位
-							it = RegistedKeyboardState.erase(it);
-							continue;
-						}
-						else
-						{
-							// 否则遍历所有想要处理这个消息的监听器并执行
-							while (itp.first != itp.second)
-							{
-								itp.first->event_data.func(e);
-								++itp.first;
-							}
-						}
-					}
-					++it;
-				}
-			}
 			//Get mouse position 
 			int x, y;
 			SDL_GetMouseState(&x, &y);
+		}
+	}
+	// 处理新键盘模式
+	{
+		const Uint8* currentKeyStates = SDL_GetKeyboardState(nullptr);
+		auto it = RegistedKeyboardState.begin();
+		while (it != RegistedKeyboardState.end())
+		{
+			if (currentKeyStates[*it])
+			{
+				auto itp = AllEvents.get<EventContainerTag::EventTypeAndEventModeType>().equal_range(
+					std::make_tuple(*it, EventMode::KeyboardStateMode)
+				);
+				if (itp.first == itp.second)
+				{
+					// 不存在则表示RegistedEvent过时了，清理这个标志位
+					it = RegistedKeyboardState.erase(it);
+					continue;
+				}
+				else
+				{
+					// 否则遍历所有想要处理这个消息的监听器并执行
+					while (itp.first != itp.second)
+					{
+						itp.first->event_data.func(e);
+						++itp.first;
+					}
+				}
+			}
+			++it;
 		}
 	}
 }
