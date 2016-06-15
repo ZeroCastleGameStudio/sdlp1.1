@@ -27,7 +27,7 @@ ZeroEngine::~ZeroEngine()
 	cout << "ZeroEngine::~ZeroEngine()" << endl;
 }
 
-bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useVSync, std::string defaultFontFile)
+bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useVSync, std::string defaultFontFile) const
 {
 	bool success = true;
 	GlobalState.reset(new EngineGlobalState());
@@ -108,7 +108,7 @@ bool ZeroEngine::Init_SDL(string Title, int windowWidth, int windowHeight)
 	return success;
 }
 
-bool ZeroEngine::Init_SDL_Image(bool useVSync)
+bool ZeroEngine::Init_SDL_Image(bool useVSync) const
 {
 	bool success = true;
 
@@ -130,7 +130,7 @@ bool ZeroEngine::Init_SDL_Image(bool useVSync)
 		renderFlag = SDL_RENDERER_ACCELERATED;
 	GlobalState->g_ZE_MainRenderer.reset(SDL_CreateRenderer(GlobalState->g_ZE_Window.get(), -1, renderFlag));
 	//初始化并绑定渲染器
-	if (GlobalState->g_ZE_MainRenderer == NULL)
+	if (GlobalState->g_ZE_MainRenderer == nullptr)
 	{
 		GlobalState->ZE_error->PopDebugConsole_SDLError("Renderer could not be created!");
 		success = false;
@@ -203,7 +203,7 @@ void ZeroEngine::Start(Game* userGame)
 	Close();
 }
 
-void ZeroEngine::Close()
+void ZeroEngine::Close() const
 {
 	//for (auto& con : ZE_Controllers)
 	//{
