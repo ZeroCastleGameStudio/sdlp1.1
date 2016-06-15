@@ -2,6 +2,7 @@
 #include <functional>
 #include <SDL.h>
 #include <atomic>
+#include <set>
 #include "ZE_EventDispatcher.h"
 #include "ZE_EventContainer.h"
 
@@ -23,12 +24,20 @@ public:
 	EventManager& operator=(const EventManager&) = delete;
 	EventManager& operator=(EventManager&&) = delete;
 
+	// 事件处理调用函数
 	void handleEvent();
 	// 注册一个事件监听器，返回监听器编号
-	size_t addEventFunction(size_t dispatch_index, SDL_EventType type, EventDispatcher*, function<void(SDL_Event)>);
+	// 参数：
+	// dispatch_index  从dispatchIndexDistributor获得的编号，此编号是唯一的，应该只从dispatchIndexDistributor获取一次
+	// type  事件的类型
+	// signedObject  对象
+	// func  事件处理函数
+	size_t addEventFunction(size_t dispatch_index, SDL_EventType type, EventDispatcher* signedObject, function<void(SDL_Event)> func);
 	// 移除指定监听器
 	void removeEventOfIndex(size_t event_index);
+	// 移除一个Dispatch的所有监听器
 	void removeAllEventOfDispatch(size_t dispatch_index);
+	// 移除一个Dispatch的所有指定类型的监听器
 	void removeAllEventOfDispatchAndType(size_t dispatch_index, SDL_EventType type);
 	// 移除所有监听器
 	void removeAllEvent();
@@ -87,4 +96,8 @@ private:
 	std::atomic_size_t dispatch_index{ 0 };
 	//保存所有的事件
 	EventContainer AllEvents;
+	// 事件掩码   此中所标明的元素即是已有监听器正在监听的事件
+	std::set<Uint32> RegistedEvent;
+	// 监听状态掩码  TODO 给容器添加分类  全局事件/按键状态
+	std::set<SDL_Keycode> RegistedKeyboardState;
 };

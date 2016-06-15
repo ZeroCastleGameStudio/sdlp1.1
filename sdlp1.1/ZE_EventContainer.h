@@ -21,11 +21,11 @@ struct EventData
 // 事件管理器用结构体
 struct EventStruct
 {
-	explicit EventStruct(size_t index, size_t dispatch_index, SDL_EventType type, EventData &event_data)
-		:index(index), type(type), event_data(event_data) {}
+	explicit EventStruct(size_t index, size_t dispatch_index, Uint32 event_type, EventData &event_data)
+		:index(index), dispatch_index(dispatch_index), event_type(event_type), event_data(event_data) {}
 	size_t index;
 	size_t dispatch_index;
-	SDL_EventType type;
+	Uint32 event_type;
 	EventData event_data;
 	bool operator<(const EventStruct& o) const
 	{
@@ -37,8 +37,8 @@ namespace EventContainerTag
 {
 	class Index {};
 	class DispatchIndex {};
-	class Type {};
-	class DispatchIndexAndType {};
+	class EventType {};
+	class DispatchIndexAndEventType {};
 }
 
 // 事件管理器容器类型
@@ -56,15 +56,15 @@ using EventContainer = ::boost::multi_index_container <
 	::boost::multi_index::member<EventStruct, size_t, &EventStruct::dispatch_index>
 	>,
 	::boost::multi_index::ordered_non_unique<
-	::boost::multi_index::tag<EventContainerTag::Type>,
-	::boost::multi_index::member<EventStruct, SDL_EventType, &EventStruct::type>
+	::boost::multi_index::tag<EventContainerTag::EventType>,
+	::boost::multi_index::member<EventStruct, Uint32, &EventStruct::event_type>
 	>,
-	::boost::multi_index::ordered_unique<
-	::boost::multi_index::tag<EventContainerTag::DispatchIndexAndType>,
+	::boost::multi_index::ordered_non_unique<
+	::boost::multi_index::tag<EventContainerTag::DispatchIndexAndEventType>,
 	::boost::multi_index::composite_key<
 	EventStruct,
 	::boost::multi_index::member<EventStruct, size_t, &EventStruct::dispatch_index>,
-	::boost::multi_index::member<EventStruct, SDL_EventType, &EventStruct::type>
+	::boost::multi_index::member<EventStruct, Uint32, &EventStruct::event_type>
 	>
 	>
 	>
