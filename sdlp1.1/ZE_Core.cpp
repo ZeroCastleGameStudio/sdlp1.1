@@ -9,25 +9,6 @@ string ZE_version = "1.0.0";
 //[Global]引擎全局状态变量
 unique_ptr<EngineGlobalState> GlobalState;
 
-////[Global]保存SDL窗体的指针
-//SDL_Window* g_ZE_Window = NULL;
-////[Global]保存SDL主Surface的指针
-//SDL_Surface* g_ZE_MainSurface = NULL;
-////[Global]到现在也不知道这玩意到底该叫什么，就叫渲染器好了，这是主渲染器，绑定到主window
-//SDL_Renderer* g_ZE_MainRenderer = NULL;
-////[Global]stage对象，唯一
-//Sprite ZE_stage;
-////[Global]error对象(应该是唯一，其它类就算有也是private)
-//Error ZE_error;
-////[Global]事件处理器对象，唯一
-//EventManager ZE_eventHandler;
-////[Global]退出主循环的判定变量
-//bool ZE_QUIT_MAIN_LOOP = false;
-////[Global]保存所有的手柄指针
-//deque<unique_ptr<Controller>> ZE_Controllers;
-////[Global]系统默认字体
-//shared_ptr<Font> defaultFont;
-
 
 bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useVSync, std::string defaultFontFile)
 {
@@ -102,7 +83,7 @@ bool ZeroEngine::Init_SDL(string Title, int windowWidth, int windowHeight)
 		}
 		else
 		{
-			GlobalState->g_ZE_MainSurface = SDL_GetWindowSurface(GlobalState->g_ZE_Window.get());
+			GlobalState->g_ZE_MainSurface.reset(SDL_GetWindowSurface(GlobalState->g_ZE_Window.get()));
 			//抓取窗口的主Surface，所有的绘制都会绘制在主surface上
 		}
 	}
@@ -130,7 +111,7 @@ bool ZeroEngine::Init_SDL_Image(bool useVSync)
 		renderFlag = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
 	else
 		renderFlag = SDL_RENDERER_ACCELERATED;
-	GlobalState->g_ZE_MainRenderer = SDL_CreateRenderer(GlobalState->g_ZE_Window.get(), -1, renderFlag);
+	GlobalState->g_ZE_MainRenderer.reset(SDL_CreateRenderer(GlobalState->g_ZE_Window.get(), -1, renderFlag));
 	//初始化并绑定渲染器
 	if (GlobalState->g_ZE_MainRenderer == NULL)
 	{
@@ -139,7 +120,7 @@ bool ZeroEngine::Init_SDL_Image(bool useVSync)
 	}
 	else
 	{
-		SDL_SetRenderDrawColor(GlobalState->g_ZE_MainRenderer, stageColor.red, stageColor.green, stageColor.blue, 1);
+		SDL_SetRenderDrawColor(GlobalState->g_ZE_MainRenderer.get(), stageColor.red, stageColor.green, stageColor.blue, 1);
 		//设置渲染器的画笔颜色
 		//要用渲染器画默认图形的话比如SDL_RENDERDRAWRECT这就需要不断的切换画笔颜色。
 		//比如要舞台是白色的，方块是红色的，就要先画白舞台，再画红方块，下一个循环再切换回白色
@@ -189,7 +170,7 @@ void ZeroEngine::Start(Game* userGame)
 		//处理事件
 		GlobalState->ZE_eventHandler->handleEvent();
 		//清空
-		SDL_RenderClear(GlobalState->g_ZE_MainRenderer);
+		SDL_RenderClear(GlobalState->g_ZE_MainRenderer.get());
 		//走逻辑
 		maingame->MainLoop();
 		//重绘
@@ -198,9 +179,9 @@ void ZeroEngine::Start(Game* userGame)
 		fraps.setText();
 		fraps.Render();
 		//改变回默认颜色
-		SDL_SetRenderDrawColor(GlobalState->g_ZE_MainRenderer, stageColor.red, stageColor.green, stageColor.blue, 1);
+		SDL_SetRenderDrawColor(GlobalState->g_ZE_MainRenderer.get(), stageColor.red, stageColor.green, stageColor.blue, 1);
 		//再刷新
-		SDL_RenderPresent(GlobalState->g_ZE_MainRenderer);
+		SDL_RenderPresent(GlobalState->g_ZE_MainRenderer.get());
 	}
 	Close();
 }
@@ -222,11 +203,13 @@ void ZeroEngine::Close()
 
 	// 这里的销毁循序应该与初始化顺序相反
 	// 释放表面指针
-	SDL_FreeSurface(GlobalState->g_ZE_MainSurface);
-	GlobalState->g_ZE_MainSurface = NULL;
-	//删除渲染器
-	SDL_DestroyRenderer(GlobalState->g_ZE_MainRenderer);
-	GlobalState->g_ZE_MainRenderer = NULL;
+	//SDL_FreeSurface(GlobalState->g_ZE_MainSurface);
+	//GlobalState->g_ZE_MainSurface = NULL;
+	GlobalState->g_ZE_MainSurface.reset();
+	////删除渲染器
+	//SDL_DestroyRenderer(GlobalState->g_ZE_MainRenderer);
+	//GlobalState->g_ZE_MainRenderer = NULL;
+	GlobalState->g_ZE_MainRenderer.reset();
 	//删除SDL窗口
 	//SDL_DestroyWindow(GlobalState->g_ZE_Window);
 	//GlobalState->g_ZE_Window = NULL;

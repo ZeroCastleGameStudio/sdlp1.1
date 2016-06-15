@@ -214,7 +214,7 @@ void AssetManager::LoadSound(bool isMusic, string name, string path)
 SDL_Texture* AssetManager::Surface2SDLTexture(SDL_Surface* surface, int* getW, int* getH)
 {
 	SDL_Texture* newTexture = NULL;
-	newTexture = SDL_CreateTextureFromSurface(GlobalState->g_ZE_MainRenderer, surface);
+	newTexture = SDL_CreateTextureFromSurface(GlobalState->g_ZE_MainRenderer.get(), surface);
 	//将Surface转换为Texture
 	//直接创建贴图也行，但是要的参数复杂很多，不如直接转换
 	if (newTexture == NULL)

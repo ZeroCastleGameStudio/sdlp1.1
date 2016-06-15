@@ -21,25 +21,6 @@ extern string ZE_version;
 //[Global]引擎全局状态变量
 extern unique_ptr<EngineGlobalState> GlobalState;
 
-////[Global]保存SDL窗体的指针
-//extern SDL_Window* g_ZE_Window;
-////[Global]保存SDL主Surface的指针
-//extern SDL_Surface* g_ZE_MainSurface;
-////[Global]到现在也不知道这玩意到底该叫什么，就叫渲染器好了，这是主渲染器，绑定到主window
-//extern SDL_Renderer* g_ZE_MainRenderer;
-////[Global]stage对象，唯一
-//extern Sprite ZE_stage;
-////[Global]error对象(应该是唯一，其它类就算有也是private)
-//extern Error ZE_error;
-////[Global]事件处理器对象，唯一
-//extern EventManager ZE_eventHandler;
-////[Global]退出主循环的判定变量
-//extern bool ZE_QUIT_MAIN_LOOP;
-////[Global]保存所有的手柄指针
-//extern deque<unique_ptr<Controller>> ZE_Controllers;
-////[Global]系统默认字体
-//extern shared_ptr<Font> defaultFont;
-
 
 //颜色结构体，也就设置舞台颜色的时候用用
 struct Color

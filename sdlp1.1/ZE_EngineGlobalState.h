@@ -42,9 +42,9 @@ public:
 	//[Global]保存SDL窗体的指针
 	unique_ptr<SDL_Window, decltype(SDL_DestroyWindow)*> g_ZE_Window{ nullptr,SDL_DestroyWindow };
 	//[Global]保存SDL主Surface的指针
-	SDL_Surface* g_ZE_MainSurface{ NULL };
+	unique_ptr<SDL_Surface, decltype(SDL_FreeSurface)*> g_ZE_MainSurface{ nullptr,SDL_FreeSurface };
 	//[Global]主渲染器，绑定到主window
-	SDL_Renderer* g_ZE_MainRenderer{ NULL };
+	unique_ptr<SDL_Renderer, decltype(SDL_DestroyRenderer)*> g_ZE_MainRenderer{ nullptr,SDL_DestroyRenderer };
 	//[Global]stage对象，唯一
 	unique_ptr<Sprite> ZE_stage;
 	//[Global]error对象(应该是唯一，其它类就算有也是private)
