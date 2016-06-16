@@ -1814,13 +1814,13 @@ void XMLDocument::DeleteNode( XMLNode* node )	{
 XMLError XMLDocument::LoadFile( const char* filename )
 {
     Clear();
-    FILE* fp = callfopen( filename, "rb" );
-    if ( !fp ) {
+    SDL_RWops* io = SDL_RWFromFile( filename, "rb" );
+    if ( !io ) {
         SetError( XML_ERROR_FILE_NOT_FOUND, filename, 0 );
         return _errorID;
     }
-    LoadFile( fp );
-    fclose( fp );
+    LoadFile( io );
+    SDL_RWclose( io );
     return _errorID;
 }
 
@@ -1851,6 +1851,44 @@ XMLError XMLDocument::LoadFile( FILE* fp )
 
     _charBuffer = new char[size+1];
     size_t read = fread( _charBuffer, 1, size, fp );
+    if ( read != size ) {
+        SetError( XML_ERROR_FILE_READ_ERROR, 0, 0 );
+        return _errorID;
+    }
+
+    _charBuffer[size] = 0;
+
+    Parse();
+    return _errorID;
+}
+
+
+XMLError XMLDocument::LoadFile( SDL_RWops* src )
+{
+    Clear();
+
+    SDL_RWseek( src, 0, SEEK_SET );
+    if ( SDL_RWtell( src ) != 0 || SDL_RWsize( src ) <= 0 ) {
+        SetError( XML_ERROR_FILE_READ_ERROR, 0, 0 );
+        return _errorID;
+    }
+
+    SDL_RWseek( src, 0, SEEK_END );
+    const long filelength = SDL_RWtell( src );
+    SDL_RWseek( src, 0, SEEK_SET );
+    if ( filelength == -1L ) {
+        SetError( XML_ERROR_FILE_READ_ERROR, 0, 0 );
+        return _errorID;
+    }
+
+    const size_t size = filelength;
+    if ( size == 0 ) {
+        SetError( XML_ERROR_EMPTY_DOCUMENT, 0, 0 );
+        return _errorID;
+    }
+
+    _charBuffer = new char[size+1];
+    size_t read = SDL_RWread( src, _charBuffer, 1, size );
     if ( read != size ) {
         SetError( XML_ERROR_FILE_READ_ERROR, 0, 0 );
         return _errorID;
