@@ -16,10 +16,15 @@
 
 using namespace std;
 
+// 声明提前
+class ZeroEngine;
+
 //[Global]ZE版本号
 extern string ZE_version;
 //[Global]引擎全局状态变量
 extern unique_ptr<EngineGlobalState> GlobalState;
+//[Global]到引擎实例的指针
+extern unique_ptr<ZeroEngine> g_Engine_ptr;
 
 
 //颜色结构体，也就设置舞台颜色的时候用用
@@ -47,6 +52,9 @@ class ZeroEngine
 public:
 	ZeroEngine();
 	~ZeroEngine();
+	ZeroEngine(const ZeroEngine&) = delete;
+	ZeroEngine(ZeroEngine&&) = delete;
+
 	//舞台颜色，默认为黑
 	Color stageColor = { 0, 0, 0 };
 	//初始化方法，使用ZE前必须调用此方法
@@ -56,6 +64,8 @@ public:
 	bool Init(string, int, int, bool, std::string defaultFontFile = "data/ttf/SourceHanSansSC-Normal.otf") const;
 	//该方法是ZE的主循环方法，目前是暂用版
 	void Start(Game*);
+	// 挂号
+	size_t getNewDisplayObjectIndex();
 
 private:
 	//最后渲染在舞台上，显示一些监视变量
@@ -71,4 +81,6 @@ private:
 	void Close() const;
 	//用户的游戏对象
 	Game* maingame{ nullptr };
+	// 显示对象index发放器
+	std::atomic_size_t display_object_index{ 0 };
 };

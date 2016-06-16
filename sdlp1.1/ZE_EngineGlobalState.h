@@ -8,8 +8,7 @@
 #include "ZE_EventManager.h"
 #include "ZE_Controller.h"
 #include "ZE_Font.h"
-
-
+#include "ZE_Core.h"
 
 
 // Ъдбщад

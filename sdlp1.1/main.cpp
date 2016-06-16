@@ -19,17 +19,17 @@ const int SCREEN_HEIGHT = 480;
 
 int main(int argc, char* args[])
 {
-	ZeroEngine ZEROENG;
-	ZEROENG.Init(u8"我TM不但是一个SDL窗口还是一个TM中英文全半角混合标题的窗口卧槽！!！", SCREEN_WIDTH, SCREEN_HEIGHT, true);
+	g_Engine_ptr.reset(new ZeroEngine);
+	g_Engine_ptr->Init(u8"我TM不但是一个SDL窗口还是一个TM中英文全半角混合标题的窗口卧槽！!！", SCREEN_WIDTH, SCREEN_HEIGHT, true);
 	{
 		mygame game;
 
 		//可以设置舞台默认颜色，也没什么卵用
-		ZEROENG.stageColor = { 0, 0, 0 };
+		g_Engine_ptr->stageColor = { 0, 0, 0 };
 
 		game.Init();
 
-		ZEROENG.Start(&game);
+		g_Engine_ptr->Start(&game);
 	}
 	cout << "mygame end" << endl;
 

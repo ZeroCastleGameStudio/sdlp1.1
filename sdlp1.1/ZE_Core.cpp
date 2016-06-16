@@ -1,4 +1,5 @@
 #include <SDL_image.h>
+#include <atomic>
 #include "ZE_Core.h"
 
 using namespace std;
@@ -8,10 +9,18 @@ string ZE_version = "1.0.0";
 
 //[Global]引擎全局状态变量
 unique_ptr<EngineGlobalState> GlobalState;
+//[Global]到引擎实例的指针
+unique_ptr<ZeroEngine> g_Engine_ptr;
 
+std::atomic_bool ZeroEngineSingleton{ false };
 
 ZeroEngine::ZeroEngine()
 {
+	if (ZeroEngineSingleton.exchange(true))
+	{
+		throw std::runtime_error("ZeroEngine must be singleton.");
+	}
+
 	GlobalState.reset(new EngineGlobalState());
 	GlobalState->ZE_eventHandler.reset(new EventManager);
 	GlobalState->ZE_error.reset(new Error);
@@ -202,6 +211,11 @@ void ZeroEngine::Start(Game* userGame)
 		SDL_RenderPresent(GlobalState->g_ZE_MainRenderer.get());
 	}
 	Close();
+}
+
+size_t ZeroEngine::getNewDisplayObjectIndex()
+{
+	return ++display_object_index;
 }
 
 void ZeroEngine::Close() const
