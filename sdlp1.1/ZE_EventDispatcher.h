@@ -15,6 +15,7 @@ public:
 	virtual ~EventDispatcher();
 	void addEventListener(EventMode event_mode, Uint32 type, function<void(SDL_Event)>);
 	void removeEventListeners(SDL_EventType type) const;
+	void removeEventListeners(EventMode type) const;
 	void removeAllEvents() const;
 private:
 	atomic_size_t dispatch_index{ ~0 };

@@ -23,7 +23,9 @@ enum class EventMode
 	// 旧式Raw事件模式  直接响应SDL事件
 	RawEventMode,
 	// 按键状态模式  响应按键getStatus模式
-	KeyboardStateMode
+	KeyboardStateMode,
+	// 每个事件循环必须调用一次的模式
+	EveryLoop
 };
 
 // 事件管理器用结构体

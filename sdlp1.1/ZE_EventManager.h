@@ -39,6 +39,7 @@ public:
 	void removeAllEventOfDispatch(size_t dispatch_index);
 	// 移除一个Dispatch的所有指定类型的监听器
 	void removeAllEventOfDispatchAndType(size_t dispatch_index, Uint32 type);
+	void removeAllEventOfDispatchAndModeType(size_t dispatch_index, EventMode type);
 	void removeAllEventOfDispatchAndTypeAndMode(size_t dispatch_index, Uint32 type, EventMode event_mode);
 	// 移除所有监听器
 	void removeAllEvent();

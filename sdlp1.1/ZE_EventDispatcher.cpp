@@ -18,6 +18,11 @@ void EventDispatcher::removeEventListeners(SDL_EventType type) const
 	GlobalState->ZE_eventHandler->removeAllEventOfDispatchAndType(dispatch_index, type);
 }
 
+void EventDispatcher::removeEventListeners(EventMode type) const
+{
+	GlobalState->ZE_eventHandler->removeAllEventOfDispatchAndModeType(dispatch_index, type);
+}
+
 void EventDispatcher::removeAllEvents() const
 {
 	GlobalState->ZE_eventHandler->removeAllEventOfDispatch(this->dispatch_index);

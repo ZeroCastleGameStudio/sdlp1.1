@@ -101,6 +101,15 @@ void EventManager::handleEvent()
 			++it;
 		}
 	}
+	// EveryLoop
+	{
+		auto itp = AllEvents.get<EventContainerTag::EventModeType>().equal_range(EventMode::EveryLoop);
+		while (itp.first != itp.second)
+		{
+			itp.first->event_data.func(e);
+			++itp.first;
+		}
+	}
 }
 
 size_t EventManager::addEventFunction(size_t dispatch_index, EventMode event_mode, Uint32 type, EventDispatcher* signedObject, function<void(SDL_Event)> func)
@@ -121,6 +130,7 @@ size_t EventManager::addEventFunction(size_t dispatch_index, EventMode event_mod
 		RegistedKeyboardState.insert(type);
 		break;
 	default:
+		// any other
 		break;
 	}
 	return index;
@@ -150,6 +160,12 @@ void EventManager::removeAllEventOfDispatchAndType(size_t dispatch_index, Uint32
 		std::make_tuple(dispatch_index, type)
 	);
 	AllEvents.get<EventContainerTag::DispatchIndexAndEventTypeAndEventModeType>().erase(itp.first, itp.second);
+}
+
+void EventManager::removeAllEventOfDispatchAndModeType(size_t dispatch_index, EventMode type)
+{
+	auto itp = AllEvents.get<EventContainerTag::EventModeType>().equal_range(type);
+	AllEvents.get<EventContainerTag::EventModeType>().erase(itp.first, itp.second);
 }
 
 void EventManager::removeAllEvent()
