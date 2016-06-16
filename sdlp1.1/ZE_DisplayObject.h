@@ -35,12 +35,12 @@ public:
 	SDL_BlendMode blendMode = SDL_BLENDMODE_BLEND;
 
 	//储存所有使用add方法加入的DO对象
-	deque<DisplayObject*> addedObjects;
+	deque<shared_ptr<DisplayObject>> addedObjects;
 	//爸爸指针
-	DisplayObject* parent = NULL;
+	DisplayObject* parent{ nullptr };
 
 	//给我一个DO类幼崽
-	void addChild(DisplayObject*);
+	void addChild(shared_ptr<DisplayObject>);
 	//设置我爸爸
 	void setParent(DisplayObject*);
 	//设置我的真实渲染方块
@@ -58,5 +58,5 @@ public:
 	virtual void dispose();
 	virtual int getWidth();
 	virtual int getHeight();
-	
+
 };

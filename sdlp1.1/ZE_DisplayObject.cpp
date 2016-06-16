@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void DisplayObject::addChild(DisplayObject* object)
+void DisplayObject::addChild(shared_ptr<DisplayObject> object)
 {
 	object->setParent(this);
 	addedObjects.push_back(object);
@@ -123,7 +123,7 @@ void DisplayObject::removeFromParent(bool disposeMe)
 	}
 }
 
-void DisplayObject::removeChild(DisplayObject* targetChild, bool disposeIt)
+void DisplayObject::removeChild(shared_ptr<DisplayObject> targetChild, bool disposeIt)
 {
 	/*if (addedObjects.size() != 0)
 	{

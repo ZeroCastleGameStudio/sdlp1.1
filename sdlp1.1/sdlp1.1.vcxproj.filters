@@ -197,5 +197,8 @@
     <ClInclude Include="ZE_EventContainer.h">
       <Filter>头文件\ZeroEngineHeads\Events</Filter>
     </ClInclude>
+    <ClInclude Include="tuanzi.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

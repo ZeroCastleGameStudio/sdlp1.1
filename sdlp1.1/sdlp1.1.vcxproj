@@ -161,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mygame.h" />
+    <ClInclude Include="tuanzi.h" />
     <ClInclude Include="ZE_AssetManager.h" />
     <ClInclude Include="ZE_Controller.h" />
     <ClInclude Include="ZE_Core.h" />
