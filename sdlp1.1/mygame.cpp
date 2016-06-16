@@ -43,7 +43,7 @@ void mygame::Init()
 
 	// 对象类实现的按键事件处理  需要启用智能指针保证对象不被提前析构
 	class tuanzi_event
-		: enable_shared_from_this<tuanzi_event>
+		: public enable_shared_from_this<tuanzi_event>
 	{
 	public:
 		tuanzi_event(Image* tuanzi) : tuanzi(tuanzi) {}
