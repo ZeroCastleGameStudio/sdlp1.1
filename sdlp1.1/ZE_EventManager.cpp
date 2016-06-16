@@ -56,19 +56,6 @@ void EventManager::handleEvent()
 					}
 				}
 			}
-			// TODO 处理鼠标模式
-			if (
-				e.type == SDL_MOUSEMOTION ||
-				e.type == SDL_MOUSEWHEEL ||
-				e.type == SDL_MOUSEBUTTONDOWN ||
-				e.type == SDL_MOUSEBUTTONUP
-				)
-			{
-
-			}
-			//Get mouse position 
-			int x, y;
-			SDL_GetMouseState(&x, &y);
 		}
 	}
 	// 处理新键盘模式
@@ -101,7 +88,23 @@ void EventManager::handleEvent()
 			++it;
 		}
 	}
-	// EveryLoop
+	// 鼠标
+	{
+		// TODO 处理鼠标模式
+		if (
+			e.type == SDL_MOUSEMOTION ||
+			e.type == SDL_MOUSEWHEEL ||
+			e.type == SDL_MOUSEBUTTONDOWN ||
+			e.type == SDL_MOUSEBUTTONUP
+			)
+		{
+
+		}
+		//Get mouse position 
+		int x, y;
+		SDL_GetMouseState(&x, &y);
+	}
+	// EveryLoop每一个事件循环都自行根据事件执行的代码，比如惯性计算、自移动物体刷新 之类的
 	{
 		auto itp = AllEvents.get<EventContainerTag::EventModeType>().equal_range(EventMode::EveryLoop);
 		while (itp.first != itp.second)
@@ -112,12 +115,11 @@ void EventManager::handleEvent()
 	}
 }
 
-size_t EventManager::addEventFunction(size_t dispatch_index, EventMode event_mode, Uint32 type, EventDispatcher* signedObject, function<void(SDL_Event)> func)
+size_t EventManager::addEventFunction(size_t dispatch_index, EventMode event_mode, Uint32 type, function<void(SDL_Event)> func)
 {
 	size_t index = ++event_index;
 	EventData temp;
 	temp.type = type;
-	temp.signedObject = signedObject;
 	temp.func = func;
 	temp.eventIndex = index;
 	AllEvents.emplace_back(index, dispatch_index, event_mode, type, temp);

@@ -10,7 +10,7 @@ void EventDispatcher::addEventListener(EventMode event_mode, Uint32 type, functi
 	{
 		dispatch_index.store(GlobalState->ZE_eventHandler->dispatchIndexDistributor());
 	}
-	GlobalState->ZE_eventHandler->addEventFunction(dispatch_index, event_mode, type, this, func);
+	GlobalState->ZE_eventHandler->addEventFunction(dispatch_index, event_mode, type, func);
 }
 
 void EventDispatcher::removeEventListeners(SDL_EventType type) const

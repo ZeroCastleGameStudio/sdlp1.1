@@ -13,7 +13,6 @@ class EventDispatcher;
 struct EventData
 {
 	Uint32 type;
-	EventDispatcher* signedObject;
 	std::function<void(SDL_Event)> func;
 	size_t eventIndex;
 };

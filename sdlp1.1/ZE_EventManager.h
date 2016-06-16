@@ -32,7 +32,7 @@ public:
 	// type  事件的类型
 	// signedObject  对象
 	// func  事件处理函数
-	size_t addEventFunction(size_t dispatch_index, EventMode event_mode, Uint32 type, EventDispatcher* signedObject, function<void(SDL_Event)> func);
+	size_t addEventFunction(size_t dispatch_index, EventMode event_mode, Uint32 type, function<void(SDL_Event)> func);
 	// 移除指定监听器
 	void removeEventOfIndex(size_t event_index);
 	// 移除一个Dispatch的所有监听器
@@ -89,7 +89,6 @@ public:
 	// 但这个方法不适合这里，我觉得可以现对图像分层，然后按层筛选来获得响应事件的对象，
 	// 或者给所有需要响应点击事件的对象如同构建碰撞箱一样构造一个事件响应箱，然后直接查看点击点处有哪些响应箱，然后根据层叠关系来发送事件
 
-	// TODO 使用get模式获取鼠标状态
 
 private:
 	// 编号计数器
@@ -100,6 +99,6 @@ private:
 	EventContainer AllEvents;
 	// 事件掩码   此中所标明的元素即是已有监听器正在监听的事件
 	std::set<Uint32> RegistedEvent;
-	// 监听状态掩码  TODO 给容器添加分类  全局事件/按键状态
+	// 监听状态掩码
 	std::set<SDL_Keycode> RegistedKeyboardState;
 };
