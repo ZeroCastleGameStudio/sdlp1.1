@@ -40,6 +40,8 @@ distribution.
 #   include <cstdarg>
 #endif
 
+#include <SDL_rwops.h>
+
 /*
    TODO: intern strings instead of allocation.
 */
@@ -1593,6 +1595,11 @@ public:
     	an errorID.
     */
     XMLError LoadFile( FILE* );
+
+    /**
+    	Load an XML file from SDL_RWops
+    */
+    XMLError LoadFile( SDL_RWops* );
 
     /**
     	Save the XML file to disk.
