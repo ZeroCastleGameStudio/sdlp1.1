@@ -11,13 +11,19 @@ unique_ptr<EngineGlobalState> GlobalState;
 
 
 ZeroEngine::ZeroEngine()
-	:fraps(make_unique<Fraps>())
 {
+	GlobalState.reset(new EngineGlobalState());
+	GlobalState->ZE_eventHandler.reset(new EventManager);
+	GlobalState->ZE_error.reset(new Error);
+	fraps = make_unique<Fraps>();
+	GlobalState->ZE_stage.reset(new Sprite);
 }
 
 ZeroEngine::~ZeroEngine()
 {
+	GlobalState->ZE_stage.reset();
 	fraps.reset();
+	GlobalState->ZE_error.reset();
 	GlobalState->ZE_eventHandler.reset();
 	GlobalState.reset();
 	TTF_Quit();
@@ -30,9 +36,6 @@ ZeroEngine::~ZeroEngine()
 bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useVSync, std::string defaultFontFile) const
 {
 	bool success = true;
-	GlobalState.reset(new EngineGlobalState());
-	GlobalState->ZE_eventHandler.reset(new EventManager);
-
 	if (!Init_SDL(Title, windowWidth, windowHeight))
 	{
 		success = false;
@@ -54,8 +57,6 @@ bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useV
 	// 加载字体
 	GlobalState->defaultFont = make_shared<Font>("default", defaultFontFile);
 
-	GlobalState->ZE_stage.reset(new Sprite);
-	GlobalState->ZE_error.reset(new Error);
 
 	function<void(SDL_Event)> addJoyStick = [](SDL_Event evt)->void
 	{
@@ -242,7 +243,5 @@ void ZeroEngine::Close() const
 	//否则自动释放会发生在SDL关闭后exe结束前
 	GlobalState->defaultFont.reset();
 
-	GlobalState->ZE_error.reset();
-	GlobalState->ZE_stage.reset();
 
 }

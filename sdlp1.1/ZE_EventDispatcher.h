@@ -1,8 +1,6 @@
 #pragma once
 #include <functional>
 #include <SDL.h>
-#include <atomic>
-#include <unordered_map>
 #include "ZE_EventContainer.h"
 
 using namespace std;
@@ -18,6 +16,6 @@ public:
 	void removeEventListeners(EventMode type) const;
 	void removeAllEvents() const;
 private:
-	atomic_size_t dispatch_index{ ~0 };
+	const size_t dispatch_index;
 };
 
