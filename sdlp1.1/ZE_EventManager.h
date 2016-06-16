@@ -2,6 +2,7 @@
 #include <functional>
 #include <SDL.h>
 #include <atomic>
+#include <set>
 #include "ZE_EventDispatcher.h"
 #include "ZE_EventContainer.h"
 
@@ -23,13 +24,23 @@ public:
 	EventManager& operator=(const EventManager&) = delete;
 	EventManager& operator=(EventManager&&) = delete;
 
+	// 事件处理调用函数
 	void handleEvent();
 	// 注册一个事件监听器，返回监听器编号
-	size_t addEventFunction(size_t dispatch_index, SDL_EventType type, EventDispatcher*, function<void(SDL_Event)>);
+	// 参数：
+	// dispatch_index  从dispatchIndexDistributor获得的编号，此编号是唯一的，应该只从dispatchIndexDistributor获取一次
+	// type  事件的类型
+	// signedObject  对象
+	// func  事件处理函数
+	size_t addEventFunction(size_t dispatch_index, EventMode event_mode, Uint32 type, function<void(SDL_Event)> func);
 	// 移除指定监听器
 	void removeEventOfIndex(size_t event_index);
+	// 移除一个Dispatch的所有监听器
 	void removeAllEventOfDispatch(size_t dispatch_index);
-	void removeAllEventOfDispatchAndType(size_t dispatch_index, SDL_EventType type);
+	// 移除一个Dispatch的所有指定类型的监听器
+	void removeAllEventOfDispatchAndType(size_t dispatch_index, Uint32 type);
+	void removeAllEventOfDispatchAndModeType(size_t dispatch_index, EventMode type);
+	void removeAllEventOfDispatchAndTypeAndMode(size_t dispatch_index, Uint32 type, EventMode event_mode);
 	// 移除所有监听器
 	void removeAllEvent();
 	// dispatch挂号器 从这里获取dispatch的index身份
@@ -78,7 +89,6 @@ public:
 	// 但这个方法不适合这里，我觉得可以现对图像分层，然后按层筛选来获得响应事件的对象，
 	// 或者给所有需要响应点击事件的对象如同构建碰撞箱一样构造一个事件响应箱，然后直接查看点击点处有哪些响应箱，然后根据层叠关系来发送事件
 
-	// TODO 使用get模式获取鼠标状态
 
 private:
 	// 编号计数器
@@ -87,4 +97,8 @@ private:
 	std::atomic_size_t dispatch_index{ 0 };
 	//保存所有的事件
 	EventContainer AllEvents;
+	// 事件掩码   此中所标明的元素即是已有监听器正在监听的事件
+	std::set<Uint32> RegistedEvent;
+	// 监听状态掩码
+	std::set<SDL_Keycode> RegistedKeyboardState;
 };

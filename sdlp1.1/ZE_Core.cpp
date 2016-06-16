@@ -11,13 +11,19 @@ unique_ptr<EngineGlobalState> GlobalState;
 
 
 ZeroEngine::ZeroEngine()
-	:fraps(make_unique<Fraps>())
 {
+	GlobalState.reset(new EngineGlobalState());
+	GlobalState->ZE_eventHandler.reset(new EventManager);
+	GlobalState->ZE_error.reset(new Error);
+	fraps = make_unique<Fraps>();
+	GlobalState->ZE_stage.reset(new Sprite);
 }
 
 ZeroEngine::~ZeroEngine()
 {
+	GlobalState->ZE_stage.reset();
 	fraps.reset();
+	GlobalState->ZE_error.reset();
 	GlobalState->ZE_eventHandler.reset();
 	GlobalState.reset();
 	TTF_Quit();
@@ -30,9 +36,6 @@ ZeroEngine::~ZeroEngine()
 bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useVSync, std::string defaultFontFile) const
 {
 	bool success = true;
-	GlobalState.reset(new EngineGlobalState());
-	GlobalState->ZE_eventHandler.reset(new EventManager);
-
 	if (!Init_SDL(Title, windowWidth, windowHeight))
 	{
 		success = false;
@@ -54,8 +57,6 @@ bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useV
 	// 加载字体
 	GlobalState->defaultFont = make_shared<Font>("default", defaultFontFile);
 
-	GlobalState->ZE_stage.reset(new Sprite);
-	GlobalState->ZE_error.reset(new Error);
 
 	function<void(SDL_Event)> addJoyStick = [](SDL_Event evt)->void
 	{
@@ -69,8 +70,8 @@ bool ZeroEngine::Init(string Title, int windowWidth, int windowHeight, bool useV
 		// FIXME 这里使用下标进行访问不会在某种情况下炸么
 		GlobalState->ZE_Controllers.erase(GlobalState->ZE_Controllers.begin() + evt.jdevice.which);
 	};
-	GlobalState->ZE_stage->addEventListener(SDL_JOYDEVICEADDED, addJoyStick);
-	GlobalState->ZE_stage->addEventListener(SDL_JOYDEVICEREMOVED, removeJoyStick);
+	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYDEVICEADDED, addJoyStick);
+	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYDEVICEREMOVED, removeJoyStick);
 
 	return success;
 }
@@ -242,7 +243,5 @@ void ZeroEngine::Close() const
 	//否则自动释放会发生在SDL关闭后exe结束前
 	GlobalState->defaultFont.reset();
 
-	GlobalState->ZE_error.reset();
-	GlobalState->ZE_stage.reset();
 
 }

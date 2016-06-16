@@ -9,6 +9,7 @@
 #include "ZE_TextField.h"
 #include "ZE_Sound.h"
 #include "mygame.h"
+#include <functional>
 
 using namespace std;
 
@@ -40,6 +41,69 @@ void mygame::Init()
 
 	auto temp = resourses.getSound("testsound");
 
+	// 对象类实现的按键事件处理  需要启用智能指针保证对象不被提前析构
+	class tuanzi_event
+		: enable_shared_from_this<tuanzi_event>
+	{
+	public:
+		tuanzi_event(Image* tuanzi) : tuanzi(tuanzi) {}
+		Image* tuanzi;
+
+		array<int, 4> inertia{ 0,0,0,0 };
+		int base_inertia{ 5 };
+		void do_inertia(shared_ptr<tuanzi_event>& my, SDL_Event evt)
+		{
+			if (inertia[0] > 1)
+			{
+				tuanzi->x -= inertia[0]--;
+			}
+			if (inertia[1] > 1)
+			{
+				tuanzi->x += inertia[1]--;
+			}
+			if (inertia[2] > 1)
+			{
+				tuanzi->y -= inertia[2]--;
+			}
+			if (inertia[3] > 1)
+			{
+				tuanzi->y += inertia[3]--;
+			}
+			check_inertia();
+		}
+		void check_inertia()
+		{
+			for (auto&a : inertia)
+			{
+				if (a > 10)
+				{
+					a = 10;
+				}
+			}
+		}
+
+		// 即使没有使用也在这里传入智能指针以保证对象不被析构
+		void left(shared_ptr<tuanzi_event>& my, SDL_Event evt)
+		{
+			inertia[0] += base_inertia;
+			tuanzi->flip = SDL_FLIP_NONE;
+		}
+		void right(shared_ptr<tuanzi_event>& my, SDL_Event evt)
+		{
+			inertia[1] += base_inertia;
+			tuanzi->flip = SDL_FLIP_HORIZONTAL;
+		}
+		void up(shared_ptr<tuanzi_event>& my, SDL_Event evt)
+		{
+			inertia[2] += base_inertia;
+		}
+		void down(shared_ptr<tuanzi_event>& my, SDL_Event evt)
+		{
+			inertia[3] += base_inertia;
+		}
+	};
+	auto tuanzi_event_obj = make_shared<tuanzi_event>(tuanzi);
+
 	function <void(SDL_Event)> eventtest = [=](SDL_Event evt)->void
 	{
 		if (evt.key.keysym.sym == SDLK_SPACE)
@@ -51,29 +115,11 @@ void mygame::Init()
 		{
 			cout << "enter" << endl;
 		}
-		else
-		{
-			switch (evt.key.keysym.sym)
-			{
-			case SDLK_UP: tuanzi->y -= 1; break;
-			case SDLK_DOWN: tuanzi->y += 1; break;
-			case SDLK_LEFT:
-			{
-				tuanzi->x -= 1;
-				tuanzi->flip = SDL_FLIP_NONE;
-			}break;
-			case SDLK_RIGHT:
-			{
-				tuanzi->x += 1;
-				tuanzi->flip = SDL_FLIP_HORIZONTAL;
-			}break;
-			}
-		}
 	};
-	function <void(SDL_Event)> eventtest2 = [=](SDL_Event evt) 
+	function <void(SDL_Event)> eventtest2 = [=](SDL_Event evt)
 	{
 		int b = evt.jbutton.button;
-		cout << b << endl; 
+		cout << b << endl;
 		GlobalState->ZE_Controllers[evt.jbutton.which]->rumble();
 	};
 	function <void(SDL_Event)> eventtest3 = [=](SDL_Event evt)
@@ -87,11 +133,16 @@ void mygame::Init()
 		cout << c << endl;
 	};
 
-	GlobalState->ZE_stage->addEventListener(SDL_KEYDOWN, eventtest);
+	// 在这里传入智能指针 让其持有对象的智能指针以保证对象不被提前析构，且保证对象能够被析构
+	GlobalState->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_UP, std::bind(&tuanzi_event::up, tuanzi_event_obj.get(), tuanzi_event_obj, std::placeholders::_1));
+	GlobalState->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_DOWN, std::bind(&tuanzi_event::down, tuanzi_event_obj.get(), tuanzi_event_obj, std::placeholders::_1));
+	GlobalState->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_LEFT, std::bind(&tuanzi_event::left, tuanzi_event_obj.get(), tuanzi_event_obj, std::placeholders::_1));
+	GlobalState->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_RIGHT, std::bind(&tuanzi_event::right, tuanzi_event_obj.get(), tuanzi_event_obj, std::placeholders::_1));
+	GlobalState->ZE_stage->addEventListener(EventMode::EveryLoop, 0, std::bind(&tuanzi_event::do_inertia, tuanzi_event_obj.get(), tuanzi_event_obj, std::placeholders::_1));
 
-	GlobalState->ZE_stage->addEventListener(SDL_JOYBUTTONDOWN, eventtest2);
-	GlobalState->ZE_stage->addEventListener(SDL_JOYAXISMOTION, eventtest3);
-	GlobalState->ZE_stage->addEventListener(SDL_JOYHATMOTION, eventtest4);
+	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYBUTTONDOWN, eventtest2);
+	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYAXISMOTION, eventtest3);
+	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYHATMOTION, eventtest4);
 
 	resourses.getSound("bgm5")->play();
 }
