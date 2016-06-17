@@ -1,4 +1,20 @@
-#include <Windows.h>
+#ifdef _WIN32
+#	include <Windows.h>
+#elif defined(ANDROID) || defined(__ANDROID__)
+#	include <android/log.h>
+#	define TAG "sdlp"
+#	define LOGV(...) __android_log_print(ANDROID_LOG_VERBOSE, TAG ,__VA_ARGS__)
+#	define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, TAG ,__VA_ARGS__)
+#	define LOGI(...) __android_log_print(ANDROID_LOG_INFO, TAG ,__VA_ARGS__)
+#	define LOGW(...) __android_log_print(ANDROID_LOG_WARN, TAG ,__VA_ARGS__)
+#	define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, TAG ,__VA_ARGS__)
+#	define LOGF(...) __android_log_print(ANDROID_LOG_FATAL, TAG ,__VA_ARGS__)
+#	define OutputDebugStringA(msg) LOGD("%s", msg)
+#else
+// TODO Add output for linux and other platforms
+#	define OutputDebugStringA
+#endif
+
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
