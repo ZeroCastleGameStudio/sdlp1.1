@@ -49,7 +49,7 @@ void mygame::Init()
 		tuanzi_event(Image* tuanzi) : tuanzi(tuanzi) {}
 		Image* tuanzi;
 
-		array<int, 4> inertia{ 0,0,0,0 };
+		array<int, 4> inertia{{ 0,0,0,0 }};
 		int base_inertia{ 5 };
 		void do_inertia(shared_ptr<tuanzi_event>& my, SDL_Event evt)
 		{
