@@ -1,16 +1,9 @@
 #include <SDL_image.h>
 #include <atomic>
 #include "ZE_Core.h"
+#include "ZE_Global.h"
 
 using namespace std;
-
-//[Global]ZE版本号
-string ZE_version = "1.0.0";
-
-//[Global]引擎全局状态变量
-unique_ptr<EngineGlobalState> GlobalState;
-//[Global]到引擎实例的指针
-unique_ptr<ZeroEngine> g_Engine_ptr;
 
 std::atomic_bool ZeroEngineSingleton{ false };
 
@@ -21,7 +14,6 @@ ZeroEngine::ZeroEngine()
 		throw std::runtime_error("ZeroEngine must be singleton.");
 	}
 
-	GlobalState.reset(new EngineGlobalState());
 	GlobalState->ZE_eventHandler.reset(new EventManager);
 	GlobalState->ZE_error.reset(new Error);
 	fraps = make_unique<Fraps>();
@@ -30,6 +22,7 @@ ZeroEngine::ZeroEngine()
 
 ZeroEngine::~ZeroEngine()
 {
+	Close();
 	GlobalState->ZE_stage.reset();
 	fraps.reset();
 	GlobalState->ZE_error.reset();

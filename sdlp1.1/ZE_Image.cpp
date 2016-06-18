@@ -2,6 +2,7 @@
 #include <math.h>
 #include "ZE_Core.h"
 #include "ZE_Image.h"
+#include "ZE_Global.h"
 
 using namespace std;
 

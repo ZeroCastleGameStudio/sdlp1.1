@@ -1,6 +1,7 @@
 #include "ZE_Core.h"
 #include "ZE_TextField.h"
 #include "ZE_AssetManager.h"
+#include "ZE_Global.h"
 
 using namespace std;
 
@@ -42,7 +43,19 @@ void TextField::changeText(string text)
 	nowUsingSubData = setDefaultSubData();
 }
 
+int TextField::getWidth()
+{
+	// TODO
+	return 0;
+}
+
+int TextField::getHeight()
+{
+	// TODO
+	return 0;
+}
+
 TextField::~TextField()
 {
-	freeTexture();
+	TextureContainer::freeTexture();
 }

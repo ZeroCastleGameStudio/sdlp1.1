@@ -150,6 +150,7 @@
     <ClCompile Include="ZE_EventDispatcher.cpp" />
     <ClCompile Include="ZE_Font.cpp" />
     <ClCompile Include="ZE_Fraps.cpp" />
+    <ClCompile Include="ZE_Global.cpp" />
     <ClCompile Include="ZE_Image.cpp" />
     <ClCompile Include="ZE_InputBox.cpp" />
     <ClCompile Include="ZE_Sound.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="ZE_EventDispatcher.h" />
     <ClInclude Include="ZE_Font.h" />
     <ClInclude Include="ZE_Fraps.h" />
+    <ClInclude Include="ZE_Global.h" />
     <ClInclude Include="ZE_Image.h" />
     <ClInclude Include="ZE_InputBox.h" />
     <ClInclude Include="ZE_Sound.h" />

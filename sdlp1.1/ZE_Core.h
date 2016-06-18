@@ -16,16 +16,6 @@
 
 using namespace std;
 
-// 声明提前
-class ZeroEngine;
-
-//[Global]ZE版本号
-extern string ZE_version;
-//[Global]引擎全局状态变量
-extern unique_ptr<EngineGlobalState> GlobalState;
-//[Global]到引擎实例的指针
-extern unique_ptr<ZeroEngine> g_Engine_ptr;
-
 
 //颜色结构体，也就设置舞台颜色的时候用用
 struct Color

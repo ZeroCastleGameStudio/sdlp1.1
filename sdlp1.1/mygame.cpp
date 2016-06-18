@@ -11,6 +11,7 @@
 #include "mygame.h"
 #include <functional>
 #include "tuanzi.h"
+#include "ZE_Global.h"
 
 using namespace std;
 
@@ -20,13 +21,13 @@ void mygame::Init()
 {
 	resourses.Init("data/amText.xml");
 
-	Image* background = new Image(resourses.getTexture("background"));
+	auto background = make_shared<Image>(resourses.getTexture("background"));
 	GlobalState->ZE_stage->addChild(background);
 
-	TextField* text = new TextField(u8"然后我是一个显示中文的内部Text");
+	auto text = make_shared<TextField>(u8"然后我是一个显示中文的内部Text");
 	GlobalState->ZE_stage->addChild(text);
 
-	Image* test1 = new Image(resourses.getTextures("test1_"), 24);
+	auto test1 = make_shared<Image>(resourses.getTextures("test1_"), 24);
 	test1->scaleX = 0.2;
 	test1->scaleY = 0.2;
 	GlobalState->ZE_stage->addChild(test1);
@@ -36,7 +37,7 @@ void mygame::Init()
 	auto temp = resourses.getSound("testsound");
 
 	auto tuanzi_obj = make_shared<tuanzi>(resourses.getTextures("bug_fly1_"), 24);
-	GlobalState->ZE_stage->addChild(tuanzi_obj.get());
+	GlobalState->ZE_stage->addChild(tuanzi_obj);
 	tuanzi_obj->play();
 	tuanzi_obj->registerEventListener();
 
@@ -88,4 +89,5 @@ void mygame::Close()
 
 mygame::~mygame()
 {
+	mygame::Close();
 }

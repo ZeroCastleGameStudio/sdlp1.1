@@ -15,8 +15,16 @@ public:
 	AssetManager* Ass;
 	string FontName;
 
-	TextField(string text_f, unsigned int effectLevel_f = 0, int fontSize_f = 20, SDL_Color textColor_f = { 0, 0, 0 },
-		AssetManager* ass_f = NULL, string fontName_f = "");
+	explicit TextField(
+		string text_f,
+		unsigned int effectLevel_f = 0,
+		int fontSize_f = 20,
+		SDL_Color textColor_f = { 0, 0, 0 },
+		AssetManager* ass_f = nullptr,
+		string fontName_f = ""
+	);
 	~TextField();
 	void changeText(string);
+	int getWidth() override;
+	int getHeight() override;
 };

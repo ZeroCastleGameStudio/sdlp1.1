@@ -1,17 +1,23 @@
 #include <iostream>
-#include "ZE_Core.h"
+#include "ZE_DisplayObject.h"
+#include "ZE_Global.h"
 
 using namespace std;
 
-void DisplayObject::addChild(shared_ptr<DisplayObject> object)
+DisplayObject::DisplayObject()
+	: index(GlobalState->g_Engine_ptr->getNewDisplayObjectIndex())
 {
-	object->setParent(this);
-	addedObjects.push_back(object);
 }
 
-void DisplayObject::setParent(DisplayObject* mum)
+void DisplayObject::addChild(shared_ptr<DisplayObject> object)
 {
-	this->parent = mum;
+	object->setParent(this->shared_from_this());
+	addedObjects.emplace(object->index, object);
+}
+
+void DisplayObject::setParent(shared_ptr<DisplayObject> parent)
+{
+	this->parent = parent;
 }
 
 SDL_Rect DisplayObject::setRenderRect(int childWidth, int childHeight)
@@ -22,9 +28,9 @@ SDL_Rect DisplayObject::setRenderRect(int childWidth, int childHeight)
 	int parentY = 0;
 	float parentScaleX = 1;
 	float parentScaleY = 1;
-	if (parent != NULL)
+	auto mum = parent.lock();
+	if (mum)
 	{
-		DisplayObject* mum = parent;
 		while (true)
 		{
 			//先获取现在的爸爸的值
@@ -88,22 +94,22 @@ SDL_Rect DisplayObject::setRenderRect(int childWidth, int childHeight)
 			//可能会出现更多的坐标计算错误，所以还是不要混用了
 
 			//如果现在的爸爸没有爸爸了，就退出
-			if (mum->parent == NULL)
+			auto mump = mum->parent.lock();
+			if (!mump)
 			{
 				break;
 			}
-			//否则就把现在的爸爸暂存，然后把现在的爸爸换成爸爸的爸爸
+			//否则就把现在的爸爸换成爸爸的爸爸
 			else
 			{
-				DisplayObject* tempMum = mum;
-				mum = tempMum->parent;
+				mum = mump;
 			}
 		}
 	}
 	SDL_Rect renderRect =
 	{
-		(int)((x+parentX)*parentScaleX),
-		(int)((y+parentY)*parentScaleY),
+		(int)((x + parentX)*parentScaleX),
+		(int)((y + parentY)*parentScaleY),
 		(int)(childWidth*scaleX*parentScaleX),
 		(int)(childHeight*scaleY*parentScaleY)
 	};
@@ -113,55 +119,24 @@ SDL_Rect DisplayObject::setRenderRect(int childWidth, int childHeight)
 
 void DisplayObject::removeFromParent(bool disposeMe)
 {
-	if (parent == NULL)
+	auto p = parent.lock();
+	if (!p)
 	{
 		GlobalState->ZE_error->PopDebugConsole_Warning("DisplayObject:" + this->name + " do not have a parent!");
 	}
 	else
 	{
-		parent->removeChild(this, disposeMe);
+		p->removeChild(this->shared_from_this(), disposeMe);
 	}
 }
 
 void DisplayObject::removeChild(shared_ptr<DisplayObject> targetChild, bool disposeIt)
 {
-	/*if (addedObjects.size() != 0)
-	{
-		bool finded = false;
-		for (unsigned int i = 0; i < addedObjects.size(); i++)
-		{
-			if (targetChild == addedObjects[i])
-			{
-				finded = true;
-				if (disposeIt)
-				{
-					addedObjects[i]->dispose();
-					delete(addedObjects[i]);
-					addedObjects[i] = NULL;
-				}
-				deque <DisplayObject*>::iterator ite;
-				ite = addedObjects.begin();
-				addedObjects.erase(ite + i);
-				break;
-			}
-		}
-		if (finded == false)
-		{
-			error.PopDebugConsole_Error("Can't find Child:" + targetChild->name);
-		}
-	}*/
-
-	auto it = find(addedObjects.begin(), addedObjects.end(), targetChild);
+	auto it = addedObjects.find(targetChild->index);
 	if (it != addedObjects.end())
 	{
-		if (disposeIt)
-		{
-			(*it)->dispose();
-			delete(*it);
-		}
 		addedObjects.erase(it);
 	}
-
 	else
 	{
 		GlobalState->ZE_error->PopDebugConsole_Error("Can't find Child:" + targetChild->name);
@@ -170,30 +145,10 @@ void DisplayObject::removeChild(shared_ptr<DisplayObject> targetChild, bool disp
 
 void DisplayObject::dispose()
 {
-	/*if (addedObjects.size() != 0)
-	{
-		while (addedObjects.size() != 0)
-		{
-			addedObjects[0]->dispose();
-			delete(addedObjects[0]);
-			addedObjects[0] = NULL;
-			addedObjects.erase(addedObjects.begin());
-		}
-	}*/
-
-	for (auto obj : addedObjects)
-	{
-		obj->dispose();
-		delete(obj);
-		obj = NULL;
-	}
 	addedObjects.clear();
 }
 
-int DisplayObject::getWidth() { return 0; }
-int DisplayObject::getHeight() { return 0; }
-
 DisplayObject::~DisplayObject()
 {
-	dispose();
+	DisplayObject::dispose();
 }

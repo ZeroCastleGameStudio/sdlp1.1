@@ -135,6 +135,9 @@
     <ClCompile Include="ZE_EngineGlobalState.cpp">
       <Filter>源文件\ZeroEngine\Core</Filter>
     </ClCompile>
+    <ClCompile Include="ZE_Global.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mygame.h">
@@ -199,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="tuanzi.h">
       <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ZE_Global.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

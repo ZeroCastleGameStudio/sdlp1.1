@@ -3,12 +3,11 @@
 #include <array>
 #include "ZE_Image.h"
 #include "mygame.h"
-
+#include "ZE_Global.h"
 
 
 class tuanzi
-	:public std::enable_shared_from_this<tuanzi>,
-	public Image
+	:public Image
 {
 public:
 

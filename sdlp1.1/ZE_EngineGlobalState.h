@@ -2,13 +2,17 @@
 
 #include <memory>
 #include <atomic>
+#include <deque>
 #include <SDL.h>
-#include "ZE_Sprite.h"
-#include "ZE_error.h"
-#include "ZE_EventManager.h"
-#include "ZE_Controller.h"
-#include "ZE_Font.h"
-#include "ZE_Core.h"
+
+
+class Sprite;
+class Error;
+class EventManager;
+class Controller;
+class Font;
+class ZeroEngine;
+
 
 
 // 试验性
@@ -19,8 +23,6 @@ auto make_sdl_unique_ptr(PtrType* ptr, DestoryType destory_func)
 {
 	return std::move(unique_ptr<PtrType, DestoryType>(ptr, destory_func));
 }
-
-
 
 
 
@@ -39,23 +41,25 @@ public:
 	EngineGlobalState& operator=(EngineGlobalState&&) = delete;
 
 	//[Global]保存SDL窗体的指针
-	unique_ptr<SDL_Window, decltype(SDL_DestroyWindow)*> g_ZE_Window{ nullptr,SDL_DestroyWindow };
+	std::unique_ptr<SDL_Window, decltype(SDL_DestroyWindow)*> g_ZE_Window{ nullptr,SDL_DestroyWindow };
 	//[Global]保存SDL主Surface的指针
-	unique_ptr<SDL_Surface, decltype(SDL_FreeSurface)*> g_ZE_MainSurface{ nullptr,SDL_FreeSurface };
+	std::unique_ptr<SDL_Surface, decltype(SDL_FreeSurface)*> g_ZE_MainSurface{ nullptr,SDL_FreeSurface };
 	//[Global]主渲染器，绑定到主window
-	unique_ptr<SDL_Renderer, decltype(SDL_DestroyRenderer)*> g_ZE_MainRenderer{ nullptr,SDL_DestroyRenderer };
+	std::unique_ptr<SDL_Renderer, decltype(SDL_DestroyRenderer)*> g_ZE_MainRenderer{ nullptr,SDL_DestroyRenderer };
 	//[Global]stage对象，唯一
-	unique_ptr<Sprite> ZE_stage;
+	std::unique_ptr<Sprite> ZE_stage;
 	//[Global]error对象(应该是唯一，其它类就算有也是private)
-	unique_ptr<Error> ZE_error;
+	std::unique_ptr<Error> ZE_error;
 	//[Global]事件处理器对象，唯一
-	unique_ptr<EventManager> ZE_eventHandler;
+	std::unique_ptr<EventManager> ZE_eventHandler;
 	//[Global]退出主循环的判定变量
-	atomic_bool ZE_QUIT_MAIN_LOOP{ false };
+	std::atomic_bool ZE_QUIT_MAIN_LOOP{ false };
 	//[Global]保存所有的手柄指针
-	deque<unique_ptr<Controller>> ZE_Controllers;
+	std::deque<std::unique_ptr<Controller>> ZE_Controllers;
 	//[Global]系统默认字体
-	shared_ptr<Font> defaultFont;
+	std::shared_ptr<Font> defaultFont;
+	//[Global]到引擎实例的指针
+	std::unique_ptr<ZeroEngine> g_Engine_ptr;
 };
 
 

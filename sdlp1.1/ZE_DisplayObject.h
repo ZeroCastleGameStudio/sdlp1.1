@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
-#include <deque>
+#include <unordered_map>
 #include "ZE_EventDispatcher.h"
+#include "ZE_Core.h"
 
 using namespace std;
 
@@ -9,9 +10,15 @@ using namespace std;
 //比如sprite中的render就是循环访问数组中的元素并调用render方法
 //image的render就是渲染自己的texture
 //原来这TM就是个树节点我才意识到
-class DisplayObject : public EventDispatcher
+class DisplayObject
+	: public EventDispatcher,
+	public std::enable_shared_from_this<DisplayObject>
 {
 public:
+
+	DisplayObject();
+
+
 	//方便用户的变量，完全没卵用
 	string name;
 	int x = 0;
@@ -34,19 +41,17 @@ public:
 	//渲染模式
 	SDL_BlendMode blendMode = SDL_BLENDMODE_BLEND;
 
-	//储存所有使用add方法加入的DO对象
-	deque<shared_ptr<DisplayObject>> addedObjects;
-	//爸爸指针
-	DisplayObject* parent{ nullptr };
+	// 对象编号
+	const size_t index;
 
 	//给我一个DO类幼崽
 	void addChild(shared_ptr<DisplayObject>);
 	//设置我爸爸
-	void setParent(DisplayObject*);
+	void setParent(shared_ptr<DisplayObject> parent);
 	//设置我的真实渲染方块
 	SDL_Rect setRenderRect(int, int);
 	//删除一个子节点和它所有的子节点
-	void removeChild(DisplayObject*, bool disposeIt = true);
+	void removeChild(shared_ptr<DisplayObject>, bool disposeIt = true);
 	//将我从父节点中删除
 	void removeFromParent(bool disposeMe = false);
 	//清除该子节点所有资源
@@ -56,7 +61,12 @@ public:
 	// 纯虚函数
 	virtual void Render() = 0;
 	virtual void dispose();
-	virtual int getWidth();
-	virtual int getHeight();
+	virtual int getWidth() = 0;
+	virtual int getHeight() = 0;
 
+protected:
+	//储存所有使用add方法加入的DO对象
+	unordered_map<size_t, shared_ptr<DisplayObject>> addedObjects;
+	//爸爸指针  为避免循环引用，使用弱指针
+	weak_ptr<DisplayObject> parent;
 };

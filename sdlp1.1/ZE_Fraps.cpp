@@ -8,7 +8,7 @@ using namespace std;
 void Fraps::setUp()
 {
 	mText = new TextField("1", 0, 12, { 255, 255, 255 });
-	this->addChild(mText);
+	this->addChild(make_shared<TextField>("0", 0, 12, { 255, 255, 255 }));
 }
 
 void Fraps::setText()

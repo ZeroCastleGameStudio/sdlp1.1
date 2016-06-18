@@ -1,5 +1,6 @@
 #include "ZE_Core.h"
 #include "ZE_TextureContainer.h"
+#include "ZE_Global.h"
 
 using namespace std;
 

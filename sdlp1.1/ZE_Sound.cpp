@@ -1,6 +1,7 @@
 #include <iostream>
 #include "ZE_Core.h"
 #include "ZE_Sound.h"
+#include "ZE_Global.h"
 
 using namespace std;
 

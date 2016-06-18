@@ -11,7 +11,7 @@ EngineGlobalState::EngineGlobalState()
 	{
 		throw std::runtime_error("EngineGlobalState Re Ctor");
 	}
-	cout << "EngineGlobalState::EngineGlobalState()" << endl;
+	std::cout << "EngineGlobalState::EngineGlobalState()" << std::endl;
 }
 
 
@@ -22,5 +22,5 @@ EngineGlobalState::~EngineGlobalState()
 	assert(nullptr == g_ZE_Window);
 	assert(nullptr == g_ZE_MainSurface);
 	assert(nullptr == g_ZE_MainRenderer);
-	cout << "EngineGlobalState::~EngineGlobalState()" << endl;
+	std::cout << "EngineGlobalState::~EngineGlobalState()" << std::endl;
 }
