@@ -1,21 +1,12 @@
 #pragma once
 #include <iostream>
-#include <fstream>
 #include <memory>
 #include <deque>
-#include <SDL.h>
-#include <SDL_ttf.h>
-#include <SDL_mixer.h>
-#include "ZE_error.h"
-#include "ZE_Sprite.h"
-#include "ZE_EventManager.h"
-#include "ZE_Controller.h"
-#include "ZE_Fraps.h"
-#include "ZE_Font.h"
-#include "ZE_EngineGlobalState.h"
+#include <atomic>
 
 using namespace std;
 
+class Fraps;
 
 //颜色结构体，也就设置舞台颜色的时候用用
 struct Color

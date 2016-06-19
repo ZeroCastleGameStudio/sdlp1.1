@@ -2,6 +2,7 @@
 #include "ZE_TextField.h"
 #include "ZE_AssetManager.h"
 #include "ZE_Global.h"
+#include "ZE_EngineGlobalState.h"
 
 using namespace std;
 

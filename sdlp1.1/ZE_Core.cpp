@@ -1,7 +1,15 @@
+
 #include <SDL_image.h>
-#include <atomic>
+#include <SDL.h>
+#include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include "ZE_Core.h"
 #include "ZE_Global.h"
+#include "ZE_EventManager.h"
+#include "ZE_Error.h"
+#include "ZE_Fraps.h"
+#include "ZE_Controller.h"
+#include "ZE_EngineGlobalState.h"
 
 using namespace std;
 

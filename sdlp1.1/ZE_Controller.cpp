@@ -1,6 +1,8 @@
 #include "ZE_Core.h"
 #include "ZE_Controller.h"
 #include "ZE_Global.h"
+#include "ZE_EngineGlobalState.h"
+#include "ZE_Error.h"
 
 using namespace std;
 

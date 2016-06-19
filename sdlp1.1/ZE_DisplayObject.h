@@ -2,7 +2,6 @@
 #include <string>
 #include <unordered_map>
 #include "ZE_EventDispatcher.h"
-#include "ZE_Core.h"
 
 using namespace std;
 
@@ -24,11 +23,11 @@ public:
 	int x = 0;
 	int y = 0;
 	//宽度缩放倍数，默认为1
-	float scaleX = 1;
+	double scaleX = 1;
 	//高度缩放倍数，默认为1
-	float scaleY = 1;
+	double scaleY = 1;
 	//透明度
-	float alpah = 1;
+	double alpah = 1;
 	//旋转点，该点指示了贴图以自己的左上为原点的一个坐标，并非舞台坐标
 	SDL_Point rotationPoint = { 0, 0 };
 	//旋转角度，接收0-360的角度变量

@@ -1,7 +1,12 @@
 #include "ZE_EngineGlobalState.h"
-#include <assert.h>
 
+#include <assert.h>
 #include <iostream>
+#include "ZE_Core.h"
+#include "ZE_EventManager.h"
+#include "ZE_Error.h"
+#include "ZE_Sprite.h"
+#include "ZE_Controller.h"
 
 std::atomic_bool EngineGlobalState_Singleton{ false };
 

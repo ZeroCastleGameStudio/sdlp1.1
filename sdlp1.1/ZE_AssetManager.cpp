@@ -4,6 +4,8 @@
 #include "tinyxml2.h"
 #include "ZE_AssetManager.h"
 #include "ZE_Global.h"
+#include "ZE_EngineGlobalState.h"
+#include "ZE_Error.h"
 
 using namespace std;
 using namespace tinyxml2;

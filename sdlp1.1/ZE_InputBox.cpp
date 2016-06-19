@@ -1,6 +1,8 @@
 #include "ZE_Core.h"
 #include "ZE_InputBox.h"
 #include "ZE_Global.h"
+#include "ZE_AssetManager.h"
+#include "ZE_EngineGlobalState.h"
 
 using namespace std;
 

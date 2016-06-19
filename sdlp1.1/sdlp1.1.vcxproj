@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mygame.cpp" />
+    <ClCompile Include="tuanzi.cpp" />
     <ClCompile Include="ZE_AssetManager.cpp" />
     <ClCompile Include="ZE_Controller.cpp" />
     <ClCompile Include="ZE_Core.cpp" />

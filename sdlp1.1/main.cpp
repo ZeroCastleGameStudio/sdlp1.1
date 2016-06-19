@@ -11,6 +11,7 @@
 
 #include "mygame.h"
 #include "ZE_Global.h"
+#include "ZE_EngineGlobalState.h"
 
 using namespace std;
 

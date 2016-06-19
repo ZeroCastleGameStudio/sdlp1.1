@@ -1,6 +1,7 @@
 #include "ZE_Core.h"
 #include "ZE_TextureContainer.h"
 #include "ZE_Global.h"
+#include "ZE_EngineGlobalState.h"
 
 using namespace std;
 
@@ -14,7 +15,7 @@ SubTexture TextureContainer::setDefaultSubData()
 	return data;
 }
 
-void TextureContainer::setAlpha(float alphaNum)
+void TextureContainer::setAlpha(double alphaNum)
 {
 	Uint8 tempalpha = (int)(alphaNum * 255);
 	SDL_SetTextureAlphaMod(mTexture->getTexture(), tempalpha);

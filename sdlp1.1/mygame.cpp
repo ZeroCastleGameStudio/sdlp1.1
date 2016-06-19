@@ -12,31 +12,35 @@
 #include <functional>
 #include "tuanzi.h"
 #include "ZE_Global.h"
+#include "ZE_Core.h"
+#include "ZE_EngineGlobalState.h"
+#include "ZE_Controller.h"
+#include "ZE_AssetManager.h"
 
 using namespace std;
 
-mygame::mygame() {}
+mygame::mygame() :resourses(new AssetManager) {}
 
 void mygame::Init()
 {
-	resourses.Init("data/amText.xml");
+	resourses->Init("data/amText.xml");
 
-	auto background = make_shared<Image>(resourses.getTexture("background"));
+	auto background = make_shared<Image>(resourses->getTexture("background"));
 	GlobalState->ZE_stage->addChild(background);
 
 	auto text = make_shared<TextField>(u8"然后我是一个显示中文的内部Text");
 	GlobalState->ZE_stage->addChild(text);
 
-	auto test1 = make_shared<Image>(resourses.getTextures("test1_"), 24);
+	auto test1 = make_shared<Image>(resourses->getTextures("test1_"), 24);
 	test1->scaleX = 0.2;
 	test1->scaleY = 0.2;
 	GlobalState->ZE_stage->addChild(test1);
 	test1->play();
 
 
-	auto temp = resourses.getSound("testsound");
+	auto temp = resourses->getSound("testsound");
 
-	auto tuanzi_obj = make_shared<tuanzi>(resourses.getTextures("bug_fly1_"), 24);
+	auto tuanzi_obj = make_shared<tuanzi>(resourses->getTextures("bug_fly1_"), 24);
 	GlobalState->ZE_stage->addChild(tuanzi_obj);
 	tuanzi_obj->play();
 	tuanzi_obj->registerEventListener();
@@ -74,7 +78,7 @@ void mygame::Init()
 	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYAXISMOTION, eventtest3);
 	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYHATMOTION, eventtest4);
 
-	resourses.getSound("bgm5")->play();
+	resourses->getSound("bgm5")->play();
 }
 
 void mygame::MainLoop()
@@ -84,7 +88,7 @@ void mygame::MainLoop()
 
 void mygame::Close()
 {
-	resourses.dispose();
+	resourses->dispose();
 }
 
 mygame::~mygame()

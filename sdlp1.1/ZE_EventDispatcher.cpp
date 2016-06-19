@@ -1,6 +1,8 @@
 #include "ZE_Core.h"
 #include "ZE_EventDispatcher.h"
 #include "ZE_Global.h"
+#include "ZE_EngineGlobalState.h"
+#include "ZE_EventManager.h"
 
 using namespace std;
 
