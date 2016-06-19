@@ -2,13 +2,14 @@
 #include <string>
 #include "ZE_Core.h"
 #include "ZE_Fraps.h"
+#include "ZE_TextField.h"
 
 using namespace std;
 
 void Fraps::setUp()
 {
-	mText = new TextField("1", 0, 12, { 255, 255, 255 });
-	this->addChild(make_shared<TextField>("0", 0, 12, { 255, 255, 255 }));
+	mText = make_shared<TextField>("0", 0, 12, SDL_Color{ 255, 255, 255 });
+	this->addChild(mText);
 }
 
 void Fraps::setText()

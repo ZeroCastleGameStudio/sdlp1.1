@@ -12,6 +12,11 @@ DisplayObject::DisplayObject()
 {
 }
 
+DisplayObject::DisplayObject(size_t index)
+	: index{ index }
+{
+}
+
 void DisplayObject::addChild(shared_ptr<DisplayObject> object)
 {
 	object->setParent(this->shared_from_this());
@@ -29,8 +34,8 @@ SDL_Rect DisplayObject::setRenderRect(int childWidth, int childHeight)
 	//首先，遍历父节点，获取我应该缩放的比例和所有父亲的值
 	int parentX = 0;
 	int parentY = 0;
-	float parentScaleX = 1;
-	float parentScaleY = 1;
+	double parentScaleX = 1;
+	double parentScaleY = 1;
 	auto mum = parent.lock();
 	if (mum)
 	{

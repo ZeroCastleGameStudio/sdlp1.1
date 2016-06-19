@@ -14,8 +14,8 @@ class DisplayObject
 	public std::enable_shared_from_this<DisplayObject>
 {
 public:
-
 	DisplayObject();
+	DisplayObject(size_t index);
 
 
 	//方便用户的变量，完全没卵用

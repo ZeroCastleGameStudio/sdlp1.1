@@ -4,6 +4,7 @@
 #include <atomic>
 #include <deque>
 #include <SDL.h>
+#include "ZE_Font.h"
 
 
 class Sprite;

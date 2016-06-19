@@ -24,7 +24,7 @@ ZeroEngine::ZeroEngine()
 
 	GlobalState->ZE_eventHandler.reset(new EventManager);
 	GlobalState->ZE_error.reset(new Error);
-	fraps = make_unique<Fraps>();
+	fraps = make_unique<Fraps>(this->getNewDisplayObjectIndex());
 	GlobalState->ZE_stage.reset(new Sprite);
 }
 

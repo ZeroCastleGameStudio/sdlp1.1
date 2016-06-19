@@ -6,7 +6,6 @@
 
 using namespace std;
 
-// FIXME：这个函数不能在多线程中调用，因为GlobalState没法在构造函数中初始化，现在在此类型的某个对象初始化时间比GlobalState早
 void EventDispatcher::addEventListener(EventMode event_mode, Uint32 type, function<void(SDL_Event)> func)
 {
 	GlobalState->ZE_eventHandler->addEventFunction(dispatch_index, event_mode, type, func);
@@ -31,6 +30,11 @@ void EventDispatcher::removeAllEvents() const
 EventDispatcher::EventDispatcher()
 	:dispatch_index(GlobalState->ZE_eventHandler->dispatchIndexDistributor())
 {}
+
+EventDispatcher::EventDispatcher(size_t dispatch_index)
+	: dispatch_index{ dispatch_index }
+{
+}
 
 EventDispatcher::~EventDispatcher()
 {
