@@ -14,4 +14,4 @@ boost <br/>
 // todo: 此处应写入开源协议 <br/>
 
 ##如何开始
-请查看wiki的hello world页面(还没写)部署你的运行环境
+请查看wiki的hello world页面部署你的运行环境
