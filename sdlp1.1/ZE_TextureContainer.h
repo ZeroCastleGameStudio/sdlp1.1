@@ -16,6 +16,5 @@ public:
 
 	virtual SubTexture setDefaultSubData();
 	virtual void Render();
-	virtual void freeTexture();
 	void setAlpha(double);
 };

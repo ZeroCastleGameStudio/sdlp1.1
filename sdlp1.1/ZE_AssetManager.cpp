@@ -3,8 +3,8 @@
 #include "ZE_Core.h"
 #include "tinyxml2.h"
 #include "ZE_AssetManager.h"
-#include "ZE_Global.h"
 #include "ZE_Error.h"
+#include <boost/algorithm/string.hpp>
 
 using namespace std;
 using namespace tinyxml2;
@@ -73,32 +73,28 @@ textureStruct AssetManager::getTexture(string name)
 			}
 		}
 	}
-	GlobalState->ZE_error->PopDebugConsole_Error("Can't find Texture: " + name);
+	core_engine.lock()->ZE_error->PopDebugConsole_Error("Can't find Texture: " + name);
 	return temp;
 }
 
-SDL_Texture* AssetManager::getTTFTexture(string text, string name, int size, SDL_Color color, int* width, int* height,
-	unsigned int effectLevel)
+auto AssetManager::getTTFTexture(string text, string name, int size, SDL_Color color, int* width, int* height, unsigned int effectLevel)
+->std::unique_ptr<SDL_Texture, decltype(SDL_DestroyTexture)*>
 {
 	auto usingfont = getFont(name);
 	TTF_Font* tempfont = usingfont->getFont(size);
-	SDL_Surface* tempsur = NULL;
+	std::unique_ptr<SDL_Surface, decltype(SDL_FreeSurface)*> tempsur{ nullptr,SDL_FreeSurface };
 	if (effectLevel == 0)
-		tempsur = TTF_RenderUTF8_Solid(tempfont, text.c_str(), color);
+		tempsur.reset(TTF_RenderUTF8_Solid(tempfont, text.c_str(), color));
 	else if (effectLevel == 1)
-		tempsur = TTF_RenderUTF8_Shaded(tempfont, text.c_str(), color, { 0, 0, 0 });
+		tempsur.reset(TTF_RenderUTF8_Shaded(tempfont, text.c_str(), color, { 0, 0, 0 }));
 	else if (effectLevel == 2)
-		tempsur = TTF_RenderUTF8_Blended(tempfont, text.c_str(), color);
-	if (tempsur == NULL)
+		tempsur.reset(TTF_RenderUTF8_Blended(tempfont, text.c_str(), color));
+	if (!tempsur)
 	{
-		GlobalState->ZE_error->PopDebugConsole_SDL_ttfError("Unable to render text surface!");
-		return NULL;
+		core_engine.lock()->ZE_error->PopDebugConsole_SDL_ttfError("Unable to render text surface!");
+		return std::unique_ptr<SDL_Texture, decltype(SDL_DestroyTexture)*>{nullptr, SDL_DestroyTexture};
 	}
-	else
-	{
-		SDL_Texture* temptexture = Surface2SDLTexture(tempsur, width, height);
-		return temptexture;
-	}
+	return Surface2SDLTexture(core_engine, tempsur, width, height);
 }
 
 shared_ptr<Font> AssetManager::getFont(string name)
@@ -110,7 +106,7 @@ shared_ptr<Font> AssetManager::getFont(string name)
 			return i;
 		}
 	}
-	GlobalState->ZE_error->PopDebugConsole_Error("Can't find font name:" + name);
+	core_engine.lock()->ZE_error->PopDebugConsole_Error("Can't find font name:" + name);
 	return nullptr;
 }
 
@@ -123,7 +119,7 @@ shared_ptr<Sound> AssetManager::getSound(string name)
 			return i;
 		}
 	}
-	GlobalState->ZE_error->PopDebugConsole_Error("Can't find sound name:" + name);
+	core_engine.lock()->ZE_error->PopDebugConsole_Error("Can't find sound name:" + name);
 	return nullptr;
 }
 
@@ -161,7 +157,7 @@ deque<textureStruct> AssetManager::getTextures(string partOfName)
 	}
 	if (temp.size() == 0)
 	{
-		GlobalState->ZE_error->PopDebugConsole_Error("Can't find Texture has part of name: " + partOfName);
+		core_engine.lock()->ZE_error->PopDebugConsole_Error("Can't find Texture has part of name: " + partOfName);
 	}
 	sort(temp.begin(), temp.end(), comparTextureStruce);
 	return temp;
@@ -186,17 +182,17 @@ void AssetManager::LoadTexture(string name, string path, string xml)
 	//声明一个子贴图数组，用于传递给贴图类
 	deque <SubTexture> subtexture = SubXmlReader(xml);
 
-	//调用下面的读取地址方法获得一个surface指针传递给S2T，
-	SDL_Texture* tempTexture = Surface2SDLTexture(ImageReader(path), &tempWidth, &tempHeight);
-	// 初始化
-	temp_texture->Init(name, tempTexture, tempWidth, tempHeight, subtexture);
+	//调用下面的读取地址方法获得一个surface指针传递给S2T，初始化
+	auto tempsur = ImageReader(path);
+	auto temptex = Surface2SDLTexture(core_engine, tempsur, &tempWidth, &tempHeight);
+	temp_texture->Init(name, temptex, tempWidth, tempHeight, subtexture);
 	// 保存指针
 	TEXTURES.push_back(temp_texture);
 }
 
 void AssetManager::LoadTTF(string name, string path)
 {
-	FONT.emplace_back(new Font(name, path));
+	FONT.emplace_back(new Font(core_engine, name, path));
 }
 
 void AssetManager::LoadSound(bool isMusic, string name, string path)
@@ -213,60 +209,69 @@ void AssetManager::LoadSound(bool isMusic, string name, string path)
 	}
 }
 
-SDL_Texture* AssetManager::Surface2SDLTexture(SDL_Surface* surface, int* getW, int* getH)
+auto AssetManager::Surface2SDLTexture(
+	weak_ptr<ZeroEngine> core_engine,
+	std::unique_ptr<SDL_Surface, decltype(SDL_FreeSurface)*>& surface,
+	int* getW, int* getH
+)->std::unique_ptr<SDL_Texture, decltype(SDL_DestroyTexture)*>
 {
-	SDL_Texture* newTexture = NULL;
-	newTexture = SDL_CreateTextureFromSurface(GlobalState->g_ZE_MainRenderer.get(), surface);
+	std::unique_ptr<SDL_Texture, decltype(SDL_DestroyTexture)*> newTexture{
+		SDL_CreateTextureFromSurface(core_engine.lock()->g_ZE_MainRenderer.get(), surface.get()),
+		SDL_DestroyTexture
+	};
 	//将Surface转换为Texture
 	//直接创建贴图也行，但是要的参数复杂很多，不如直接转换
-	if (newTexture == NULL)
+	if (!newTexture)
 	{
-		GlobalState->ZE_error->PopDebugConsole_SDLError("Unable to creat texture!");
+		core_engine.lock()->ZE_error->PopDebugConsole_SDLError("Unable to creat texture!");
 	}
 	//获取宽高，用指针传回去
 	*getW = surface->w;
 	*getH = surface->h;
-	SDL_FreeSurface(surface);
-	//将临时的Surface释放掉，时刻记得，没用了立即扔，免得秋后算账
-	//这是因为上面那个格式化方法会复制一个surface而不是指向原来的地址，毕竟占用的内存体积可能不一样
 	return newTexture;
 }
 
-SDL_Surface* AssetManager::ImageReader(string path, int extNameLength)
+
+// FIXME 这里返回的空指针可能导致故障扩散  是否需要处理
+auto AssetManager::ImageReader(string path)->std::unique_ptr<SDL_Surface, decltype(SDL_FreeSurface)*>
 {
-	string temp;
-	for (int i = 0; i < extNameLength; i++)
+	// 取最后一个小数点开始为扩展名 并转换为小写以便对比
+	size_t last_point = path.find_last_of('.');
+	if (string::npos == last_point)
 	{
-		//循环读取字符串的最后三位赋值给temp，extNameLength默认为3。
-		//头文件中的函数声明设置了默认参数这里就不能再设置了，记住，不然会跳一个C2572错误
-		temp += path[path.length() - (extNameLength - i)];
-		//最后temp会变成一个扩展名
+		core_engine.lock()->ZE_error->PopDebugConsole_Error("file ext canot find : " + path);
+		throw std::runtime_error("file ext canot find : " + path);
+		//return  nullptr;
 	}
+	++last_point;
+	// 注意to_lower_copy只能做用到ASCII上  UTF16/32会出问题
+	string temp = boost::algorithm::to_lower_copy(temp.substr(last_point, path.length() - last_point));
 
-	SDL_Surface* tempSurface = NULL;
 
-	if (temp == "bmp" || temp == "BMP")
+	std::unique_ptr<SDL_Surface, decltype(SDL_FreeSurface)*> tempSurface{ nullptr,SDL_FreeSurface };
+
+	if (temp == "bmp")
 	{
 		//载入BMP的方法使用SDL原生载入函数，SDL只能载入BMP
-		tempSurface = SDL_LoadBMP(path.c_str());
+		tempSurface.reset(SDL_LoadBMP(path.c_str()));
 		//因为是纯C，不接受string变量，不再赘述
-		if (tempSurface == NULL)
+		if (!tempSurface)
 		{
-			GlobalState->ZE_error->PopDebugConsole_SDLError("Unable to load bmp file:" + path + " |Load error");
+			core_engine.lock()->ZE_error->PopDebugConsole_SDLError("Unable to load bmp file:" + path + " |Load error");
 		}
 	}
-	else if (temp == "png" || temp == "PNG")
+	else if (temp == "png")
 	{
 		//SDL只能载入BMP，PNG就用SDL_IMAGE
-		tempSurface = IMG_Load(path.c_str());
-		if (tempSurface == NULL)
+		tempSurface.reset(IMG_Load(path.c_str()));
+		if (!tempSurface)
 		{
-			GlobalState->ZE_error->PopDebugConsole_SDL_ImageError("Unable to load png file:" + path + " |Load error");
+			core_engine.lock()->ZE_error->PopDebugConsole_SDL_ImageError("Unable to load png file:" + path + " |Load error");
 		}
 	}
 	else
 	{
-		GlobalState->ZE_error->PopDebugConsole_Error("Unable to read " + temp + " file.");
+		core_engine.lock()->ZE_error->PopDebugConsole_Error("Unable to read " + temp + " file.");
 		//if们都没截住那就是没搞的格式呗...
 	}
 
@@ -322,6 +327,11 @@ deque<SubTexture> AssetManager::SubXmlReader(string xml)
 		}
 		return temp;
 	}
+}
+
+AssetManager::AssetManager(weak_ptr<ZeroEngine> core_engine)
+	:core_engine(core_engine)
+{
 }
 
 AssetManager::~AssetManager()

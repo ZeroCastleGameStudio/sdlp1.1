@@ -7,8 +7,10 @@ using namespace std;
 //Image的参数结构体
 struct textureStruct
 {
-	shared_ptr<Texture> texture;//接收的贴图
-	SubTexture subData;//贴图的读取信息
+	//接收的贴图
+	shared_ptr<Texture> texture;
+	//贴图的读取信息
+	SubTexture subData;
 };
 
 //ZE的图片类，基本与STARING的图片类一致
@@ -19,8 +21,9 @@ public:
 	deque<textureStruct> subData;
 	//当前对象是否是动图
 	bool isMoveble = false;
-	Image(textureStruct);
-	Image(deque<textureStruct>, unsigned int frameSpeed = 12);
+	// TODO texture需不需要使用引用模式
+	Image(weak_ptr<ZeroEngine> core_engine_weak_ptr, textureStruct texture);
+	Image(weak_ptr<ZeroEngine> core_engine_weak_ptr, deque<textureStruct> textureData, unsigned int frameSpeed = 12);
 	virtual int getWidth();
 	virtual int getHeight();
 	//SDL的blendmode似乎并不多，大概好多都能自己实现

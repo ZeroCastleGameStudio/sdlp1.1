@@ -16,6 +16,7 @@ public:
 	string FontName;
 
 	explicit TextField(
+		weak_ptr<ZeroEngine> core_engine,
 		string text_f,
 		unsigned int effectLevel_f = 0,
 		int fontSize_f = 20,
@@ -27,4 +28,5 @@ public:
 	void changeText(string);
 	int getWidth() override;
 	int getHeight() override;
+	weak_ptr<ZeroEngine> core_engine;
 };

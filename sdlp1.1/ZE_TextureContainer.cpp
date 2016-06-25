@@ -58,14 +58,3 @@ void TextureContainer::Render()
 	stageX = renderRect.x;
 	stageY = renderRect.y;
 }
-
-void TextureContainer::freeTexture()
-{
-	// ÖÇÄÜÖ¸Õë»¯
-	//if (mTexture != NULL)
-	//{
-	//	mTexture->~Texture();
-	//	delete(mTexture);
-	//	mTexture = NULL;
-	//}
-}

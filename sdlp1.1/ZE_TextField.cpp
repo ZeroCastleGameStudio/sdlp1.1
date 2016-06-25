@@ -1,13 +1,14 @@
 #include "ZE_Core.h"
 #include "ZE_TextField.h"
 #include "ZE_AssetManager.h"
-#include "ZE_Global.h"
-#include "ZE_EngineGlobalState.h"
 
 using namespace std;
 
-TextField::TextField(string text_f, unsigned int effectLevel_f, int fontSize_f, SDL_Color color_f,
+TextField::TextField(
+	weak_ptr<ZeroEngine> core_engine,
+	string text_f, unsigned int effectLevel_f, int fontSize_f, SDL_Color color_f,
 	AssetManager* ass_f, string fontName_f)
+	:TextureContainer(core_engine)
 {
 	Text = text_f;
 	EffectLevel = effectLevel_f;
@@ -21,20 +22,19 @@ TextField::TextField(string text_f, unsigned int effectLevel_f, int fontSize_f, 
 
 void TextField::changeText(string text)
 {
-	freeTexture();
 	mTexture = make_shared<Texture>();
-	SDL_Texture* temptex;
-	if (Ass == NULL)
+	std::unique_ptr<SDL_Texture, decltype(SDL_DestroyTexture)*> temptex{ nullptr,SDL_DestroyTexture };
+	if (!Ass)
 	{
-		TTF_Font* tempfont = GlobalState->defaultFont->getFont(FontSize);
-		SDL_Surface* tempsur = nullptr;
+		TTF_Font* tempfont = core_engine.lock()->defaultFont->getFont(FontSize);
+		std::unique_ptr<SDL_Surface, decltype(SDL_FreeSurface)*> tempsur{ nullptr,SDL_FreeSurface };
 		if (EffectLevel == 0)
-			tempsur = TTF_RenderUTF8_Solid(tempfont, text.c_str(), TextColor);
+			tempsur.reset(TTF_RenderUTF8_Solid(tempfont, text.c_str(), TextColor));
 		else if (EffectLevel == 1)
-			tempsur = TTF_RenderUTF8_Shaded(tempfont, text.c_str(), TextColor, { 0, 0, 0 });
+			tempsur.reset(TTF_RenderUTF8_Shaded(tempfont, text.c_str(), TextColor, { 0, 0, 0 }));
 		else if (EffectLevel == 2)
-			tempsur = TTF_RenderUTF8_Blended(tempfont, text.c_str(), TextColor);
-		temptex = AssetManager::Surface2SDLTexture(tempsur, &mWidth, &mHeight);
+			tempsur.reset(TTF_RenderUTF8_Blended(tempfont, text.c_str(), TextColor));
+		temptex = AssetManager::Surface2SDLTexture(core_engine, tempsur, &mWidth, &mHeight);
 	}
 	else
 	{
@@ -58,5 +58,4 @@ int TextField::getHeight()
 
 TextField::~TextField()
 {
-	TextureContainer::freeTexture();
 }
