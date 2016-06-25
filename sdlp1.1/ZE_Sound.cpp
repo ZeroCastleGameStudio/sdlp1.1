@@ -1,20 +1,20 @@
 #include <iostream>
 #include "ZE_Core.h"
 #include "ZE_Sound.h"
-#include "ZE_Global.h"
-#include "ZE_EngineGlobalState.h"
 #include "ZE_Error.h"
 
 using namespace std;
 
-Sound::Sound(string name, Mix_Music* muc)
+Sound::Sound(std::weak_ptr<ZeroEngine> core_engine, string name, Mix_Music* muc)
+	:core_engine(core_engine)
 {
 	isMusic = true;
 	this->name = name;
 	music = muc;
 }
 
-Sound::Sound(string name, Mix_Chunk* chunk)
+Sound::Sound(std::weak_ptr<ZeroEngine> core_engine, string name, Mix_Chunk* chunk)
+	:core_engine(core_engine)
 {
 	isMusic = false;
 	this->name = name;
@@ -70,7 +70,7 @@ Sound::~Sound()
 		会弹出一个访问冲突错误。chunk的话就没有问题*/
 		if (Mix_GetMusicType(music) == MUS_MP3)
 		{
-			GlobalState->ZE_error->PopDebugConsole_Warning("Can't free a mp3 music, SDL_Mixer is not support it");
+			core_engine.lock()->ZE_error->PopDebugConsole_Warning("Can't free a mp3 music, SDL_Mixer is not support it");
 		}
 		else
 		{
