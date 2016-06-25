@@ -1,7 +1,5 @@
 #include "ZE_Core.h"
 #include "ZE_TextureContainer.h"
-#include "ZE_Global.h"
-#include "ZE_EngineGlobalState.h"
 
 using namespace std;
 
@@ -18,7 +16,7 @@ SubTexture TextureContainer::setDefaultSubData()
 void TextureContainer::setAlpha(double alphaNum)
 {
 	Uint8 tempalpha = (int)(alphaNum * 255);
-	SDL_SetTextureAlphaMod(mTexture->getTexture(), tempalpha);
+	SDL_SetTextureAlphaMod(mTexture->getTexture().get(), tempalpha);
 }
 
 void TextureContainer::Render()
@@ -56,7 +54,7 @@ void TextureContainer::Render()
 	}
 	SDL_Rect subTextureClip = { nowUsingSubData.x, nowUsingSubData.y, nowUsingSubData.width, nowUsingSubData.height };
 	setAlpha(this->alpah);
-	SDL_RenderCopyEx(GlobalState->g_ZE_MainRenderer.get(), mTexture->getTexture(), &subTextureClip, &renderRect, rotationAngle, &rotationPoint, flip);
+	SDL_RenderCopyEx(core_engine.lock()->g_ZE_MainRenderer.get(), mTexture->getTexture().get(), &subTextureClip, &renderRect, rotationAngle, &rotationPoint, flip);
 	stageX = renderRect.x;
 	stageY = renderRect.y;
 }

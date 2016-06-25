@@ -35,13 +35,13 @@ public:
 
 	//接收5个参数，该texture的名称，该texture的贴图指针，
 	//该贴图的宽，高，和该texture的sub的结构体
-	void Init(string, SDL_Texture*, int, int, deque<SubTexture> = {});
+	void Init(string, std::unique_ptr<SDL_Texture, decltype(SDL_DestroyTexture)*>&, int, int, deque<SubTexture> = {});
 	//获取宽度
 	int getWidth();
 	//获取高度
 	int getHeight();
 	//获取贴图
-	SDL_Texture* getTexture();
+	std::unique_ptr<SDL_Texture, decltype(SDL_DestroyTexture)*>& getTexture();
 
 	//这个数据用来保存整个贴图的读取信息
 	SubTexture mySubInfo;
@@ -51,7 +51,7 @@ public:
 
 private:
 	//保存贴图
-	SDL_Texture* mTexture{ NULL };
+	std::unique_ptr<SDL_Texture, decltype(SDL_DestroyTexture)*> mTexture{ nullptr, SDL_DestroyTexture };
 	//宽度
 	int mWidth;
 	//高度

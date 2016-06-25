@@ -5,6 +5,7 @@
 class TextureContainer : public DisplayObject
 {
 public:
+	using DisplayObject::DisplayObject;
 	shared_ptr<Texture> mTexture{ nullptr };
 	int stageX;
 	int stageY;
