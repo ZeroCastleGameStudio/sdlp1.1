@@ -1,21 +1,23 @@
 #pragma once
 #include <string>
 #include <unordered_map>
+#include <memory>
 #include "ZE_EventDispatcher.h"
 
 using namespace std;
+
+class ZeroEngine;
 
 //所有继承自本类的类都应重写Render方法
 //比如sprite中的render就是循环访问数组中的元素并调用render方法
 //image的render就是渲染自己的texture
 //原来这TM就是个树节点我才意识到
 class DisplayObject
-	: public EventDispatcher,
-	public std::enable_shared_from_this<DisplayObject>
+	: public EventDispatcher
 {
 public:
-	DisplayObject();
-	DisplayObject(size_t index);
+	explicit DisplayObject(weak_ptr<ZeroEngine> core_engine_weak_ptr);
+	DisplayObject(weak_ptr<ZeroEngine> core_engine_weak_ptr, size_t index);
 
 
 	//方便用户的变量，完全没卵用
@@ -40,7 +42,7 @@ public:
 	//渲染模式
 	SDL_BlendMode blendMode = SDL_BLENDMODE_BLEND;
 
-	// 对象编号
+	// 对象渲染器标号
 	const size_t index;
 
 	//给我一个DO类幼崽

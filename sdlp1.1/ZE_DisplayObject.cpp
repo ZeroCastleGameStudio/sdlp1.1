@@ -1,25 +1,25 @@
 #include <iostream>
 #include "ZE_DisplayObject.h"
-#include "ZE_Global.h"
 #include "ZE_Core.h"
-#include "ZE_EngineGlobalState.h"
 #include "ZE_Error.h"
 
 using namespace std;
 
-DisplayObject::DisplayObject()
-	: index(GlobalState->g_Engine_ptr->getNewDisplayObjectIndex())
+DisplayObject::DisplayObject(weak_ptr<ZeroEngine> core_engine_weak_ptr)
+	:EventDispatcher(core_engine_weak_ptr.lock()),
+	index(core_engine.lock()->getNewDisplayObjectIndex())
 {
 }
 
-DisplayObject::DisplayObject(size_t index)
-	: index{ index }
+DisplayObject::DisplayObject(weak_ptr<ZeroEngine> core_engine_weak_ptr, size_t index)
+	: EventDispatcher(core_engine_weak_ptr.lock()),
+	index{ index }
 {
 }
 
 void DisplayObject::addChild(shared_ptr<DisplayObject> object)
 {
-	object->setParent(this->shared_from_this());
+	object->setParent(std::dynamic_pointer_cast<DisplayObject>(shared_from_this()));
 	addedObjects.emplace(object->index, object);
 }
 
@@ -130,11 +130,11 @@ void DisplayObject::removeFromParent(bool disposeMe)
 	auto p = parent.lock();
 	if (!p)
 	{
-		GlobalState->ZE_error->PopDebugConsole_Warning("DisplayObject:" + this->name + " do not have a parent!");
+		core_engine.lock()->ZE_error->PopDebugConsole_Warning("DisplayObject:" + this->name + " do not have a parent!");
 	}
 	else
 	{
-		p->removeChild(this->shared_from_this(), disposeMe);
+		p->removeChild(std::dynamic_pointer_cast<DisplayObject>(shared_from_this()), disposeMe);
 	}
 }
 
@@ -147,7 +147,7 @@ void DisplayObject::removeChild(shared_ptr<DisplayObject> targetChild, bool disp
 	}
 	else
 	{
-		GlobalState->ZE_error->PopDebugConsole_Error("Can't find Child:" + targetChild->name);
+		core_engine.lock()->ZE_error->PopDebugConsole_Error("Can't find Child:" + targetChild->name);
 	}
 }
 

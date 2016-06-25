@@ -1,18 +1,13 @@
 #include "ZE_EventManager.h"
 #include "ZE_Core.h"
 #include "ZE_Global.h"
-#include "ZE_EngineGlobalState.h"
 
 using namespace std;
 
-std::atomic_bool EventManagerSingleton_AreCtor{ false };
 
-EventManager::EventManager()
+EventManager::EventManager(weak_ptr<ZeroEngine> core_engine)
+	:core_engine(core_engine)
 {
-	if (EventManagerSingleton_AreCtor.exchange(true))
-	{
-		throw std::runtime_error("EventManager::EventManager Singleton error");
-	}
 }
 
 EventManager::~EventManager()
@@ -26,7 +21,7 @@ void EventManager::handleEvent()
 	{
 		if (e.type == SDL_QUIT)
 		{
-			GlobalState->ZE_QUIT_MAIN_LOOP = true;
+			core_engine.lock()->ZE_QUIT_MAIN_LOOP = true;
 			return;
 		}
 		else
