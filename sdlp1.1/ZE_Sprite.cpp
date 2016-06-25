@@ -1,4 +1,3 @@
-#include "ZE_Core.h"
 #include "ZE_Sprite.h"
 
 using namespace std;

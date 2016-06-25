@@ -3,6 +3,10 @@
 #include <memory>
 #include <deque>
 #include <atomic>
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
+#include <SDL_mixer.h>
 
 using namespace std;
 

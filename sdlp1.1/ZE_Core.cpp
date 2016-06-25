@@ -7,6 +7,9 @@
 #include "ZE_EventManager.h"
 #include "ZE_Error.h"
 #include "ZE_Fraps.h"
+#include "ZE_Sprite.h"
+#include "ZE_Font.h"
+#include "ZE_Controller.h"
 
 //[Global]ZE∞Ê±æ∫≈
 std::string ZE_version = "2.0.0";
@@ -18,7 +21,7 @@ ZeroEngine::ZeroEngine(ZeroEngineInitArgs& init_args)
 
 	ZE_error.reset(new Error);
 	ZE_eventHandler.reset(new EventManager(shared_from_this()));
-	ZE_stage.reset(new Sprite);
+	ZE_stage.reset(new Sprite(shared_from_this()));
 	this->stageColor = init_args.stageColor;
 
 
@@ -43,8 +46,7 @@ ZeroEngine::ZeroEngine(ZeroEngineInitArgs& init_args)
 	}
 
 
-	// TODO
-	fraps = make_unique<Fraps>(this->getNewDisplayObjectIndex());
+	fraps = make_unique<Fraps>(shared_from_this(), this->getNewDisplayObjectIndex());
 
 	// º”‘ÿ◊÷ÃÂ
 	defaultFont = make_shared<Font>("default", init_args.defaultFontFile);

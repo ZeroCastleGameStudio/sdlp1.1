@@ -15,6 +15,6 @@ public:
 
 private:
 	shared_ptr<TextField> mText;
-	Uint32 lastCheck;
-	int callCount;
+	Uint32 lastCheck{ 0 };
+	int callCount{ 0 };
 };
