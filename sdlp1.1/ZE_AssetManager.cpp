@@ -200,12 +200,12 @@ void AssetManager::LoadSound(bool isMusic, string name, string path)
 	if (isMusic)
 	{
 		Mix_Music* music = Mix_LoadMUS(path.c_str());
-		SOUNDS.emplace_back(new Sound(name, music));
+		SOUNDS.emplace_back(new Sound(core_engine, name, music));
 	}
 	else
 	{
 		Mix_Chunk* sound = Mix_LoadWAV(path.c_str());
-		SOUNDS.emplace_back(new Sound(name, sound));
+		SOUNDS.emplace_back(new Sound(core_engine, name, sound));
 	}
 }
 

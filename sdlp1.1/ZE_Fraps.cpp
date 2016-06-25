@@ -8,7 +8,7 @@ using namespace std;
 
 void Fraps::setUp()
 {
-	mText = make_shared<TextField>("0", 0, 12, SDL_Color{ 255, 255, 255 });
+	mText = make_shared<TextField>(core_engine, "0", 0, 12, SDL_Color{ 255, 255, 255 });
 	this->addChild(mText);
 }
 
