@@ -9,9 +9,9 @@ class tuanzi
 {
 public:
 
-	explicit tuanzi(const textureStruct& texture_struct);
+	explicit tuanzi(weak_ptr<ZeroEngine> core_engine, const textureStruct& texture_struct);
 
-	tuanzi(const deque<textureStruct>& texture_structs, unsigned frameSpeed);
+	tuanzi(weak_ptr<ZeroEngine> core_engine, const deque<textureStruct>& texture_structs, unsigned frameSpeed);
 
 	void registerEventListener();
 

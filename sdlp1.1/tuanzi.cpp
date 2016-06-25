@@ -1,31 +1,29 @@
 #include "tuanzi.h"
 #include "mygame.h"
-#include "ZE_Global.h"
-#include "ZE_EngineGlobalState.h"
 #include "ZE_Sprite.h"
 #include "ZE_DisplayObject.h"
-
+#include "ZE_EventContainer.h"
 
 void tuanzi::registerEventListener()
 {
 
 	// 在这里传入智能指针 让其持有对象的智能指针以保证对象不被提前析构，且保证对象能够被析构
 	// 需要将父类智能指针转换为子类智能指针以便调用器能找到对应的函数
-	GlobalState->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_UP, std::bind(&tuanzi::up, this, std::dynamic_pointer_cast<tuanzi>(shared_from_this()), std::placeholders::_1));
-	GlobalState->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_DOWN, std::bind(&tuanzi::down, this, std::dynamic_pointer_cast<tuanzi>(shared_from_this()), std::placeholders::_1));
-	GlobalState->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_LEFT, std::bind(&tuanzi::left, this, std::dynamic_pointer_cast<tuanzi>(shared_from_this()), std::placeholders::_1));
-	GlobalState->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_RIGHT, std::bind(&tuanzi::right, this, std::dynamic_pointer_cast<tuanzi>(shared_from_this()), std::placeholders::_1));
-	GlobalState->ZE_stage->addEventListener(EventMode::EveryLoop, 0, std::bind(&tuanzi::do_inertia, this, std::dynamic_pointer_cast<tuanzi>(shared_from_this()), std::placeholders::_1));
+	core_engine.lock()->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_UP, std::bind(&tuanzi::up, this, std::dynamic_pointer_cast<tuanzi>(shared_from_this()), std::placeholders::_1));
+	core_engine.lock()->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_DOWN, std::bind(&tuanzi::down, this, std::dynamic_pointer_cast<tuanzi>(shared_from_this()), std::placeholders::_1));
+	core_engine.lock()->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_LEFT, std::bind(&tuanzi::left, this, std::dynamic_pointer_cast<tuanzi>(shared_from_this()), std::placeholders::_1));
+	core_engine.lock()->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_RIGHT, std::bind(&tuanzi::right, this, std::dynamic_pointer_cast<tuanzi>(shared_from_this()), std::placeholders::_1));
+	core_engine.lock()->ZE_stage->addEventListener(EventMode::EveryLoop, 0, std::bind(&tuanzi::do_inertia, this, std::dynamic_pointer_cast<tuanzi>(shared_from_this()), std::placeholders::_1));
 
 }
 
-tuanzi::tuanzi(const textureStruct& texture_struct)
-	: Image{ texture_struct }
+tuanzi::tuanzi(weak_ptr<ZeroEngine> core_engine, const textureStruct& texture_struct)
+	:Image(core_engine, texture_struct)
 {
 }
 
-tuanzi::tuanzi(const deque<textureStruct>& texture_structs, unsigned frameSpeed)
-	: Image{ texture_structs, frameSpeed }
+tuanzi::tuanzi(weak_ptr<ZeroEngine> core_engine, const deque<textureStruct>& texture_structs, unsigned frameSpeed)
+	: Image{ core_engine, texture_structs, frameSpeed }
 {
 }
 
