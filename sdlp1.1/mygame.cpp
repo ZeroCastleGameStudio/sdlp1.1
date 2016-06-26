@@ -10,99 +10,42 @@
 #include "ZE_Sound.h"
 #include "mygame.h"
 #include <functional>
+#include "tuanzi.h"
+#include "ZE_Core.h"
+#include "ZE_Controller.h"
+#include "ZE_AssetManager.h"
+#include "ZE_EventContainer.h"
 
 using namespace std;
 
 mygame::mygame() {}
 
-void mygame::Init()
+void mygame::Init(weak_ptr<ZeroEngine> core_engine)
 {
-	resourses.Init("data/amText.xml");
+	this->core_engine = core_engine;
+	resourses = make_unique<AssetManager>(core_engine);
 
-	Image* tuanzi;
+	resourses->Init("data/amText.xml");
 
-	Image* background = new Image(resourses.getTexture("background"));
-	GlobalState->ZE_stage->addChild(background);
+	auto background = make_shared<Image>(core_engine, resourses->getTexture("background"));
+	core_engine.lock()->ZE_stage->addChild(background);
 
-	tuanzi = new Image(resourses.getTextures("bug_fly1_"), 24);
+	auto text = make_shared<TextField>(core_engine, u8"然后我是一个显示中文的内部Text");
+	core_engine.lock()->ZE_stage->addChild(text);
 
-	TextField* text = new TextField(u8"然后我是一个显示中文的内部Text");
-	GlobalState->ZE_stage->addChild(text);
-
-	GlobalState->ZE_stage->addChild(tuanzi);
-	tuanzi->play();
-
-	Image* test1 = new Image(resourses.getTextures("test1_"), 24);
+	auto test1 = make_shared<Image>(core_engine, resourses->getTextures("test1_"), 24);
 	test1->scaleX = 0.2;
 	test1->scaleY = 0.2;
-	GlobalState->ZE_stage->addChild(test1);
+	core_engine.lock()->ZE_stage->addChild(test1);
 	test1->play();
 
 
-	auto temp = resourses.getSound("testsound");
+	auto temp = resourses->getSound("testsound");
 
-	// 对象类实现的按键事件处理  需要启用智能指针保证对象不被提前析构
-	class tuanzi_event
-		: public enable_shared_from_this<tuanzi_event>
-	{
-	public:
-		tuanzi_event(Image* tuanzi) : tuanzi(tuanzi) {}
-		Image* tuanzi;
-
-		array<int, 4> inertia{{ 0,0,0,0 }};
-		int base_inertia{ 5 };
-		void do_inertia(shared_ptr<tuanzi_event>& my, SDL_Event evt)
-		{
-			if (inertia[0] > 1)
-			{
-				tuanzi->x -= inertia[0]--;
-			}
-			if (inertia[1] > 1)
-			{
-				tuanzi->x += inertia[1]--;
-			}
-			if (inertia[2] > 1)
-			{
-				tuanzi->y -= inertia[2]--;
-			}
-			if (inertia[3] > 1)
-			{
-				tuanzi->y += inertia[3]--;
-			}
-			check_inertia();
-		}
-		void check_inertia()
-		{
-			for (auto&a : inertia)
-			{
-				if (a > 10)
-				{
-					a = 10;
-				}
-			}
-		}
-
-		// 即使没有使用也在这里传入智能指针以保证对象不被析构
-		void left(shared_ptr<tuanzi_event>& my, SDL_Event evt)
-		{
-			inertia[0] += base_inertia;
-			tuanzi->flip = SDL_FLIP_NONE;
-		}
-		void right(shared_ptr<tuanzi_event>& my, SDL_Event evt)
-		{
-			inertia[1] += base_inertia;
-			tuanzi->flip = SDL_FLIP_HORIZONTAL;
-		}
-		void up(shared_ptr<tuanzi_event>& my, SDL_Event evt)
-		{
-			inertia[2] += base_inertia;
-		}
-		void down(shared_ptr<tuanzi_event>& my, SDL_Event evt)
-		{
-			inertia[3] += base_inertia;
-		}
-	};
-	auto tuanzi_event_obj = make_shared<tuanzi_event>(tuanzi);
+	auto tuanzi_obj = make_shared<tuanzi>(core_engine, resourses->getTextures("bug_fly1_"), 24);
+	core_engine.lock()->ZE_stage->addChild(tuanzi_obj);
+	tuanzi_obj->play();
+	tuanzi_obj->registerEventListener();
 
 	function <void(SDL_Event)> eventtest = [=](SDL_Event evt)->void
 	{
@@ -120,7 +63,7 @@ void mygame::Init()
 	{
 		int b = evt.jbutton.button;
 		cout << b << endl;
-		GlobalState->ZE_Controllers[evt.jbutton.which]->rumble();
+		core_engine.lock()->ZE_Controllers[evt.jbutton.which]->rumble();
 	};
 	function <void(SDL_Event)> eventtest3 = [=](SDL_Event evt)
 	{
@@ -133,18 +76,11 @@ void mygame::Init()
 		cout << c << endl;
 	};
 
-	// 在这里传入智能指针 让其持有对象的智能指针以保证对象不被提前析构，且保证对象能够被析构
-	GlobalState->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_UP, std::bind(&tuanzi_event::up, tuanzi_event_obj.get(), tuanzi_event_obj, std::placeholders::_1));
-	GlobalState->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_DOWN, std::bind(&tuanzi_event::down, tuanzi_event_obj.get(), tuanzi_event_obj, std::placeholders::_1));
-	GlobalState->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_LEFT, std::bind(&tuanzi_event::left, tuanzi_event_obj.get(), tuanzi_event_obj, std::placeholders::_1));
-	GlobalState->ZE_stage->addEventListener(EventMode::KeyboardStateMode, SDL_SCANCODE_RIGHT, std::bind(&tuanzi_event::right, tuanzi_event_obj.get(), tuanzi_event_obj, std::placeholders::_1));
-	GlobalState->ZE_stage->addEventListener(EventMode::EveryLoop, 0, std::bind(&tuanzi_event::do_inertia, tuanzi_event_obj.get(), tuanzi_event_obj, std::placeholders::_1));
+	core_engine.lock()->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYBUTTONDOWN, eventtest2);
+	core_engine.lock()->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYAXISMOTION, eventtest3);
+	core_engine.lock()->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYHATMOTION, eventtest4);
 
-	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYBUTTONDOWN, eventtest2);
-	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYAXISMOTION, eventtest3);
-	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYHATMOTION, eventtest4);
-
-	resourses.getSound("bgm5")->play();
+	resourses->getSound("bgm5")->play();
 }
 
 void mygame::MainLoop()
@@ -154,9 +90,10 @@ void mygame::MainLoop()
 
 void mygame::Close()
 {
-	resourses.dispose();
+	resourses->dispose();
 }
 
 mygame::~mygame()
 {
+	mygame::Close();
 }

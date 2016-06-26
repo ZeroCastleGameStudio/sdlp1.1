@@ -5,6 +5,7 @@
 #include <set>
 #include "ZE_EventDispatcher.h"
 #include "ZE_EventContainer.h"
+#include "ZE_Core.h"
 
 using namespace std;
 
@@ -17,7 +18,7 @@ using namespace std;
 class EventManager
 {
 public:
-	EventManager();
+	EventManager(weak_ptr<ZeroEngine> core_engine);
 	~EventManager();
 	EventManager(const EventManager&) = delete;
 	EventManager(EventManager&&) = delete;
@@ -91,6 +92,8 @@ public:
 
 
 private:
+	// 引擎指针
+	std::weak_ptr<ZeroEngine> core_engine;
 	// 编号计数器
 	std::atomic_size_t event_index{ 0 };
 	// dispatch编号分发器

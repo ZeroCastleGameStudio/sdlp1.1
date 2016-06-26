@@ -1,14 +1,15 @@
 #include "ZE_Font.h"
 #include "ZE_Core.h"
+#include "ZE_Error.h"
 
 using namespace std;
 
-Font::Font(string name, string path)
+Font::Font(weak_ptr<ZeroEngine> core_engine, string name, string path)
+	:name(name), core_engine(core_engine), mPath(path)
 {
-	this->name = name;
-	this->mPath = path;
 }
 
+// 不得析构返回指针
 TTF_Font* Font::getFont(int size)
 {
 	try
@@ -29,7 +30,7 @@ void Font::setNewSizeOfFont(int size)
 		auto font = TTF_OpenFont(mPath.c_str(), size);
 		if (!font)
 		{
-			GlobalState->ZE_error->PopDebugConsole_SDL_ttfError("Failed to load ttf font!");
+			core_engine.lock()->ZE_error->PopDebugConsole_SDL_ttfError("Failed to load ttf font!");
 			cout << "Failed to load ttf font!" << endl;
 			mFont.emplace(size, nullptr);
 			return;
@@ -42,10 +43,10 @@ Font::~Font()
 {
 	for (auto& a : mFont)
 	{
-		if (a.second != NULL)
+		if (a.second != nullptr)
 		{
 			TTF_CloseFont(a.second);
-			a.second = NULL;
+			a.second = nullptr;
 		}
 	}
 }

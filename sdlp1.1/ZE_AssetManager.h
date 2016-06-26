@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "ZE_Texture.h"
 #include "ZE_Image.h"
 #include "ZE_Font.h"
@@ -9,8 +10,10 @@ using namespace std;
 //仿制starling的资源管理器
 //当用户想使用资源时，应首先声明一个本类的对象
 class AssetManager
+	:public std::enable_shared_from_this<AssetManager>
 {
 public:
+	explicit AssetManager(weak_ptr<ZeroEngine> core_engine);
 	~AssetManager();
 	//该方法接收一个xml文件地址，文件中标注了该对象需要载入的全部图片文件的地址
 	//xml文件格式如下
@@ -24,14 +27,21 @@ public:
 	//获取一个已注册的texture，包含subtexture
 	textureStruct getTexture(string name);
 	//获取已注册字体生成的一个贴图
-	SDL_Texture* getTTFTexture(string text, string name, int size, SDL_Color color, int* width, int* height,
-		unsigned int effectLevel = 0);
+	auto getTTFTexture(
+		string text, string name, int size, SDL_Color color,
+		int* width, int* height,
+		unsigned int effectLevel = 0
+	)->std::unique_ptr<SDL_Texture, decltype(SDL_DestroyTexture)*>;
 	//获取一个声音对象
 	shared_ptr<Sound> getSound(string name);
 	//获取数个已注册的texture
 	deque<textureStruct> getTextures(string partOfName);
 	//该方法将一个surface指针转换为SDLtexture指针并返回
-	static SDL_Texture* Surface2SDLTexture(SDL_Surface*, int*, int*);
+	static auto Surface2SDLTexture(
+		weak_ptr<ZeroEngine> core_engine,
+		std::unique_ptr<SDL_Surface, decltype(SDL_FreeSurface)*>& surface,
+		int* getW, int* getH
+	)->std::unique_ptr<SDL_Texture, decltype(SDL_DestroyTexture)*>;
 	//清除
 	void dispose();
 
@@ -54,20 +64,17 @@ private:
 	void LoadSound(bool isMusic, string name, string path);
 	//分辨图片格式的方法，将返回一个Surface指针
 	//用户不该调用此方法
-	SDL_Surface* ImageReader(string, int extNameLength = 3);
+	auto ImageReader(string)->std::unique_ptr<SDL_Surface, decltype(SDL_FreeSurface)*>;
 	//获取并返回一个FONT对象
 	shared_ptr<Font> getFont(string);
 
-	//删除单一texture，基本只被下面的方法调用
-	void DeleteTexture(int index);
-	//删除所有注册的Texture，小心使用
+	//删除所有注册的Texture
 	void DeleteAllTextures();
-	//删除单一font，基本只被下面的方法调用
-	void DeleteFont(int index);
-	//删除所有注册的font，小心使用
+	//删除所有注册的font
 	void DeleteAllFonts();
-	//删除单一sound，基本只被下面的方法调用
-	void DeleteSound(int index);
-	//删除所有注册的sound，小心使用
+	//删除所有注册的sound
 	void DeleteAllSounds();
+
+private:
+	weak_ptr<ZeroEngine> core_engine;
 };

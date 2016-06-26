@@ -5,6 +5,7 @@
 class TextureContainer : public DisplayObject
 {
 public:
+	using DisplayObject::DisplayObject;
 	shared_ptr<Texture> mTexture{ nullptr };
 	int stageX;
 	int stageY;
@@ -15,6 +16,5 @@ public:
 
 	virtual SubTexture setDefaultSubData();
 	virtual void Render();
-	virtual void freeTexture();
-	void setAlpha(float);
+	void setAlpha(double);
 };
