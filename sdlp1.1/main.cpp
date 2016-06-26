@@ -28,14 +28,14 @@ int main(int argc, char* args[])
 	engine_arg.useVSync = true;
 
 	// 创建核心对象
-	auto engine = make_shared<ZeroEngine>(engine_arg);
+	auto engine = make_shared<ZeroEngine>();
 
 	{
 		// 创建用户对象
 		auto game = make_shared<mygame>();
 
 		auto temp = std::dynamic_pointer_cast<Game>(game);
-		engine->Init(temp);
+		engine->Init(engine_arg, temp);
 		engine->Run();
 	}
 

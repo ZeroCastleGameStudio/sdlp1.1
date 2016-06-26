@@ -58,7 +58,7 @@ class ZeroEngine
 	: public std::enable_shared_from_this<ZeroEngine>
 {
 public:
-	explicit ZeroEngine(ZeroEngineInitArgs& init_args);
+	explicit ZeroEngine();
 	~ZeroEngine();
 	// 阻止移动语义与拷贝语义
 	ZeroEngine(const ZeroEngine&) = delete;
@@ -70,7 +70,7 @@ public:
 	//该方法调用了本类中的其它两个方法，分别初始化了外部库SDL和SDL_IMAGE
 	//该方法会返回一个bool值，若所有模块初始化成功则返回true，否则返回false
 	//外部库的报错写在对应方法里
-	bool Init(std::shared_ptr<Game>& userGame);
+	bool Init(ZeroEngineInitArgs& init_args, std::shared_ptr<Game>& userGame);
 	//该方法是ZE的主循环方法，目前是暂用版
 	void Run();
 	// 挂号

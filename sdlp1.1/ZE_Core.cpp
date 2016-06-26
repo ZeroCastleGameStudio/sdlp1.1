@@ -16,9 +16,31 @@ std::string ZE_version = "2.0.0";
 
 using namespace std;
 
-ZeroEngine::ZeroEngine(ZeroEngineInitArgs& init_args)
+ZeroEngine::ZeroEngine()
 {
+	// 构造函数中不能使用shared_from_this()
+}
 
+ZeroEngine::~ZeroEngine()
+{
+	//清除默认字体
+	defaultFont.reset();
+	fraps.reset();
+	ZE_stage.reset();
+	ZE_eventHandler.reset();
+	ZE_error.reset();
+	TTF_Quit();
+	IMG_Quit();
+	SDL_Quit();
+	//退出
+	cout << "ZeroEngine::~ZeroEngine()" << endl;
+}
+
+bool ZeroEngine::Init(ZeroEngineInitArgs& init_args, std::shared_ptr<Game>& userGame)
+{
+	userGame = userGame;
+
+	// 做构造函数路没做完的事情
 	ZE_error.reset(new Error);
 	ZE_eventHandler.reset(new EventManager(shared_from_this()));
 	ZE_stage.reset(new Sprite(shared_from_this()));
@@ -52,27 +74,7 @@ ZeroEngine::ZeroEngine(ZeroEngineInitArgs& init_args)
 	defaultFont = make_shared<Font>(shared_from_this(), "default", init_args.defaultFontFile);
 
 
-
-}
-
-ZeroEngine::~ZeroEngine()
-{
-	//清除默认字体
-	defaultFont.reset();
-	fraps.reset();
-	ZE_stage.reset();
-	ZE_eventHandler.reset();
-	ZE_error.reset();
-	TTF_Quit();
-	IMG_Quit();
-	SDL_Quit();
-	//退出
-	cout << "ZeroEngine::~ZeroEngine()" << endl;
-}
-
-bool ZeroEngine::Init(std::shared_ptr<Game>& userGame)
-{
-	userGame = userGame;
+	// 内部初始化结束  开始初始化用户类
 
 	userGame->Init(shared_from_this());
 
