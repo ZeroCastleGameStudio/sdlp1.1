@@ -12,7 +12,7 @@ public:
 	unsigned int EffectLevel;
 	int FontSize;
 	SDL_Color TextColor;
-	AssetManager* Ass;
+	std::weak_ptr<AssetManager> Ass;
 	string FontName;
 
 	explicit TextField(
@@ -21,7 +21,7 @@ public:
 		unsigned int effectLevel_f = 0,
 		int fontSize_f = 20,
 		SDL_Color textColor_f = { 0, 0, 0 },
-		AssetManager* ass_f = nullptr,
+		std::weak_ptr<AssetManager> ass_f = std::weak_ptr<AssetManager>(),
 		string fontName_f = ""
 	);
 	~TextField();

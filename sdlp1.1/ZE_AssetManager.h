@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "ZE_Texture.h"
 #include "ZE_Image.h"
 #include "ZE_Font.h"
@@ -9,6 +10,7 @@ using namespace std;
 //仿制starling的资源管理器
 //当用户想使用资源时，应首先声明一个本类的对象
 class AssetManager
+	:public std::enable_shared_from_this<AssetManager>
 {
 public:
 	explicit AssetManager(weak_ptr<ZeroEngine> core_engine);

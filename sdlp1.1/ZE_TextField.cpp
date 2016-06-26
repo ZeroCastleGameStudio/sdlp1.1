@@ -7,24 +7,25 @@ using namespace std;
 TextField::TextField(
 	weak_ptr<ZeroEngine> core_engine,
 	string text_f, unsigned int effectLevel_f, int fontSize_f, SDL_Color color_f,
-	AssetManager* ass_f, string fontName_f)
-	:TextureContainer(core_engine)
+	std::weak_ptr<AssetManager> ass_f, string fontName_f)
+	:TextureContainer(core_engine),
+	Text(text_f),
+	EffectLevel(effectLevel_f),
+	FontSize(fontSize_f),
+	Ass(ass_f),
+	FontName(fontName_f)
 {
-	Text = text_f;
-	EffectLevel = effectLevel_f;
-	FontSize = fontSize_f;
-	TextColor = color_f;
-	Ass = ass_f;
-	FontName = fontName_f;
-
 	changeText(text_f);
 }
 
 void TextField::changeText(string text)
 {
 	mTexture = make_shared<Texture>();
+
 	std::unique_ptr<SDL_Texture, decltype(SDL_DestroyTexture)*> temptex{ nullptr,SDL_DestroyTexture };
-	if (!Ass)
+
+	auto tempass = Ass.lock();
+	if (!tempass)
 	{
 		TTF_Font* tempfont = core_engine.lock()->defaultFont->getFont(FontSize);
 		std::unique_ptr<SDL_Surface, decltype(SDL_FreeSurface)*> tempsur{ nullptr,SDL_FreeSurface };
@@ -38,7 +39,7 @@ void TextField::changeText(string text)
 	}
 	else
 	{
-		temptex = Ass->getTTFTexture(text, FontName, FontSize, TextColor, &mWidth, &mHeight, EffectLevel);
+		temptex = tempass->getTTFTexture(text, FontName, FontSize, TextColor, &mWidth, &mHeight, EffectLevel);
 	}
 	mTexture->Init("", temptex, mWidth, mHeight);
 	nowUsingSubData = setDefaultSubData();
