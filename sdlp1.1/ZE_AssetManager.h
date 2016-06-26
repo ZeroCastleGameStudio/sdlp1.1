@@ -68,17 +68,11 @@ private:
 	//获取并返回一个FONT对象
 	shared_ptr<Font> getFont(string);
 
-	//删除单一texture，基本只被下面的方法调用
-	void DeleteTexture(int index);
-	//删除所有注册的Texture，小心使用
+	//删除所有注册的Texture
 	void DeleteAllTextures();
-	//删除单一font，基本只被下面的方法调用
-	void DeleteFont(int index);
-	//删除所有注册的font，小心使用
+	//删除所有注册的font
 	void DeleteAllFonts();
-	//删除单一sound，基本只被下面的方法调用
-	void DeleteSound(int index);
-	//删除所有注册的sound，小心使用
+	//删除所有注册的sound
 	void DeleteAllSounds();
 
 private:

@@ -11,37 +11,39 @@
 #include "mygame.h"
 #include <functional>
 #include "tuanzi.h"
-#include "ZE_Global.h"
 #include "ZE_Core.h"
-#include "ZE_EngineGlobalState.h"
 #include "ZE_Controller.h"
 #include "ZE_AssetManager.h"
+#include "ZE_EventContainer.h"
 
 using namespace std;
 
-mygame::mygame() :resourses(new AssetManager) {}
+mygame::mygame() {}
 
-void mygame::Init()
+void mygame::Init(weak_ptr<ZeroEngine> core_engine)
 {
+	core_engine = core_engine;
+	resourses = make_unique<AssetManager>(core_engine);
+
 	resourses->Init("data/amText.xml");
 
-	auto background = make_shared<Image>(resourses->getTexture("background"));
-	GlobalState->ZE_stage->addChild(background);
+	auto background = make_shared<Image>(core_engine, resourses->getTexture("background"));
+	core_engine.lock()->ZE_stage->addChild(background);
 
-	auto text = make_shared<TextField>(u8"然后我是一个显示中文的内部Text");
-	GlobalState->ZE_stage->addChild(text);
+	auto text = make_shared<TextField>(core_engine, u8"然后我是一个显示中文的内部Text");
+	core_engine.lock()->ZE_stage->addChild(text);
 
-	auto test1 = make_shared<Image>(resourses->getTextures("test1_"), 24);
+	auto test1 = make_shared<Image>(core_engine, resourses->getTextures("test1_"), 24);
 	test1->scaleX = 0.2;
 	test1->scaleY = 0.2;
-	GlobalState->ZE_stage->addChild(test1);
+	core_engine.lock()->ZE_stage->addChild(test1);
 	test1->play();
 
 
 	auto temp = resourses->getSound("testsound");
 
-	auto tuanzi_obj = make_shared<tuanzi>(resourses->getTextures("bug_fly1_"), 24);
-	GlobalState->ZE_stage->addChild(tuanzi_obj);
+	auto tuanzi_obj = make_shared<tuanzi>(core_engine, resourses->getTextures("bug_fly1_"), 24);
+	core_engine.lock()->ZE_stage->addChild(tuanzi_obj);
 	tuanzi_obj->play();
 	tuanzi_obj->registerEventListener();
 
@@ -61,7 +63,7 @@ void mygame::Init()
 	{
 		int b = evt.jbutton.button;
 		cout << b << endl;
-		GlobalState->ZE_Controllers[evt.jbutton.which]->rumble();
+		core_engine.lock()->ZE_Controllers[evt.jbutton.which]->rumble();
 	};
 	function <void(SDL_Event)> eventtest3 = [=](SDL_Event evt)
 	{
@@ -74,9 +76,9 @@ void mygame::Init()
 		cout << c << endl;
 	};
 
-	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYBUTTONDOWN, eventtest2);
-	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYAXISMOTION, eventtest3);
-	GlobalState->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYHATMOTION, eventtest4);
+	core_engine.lock()->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYBUTTONDOWN, eventtest2);
+	core_engine.lock()->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYAXISMOTION, eventtest3);
+	core_engine.lock()->ZE_stage->addEventListener(EventMode::RawEventMode, SDL_JOYHATMOTION, eventtest4);
 
 	resourses->getSound("bgm5")->play();
 }

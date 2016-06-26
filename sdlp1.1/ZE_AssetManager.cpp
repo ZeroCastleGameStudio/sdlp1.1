@@ -305,7 +305,7 @@ deque<SubTexture> AssetManager::SubXmlReader(string xml)
 			attr = attr->Next();
 			tempSub.height = attr->IntValue();
 			attr = attr->Next();
-			if (attr == NULL)
+			if (!attr)
 			{
 				tempSub.frameX = 0;
 				tempSub.frameY = 0;
@@ -346,72 +346,18 @@ void AssetManager::dispose()
 	DeleteAllSounds();
 }
 
-void AssetManager::DeleteSound(int index)
-{
-	// 智能指针化
-	//SOUNDS[index]->~Sound();
-	//delete(SOUNDS[index]);
-	//SOUNDS[index] = NULL;
-	SOUNDS.erase(SOUNDS.begin() + index);
-}
-
 void AssetManager::DeleteAllSounds()
 {
-	while (SOUNDS.size() != 0)
-	{
-		DeleteSound(0);
-	}
 	SOUNDS.clear();
-}
-
-void AssetManager::DeleteFont(int index)
-{
-	// 智能指针化
-	//FONT[index]->~Font();
-	//delete(FONT[index]);
-	//FONT[index] = NULL;
-	FONT.erase(FONT.begin() + index);
 }
 
 void AssetManager::DeleteAllFonts()
 {
-	while (FONT.size() != 0)
-	{
-		DeleteFont(0);
-	}
 	FONT.clear();
-}
-
-void AssetManager::DeleteTexture(int index)
-{
-	// 智能指针化
-	//TEXTURES[index]->~Texture();
-	//delete(TEXTURES[index]);
-	//TEXTURES[index] = NULL;
-	//删除数组元素
-	TEXTURES.erase(TEXTURES.begin() + index);
 }
 
 void AssetManager::DeleteAllTextures()
 {
-	//AllTexture是一个指针vector
-	while (TEXTURES.size() != 0)
-	{
-		DeleteTexture(0);
-		//永远记得，不要野指针，不要内存泄露
-	}
-
-	/*我要羞耻一下你，以前这个东西你是这么写的，简化过了
-	for(var i = 0; i < TEXTURES.size(); i++)
-	{
-		dispose(TEXTURES[i])
-		remove(TEXTURES[i])
-	}
-	我以为只有上学的时候才会犯这种傻逼错误。
-	首先你不断的删除数组元素，SIZE越来越小，I越来越大，那删一半不就退出循环了吗
-	然后你还删的是i，卧槽，数组越来越小，有上一半I就指向非法数据了
-	这尼玛导致的内存泄露DEBUG了快两天
-	别再傻逼了*/
-
+	// 智能指针的时代 对付智能指针数组都是直接clear的
 	TEXTURES.clear();
 }

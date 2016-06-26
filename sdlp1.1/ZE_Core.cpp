@@ -49,7 +49,7 @@ ZeroEngine::ZeroEngine(ZeroEngineInitArgs& init_args)
 	fraps = make_unique<Fraps>(shared_from_this(), this->getNewDisplayObjectIndex());
 
 	// ¼ÓÔØ×ÖÌå
-	defaultFont = make_shared<Font>("default", init_args.defaultFontFile);
+	defaultFont = make_shared<Font>(shared_from_this(), "default", init_args.defaultFontFile);
 
 
 

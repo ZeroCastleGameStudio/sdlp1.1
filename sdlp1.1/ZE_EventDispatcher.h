@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>
 #include <SDL.h>
+#include <memory>
 
 using namespace std;
 
