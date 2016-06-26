@@ -28,6 +28,7 @@ struct Color
 
 //主Game类，用户应继承此类并重写方法
 class Game
+	:public std::enable_shared_from_this<Game>
 {
 public:
 	// 初始化时需要访问核心引擎数据的部分

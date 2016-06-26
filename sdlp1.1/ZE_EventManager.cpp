@@ -1,6 +1,5 @@
 #include "ZE_EventManager.h"
 #include "ZE_Core.h"
-#include "ZE_Global.h"
 
 using namespace std;
 
