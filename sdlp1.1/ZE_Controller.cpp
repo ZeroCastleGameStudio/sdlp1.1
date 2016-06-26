@@ -1,30 +1,29 @@
 #include "ZE_Core.h"
 #include "ZE_Controller.h"
-#include "ZE_Global.h"
-#include "ZE_EngineGlobalState.h"
 #include "ZE_Error.h"
 
 using namespace std;
 
-Controller::Controller(int id)
+Controller::Controller(std::weak_ptr<ZeroEngine> core_engine, int id)
+	:core_engine(core_engine)
 {
 	me = SDL_JoystickOpen(id);
-	if (me == NULL)
+	if (!me)
 	{
-		GlobalState->ZE_error->PopDebugConsole_SDLError("Unable to open game controller!");
+		core_engine.lock()->ZE_error->PopDebugConsole_SDLError("Unable to open game controller!");
 	}
 	else
 	{
 		shake = SDL_HapticOpenFromJoystick(me);
-		if (shake == NULL)
+		if (!shake)
 		{
-			GlobalState->ZE_error->PopDebugConsole_Warning("Warning: Controller does not support haptics!");
+			core_engine.lock()->ZE_error->PopDebugConsole_Warning("Warning: Controller does not support haptics!");
 		}
 		else
 		{
-			if( SDL_HapticRumbleInit( shake ) < 0 )
+			if (SDL_HapticRumbleInit(shake) < 0)
 			{
-				GlobalState->ZE_error->PopDebugConsole_Warning("Warning: Unable to initialize rumble!");
+				core_engine.lock()->ZE_error->PopDebugConsole_Warning("Warning: Unable to initialize rumble!");
 			}
 		}
 	}
@@ -32,7 +31,7 @@ Controller::Controller(int id)
 
 void Controller::rumble(float power, int time)
 {
-	if (shake != NULL)
+	if (shake)
 	{
 		SDL_HapticRumblePlay(shake, power, time);
 	}
