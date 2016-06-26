@@ -15,6 +15,7 @@ TextField::TextField(
 	Ass(ass_f),
 	FontName(fontName_f)
 {
+	this->core_engine = core_engine;
 	changeText(text_f);
 }
 

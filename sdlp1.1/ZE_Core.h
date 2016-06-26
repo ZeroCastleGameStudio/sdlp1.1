@@ -92,7 +92,7 @@ private:
 	//舞台颜色，默认为黑
 	Color stageColor{ 0, 0, 0 };
 	//最后渲染在舞台上，显示一些监视变量
-	std::unique_ptr<Fraps> fraps;
+	std::shared_ptr<Fraps> fraps;
 	//用户的游戏对象
 	std::shared_ptr<Game> userGame;
 	// 显示对象index发放器
@@ -108,7 +108,7 @@ public:
 	//[Global]主渲染器，绑定到主window
 	std::unique_ptr<SDL_Renderer, decltype(SDL_DestroyRenderer)*> g_ZE_MainRenderer{ nullptr,SDL_DestroyRenderer };
 	//[Global]stage对象，唯一
-	std::unique_ptr<Sprite> ZE_stage;
+	std::shared_ptr<Sprite> ZE_stage;
 	//[Global]error对象(应该是唯一，其它类就算有也是private)
 	std::unique_ptr<Error> ZE_error;
 	//[Global]事件处理器对象，唯一

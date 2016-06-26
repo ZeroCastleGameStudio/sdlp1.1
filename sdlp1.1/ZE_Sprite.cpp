@@ -4,20 +4,21 @@ using namespace std;
 
 void Sprite::Render()
 {
-	for (unsigned int i = 0; i < addedObjects.size(); i++)
+	for (auto&a : addedObjects)
 	{
-		addedObjects[i]->Render();
+		a.second->Render();
 	}
 }
 
 int Sprite::getWidth()
 {
 	int tempWidth = 0;
-	for (unsigned int i = 0; i < addedObjects.size(); i++)
+	// FIXME 这么干会不会有性能问题
+	for (auto&a : addedObjects)
 	{
-		if (addedObjects[i]->x + addedObjects[i]->getWidth() > tempWidth)
+		if (a.second->x + a.second->getWidth() > tempWidth)
 		{
-			tempWidth = addedObjects[i]->x + addedObjects[i]->getWidth();
+			tempWidth = a.second->x + a.second->getWidth();
 		}
 	}
 	return tempWidth;
@@ -26,11 +27,11 @@ int Sprite::getWidth()
 int Sprite::getHeight()
 {
 	int tempHeight = 0;
-	for (unsigned int i = 0; i < addedObjects.size(); i++)
+	for (auto&a : addedObjects)
 	{
-		if (addedObjects[i]->y + addedObjects[i]->getHeight() > tempHeight)
+		if (a.second->y + a.second->getHeight() > tempHeight)
 		{
-			tempHeight = addedObjects[i]->y + addedObjects[i]->getHeight();
+			tempHeight = a.second->y + a.second->getHeight();
 		}
 	}
 	return tempHeight;

@@ -22,7 +22,7 @@ mygame::mygame() {}
 
 void mygame::Init(weak_ptr<ZeroEngine> core_engine)
 {
-	core_engine = core_engine;
+	this->core_engine = core_engine;
 	resourses = make_unique<AssetManager>(core_engine);
 
 	resourses->Init("data/amText.xml");

@@ -38,12 +38,12 @@ ZeroEngine::~ZeroEngine()
 
 bool ZeroEngine::Init(ZeroEngineInitArgs& init_args, std::shared_ptr<Game>& userGame)
 {
-	userGame = userGame;
+	this->userGame = userGame;
 
 	// 做构造函数路没做完的事情
 	ZE_error.reset(new Error);
 	ZE_eventHandler.reset(new EventManager(shared_from_this()));
-	ZE_stage.reset(new Sprite(shared_from_this()));
+	ZE_stage = make_shared<Sprite>(shared_from_this());
 	this->stageColor = init_args.stageColor;
 
 
@@ -68,7 +68,7 @@ bool ZeroEngine::Init(ZeroEngineInitArgs& init_args, std::shared_ptr<Game>& user
 	}
 
 
-	fraps = make_unique<Fraps>(shared_from_this(), this->getNewDisplayObjectIndex());
+	fraps = make_shared<Fraps>(shared_from_this(), this->getNewDisplayObjectIndex());
 
 	// 加载字体
 	defaultFont = make_shared<Font>(shared_from_this(), "default", init_args.defaultFontFile);
