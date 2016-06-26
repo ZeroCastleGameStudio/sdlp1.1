@@ -245,7 +245,7 @@ auto AssetManager::ImageReader(string path)->std::unique_ptr<SDL_Surface, declty
 	}
 	++last_point;
 	// 注意to_lower_copy只能做用到ASCII上  UTF16/32会出问题
-	string temp = boost::algorithm::to_lower_copy(temp.substr(last_point, path.length() - last_point));
+	string temp = boost::algorithm::to_lower_copy(path.substr(last_point, path.length() - last_point));
 
 
 	std::unique_ptr<SDL_Surface, decltype(SDL_FreeSurface)*> tempSurface{ nullptr,SDL_FreeSurface };

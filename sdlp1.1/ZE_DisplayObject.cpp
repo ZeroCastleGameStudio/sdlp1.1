@@ -23,7 +23,7 @@ void DisplayObject::addChild(shared_ptr<DisplayObject> object)
 	addedObjects.emplace(object->index, object);
 }
 
-void DisplayObject::setParent(shared_ptr<DisplayObject> parent)
+void DisplayObject::setParent(weak_ptr<DisplayObject> parent)
 {
 	this->parent = parent;
 }

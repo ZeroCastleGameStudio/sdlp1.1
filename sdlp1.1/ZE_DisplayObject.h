@@ -48,7 +48,7 @@ public:
 	//给我一个DO类幼崽
 	void addChild(shared_ptr<DisplayObject>);
 	//设置我爸爸
-	void setParent(shared_ptr<DisplayObject> parent);
+	void setParent(weak_ptr<DisplayObject> parent);
 	//设置我的真实渲染方块
 	SDL_Rect setRenderRect(int, int);
 	//删除一个子节点和它所有的子节点
