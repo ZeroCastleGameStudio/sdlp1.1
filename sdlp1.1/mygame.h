@@ -1,17 +1,18 @@
 #pragma once
 #include "ZE_Core.h"
-#include "ZE_AssetManager.h"
-
 using namespace std;
+
+class AssetManager;
 
 class mygame : public Game
 {
 public:
-	AssetManager resourses;
+	unique_ptr<AssetManager> resourses;
 
 	mygame();
-	void Init();
+	void Init(weak_ptr<ZeroEngine> core_engine) override;
 	void MainLoop() override;
 	void Close() override;
 	virtual ~mygame();
+	weak_ptr<ZeroEngine> core_engine;
 };

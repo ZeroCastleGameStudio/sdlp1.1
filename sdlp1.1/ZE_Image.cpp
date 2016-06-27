@@ -1,11 +1,13 @@
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include "ZE_Core.h"
 #include "ZE_Image.h"
+#include "ZE_Error.h"
 
 using namespace std;
 
-Image::Image(textureStruct texture)
+Image::Image(weak_ptr<ZeroEngine> core_engine_weak_ptr, textureStruct texture)
+	:TextureContainer(core_engine_weak_ptr)
 {
 	this->mTexture = texture.texture;
 	this->nowUsingSubData = texture.subData;
@@ -14,7 +16,8 @@ Image::Image(textureStruct texture)
 	this->setBlendMode(SDL_BLENDMODE_BLEND);
 }
 
-Image::Image(deque<textureStruct> textureData, unsigned int frameSpeed)
+Image::Image(weak_ptr<ZeroEngine> core_engine_weak_ptr, deque<textureStruct> textureData, unsigned int frameSpeed)
+	:TextureContainer(core_engine_weak_ptr)
 {
 	this->isMoveble = true;
 	this->subData = textureData;
@@ -36,7 +39,7 @@ int Image::getHeight() { return mHeight; }
 
 void Image::setBlendMode(SDL_BlendMode mode)
 {
-	SDL_SetTextureBlendMode(mTexture->getTexture(), mode);
+	SDL_SetTextureBlendMode(mTexture->getTexture().get(), mode);
 }
 
 void Image::Render()
@@ -60,7 +63,7 @@ void Image::changeCurrentFrame(unsigned int frame)
 		if (frame == subData.size())
 			frame = 0;
 		else if (frame > subData.size())
-			GlobalState->ZE_error->PopDebugConsole_Error("Frame index out of range");
+			core_engine.lock()->ZE_error->PopDebugConsole_Error("Frame index out of range");
 
 		this->mTexture = subData[frame].texture;
 		this->nowUsingSubData = subData[frame].subData;
@@ -69,7 +72,7 @@ void Image::changeCurrentFrame(unsigned int frame)
 			currentFrame = 0;
 	}
 	else
-		GlobalState->ZE_error->PopDebugConsole_Warning("Can't edit a stable image");
+		core_engine.lock()->ZE_error->PopDebugConsole_Warning("Can't edit a stable image");
 }
 
 void Image::play()
@@ -80,7 +83,7 @@ void Image::play()
 		frameTimer.start();
 	}
 	else
-		GlobalState->ZE_error->PopDebugConsole_Warning("Can't edit a stable image");
+		core_engine.lock()->ZE_error->PopDebugConsole_Warning("Can't edit a stable image");
 }
 void Image::stop()
 {
@@ -90,7 +93,7 @@ void Image::stop()
 		frameTimer.reset();
 	}
 	else
-		GlobalState->ZE_error->PopDebugConsole_Warning("Can't edit a stable image");
+		core_engine.lock()->ZE_error->PopDebugConsole_Warning("Can't edit a stable image");
 }
 
 bool Image::playState() { return playing; }

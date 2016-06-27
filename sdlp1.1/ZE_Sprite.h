@@ -7,6 +7,7 @@ using namespace std;
 class Sprite : public DisplayObject
 {
 public:
+	using DisplayObject::DisplayObject;
 	virtual int getWidth();
 	virtual int getHeight();
 

@@ -3,10 +3,10 @@
 
 using namespace std;
 
-void Texture::Init(string name, SDL_Texture* texture, int width, int height, deque<SubTexture> subData)
+void Texture::Init(string name, std::unique_ptr<SDL_Texture, decltype(SDL_DestroyTexture)*>& texture, int width, int height, deque<SubTexture> subData)
 {
 	this->name = name;
-	this->mTexture = texture;
+	this->mTexture.swap(texture);
 	this->mWidth = width;
 	this->mHeight = height;
 	this->subTextures = subData;
@@ -20,13 +20,11 @@ void Texture::Init(string name, SDL_Texture* texture, int width, int height, deq
 int Texture::getWidth() { return mWidth; }
 int Texture::getHeight() { return mHeight; }
 
-SDL_Texture* Texture::getTexture()
+std::unique_ptr<SDL_Texture, decltype(SDL_DestroyTexture)*>& Texture::getTexture()
 {
 	return mTexture;
 }
 
 Texture::~Texture()
 {
-	SDL_DestroyTexture(mTexture);
-	mTexture = NULL;
 }

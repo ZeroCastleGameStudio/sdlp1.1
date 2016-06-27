@@ -1,18 +1,20 @@
 #pragma once
 #include <SDL.h>
 #include "ZE_Sprite.h"
-#include "ZE_TextField.h"
 
 using namespace std;
 
+class TextField;
 class Fraps : public Sprite
 {
 public:
+
+	using Sprite::Sprite;
 	void setUp();
 	void setText();
 
 private:
-	TextField* mText = NULL;
-	Uint32 lastCheck;
-	int callCount;
+	shared_ptr<TextField> mText;
+	Uint32 lastCheck{ 0 };
+	int callCount{ 0 };
 };

@@ -140,11 +140,11 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mygame.cpp" />
+    <ClCompile Include="tuanzi.cpp" />
     <ClCompile Include="ZE_AssetManager.cpp" />
     <ClCompile Include="ZE_Controller.cpp" />
     <ClCompile Include="ZE_Core.cpp" />
     <ClCompile Include="ZE_DisplayObject.cpp" />
-    <ClCompile Include="ZE_EngineGlobalState.cpp" />
     <ClCompile Include="ZE_Error.cpp" />
     <ClCompile Include="ZE_EventManager.cpp" />
     <ClCompile Include="ZE_EventDispatcher.cpp" />
@@ -161,11 +161,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mygame.h" />
+    <ClInclude Include="tuanzi.h" />
     <ClInclude Include="ZE_AssetManager.h" />
     <ClInclude Include="ZE_Controller.h" />
     <ClInclude Include="ZE_Core.h" />
     <ClInclude Include="ZE_DisplayObject.h" />
-    <ClInclude Include="ZE_EngineGlobalState.h" />
     <ClInclude Include="ZE_Error.h" />
     <ClInclude Include="ZE_EventContainer.h" />
     <ClInclude Include="ZE_EventManager.h" />
