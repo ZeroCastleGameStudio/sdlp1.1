@@ -136,7 +136,13 @@ bool ZeroEngine::Init_SDL_Image(bool useVSync)
 		renderFlag = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
 	else
 		renderFlag = SDL_RENDERER_ACCELERATED;
-	g_ZE_MainRenderer.reset(SDL_CreateRenderer(g_ZE_Window.get(), -1, renderFlag));
+	//渲染器可能已被创建，尝试获取
+	g_ZE_MainRenderer.reset(SDL_GetRenderer(g_ZE_Window.get()));
+	if (g_ZE_MainRenderer == nullptr)
+	{
+		//渲染器之前并未被创建，现在创建
+		g_ZE_MainRenderer.reset(SDL_CreateRenderer(g_ZE_Window.get(), -1, renderFlag));
+	}
 	//初始化并绑定渲染器
 	if (g_ZE_MainRenderer == nullptr)
 	{
